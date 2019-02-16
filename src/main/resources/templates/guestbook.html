@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Pollra</title>
+    <script
+            src="https://code.jquery.com/jquery-3.3.1.js"
+            integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+            crossorigin="anonymous"></script>
+    <link type="text/css" rel="stylesheet" href="/css/nav.css" >
+    <link type="text/css" rel="stylesheet" href="/css/content.css">
+    <script type="text/javascript" src="/js/guestBook.js"></script>
+    <script type="text/javascript" src="/js/nav.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.9/semantic.min.css">
+    <style>
+        body{
+            margin:0px;
+        }
+    </style>
+</head>
+<body>
+<!--네비게이션-->
+<div id="navigation">
+    <!--로고-->
+    <div class="logoContainer">
+        <label class="logo">Pollra</label>
+        <div class="gbookLink" onclick="location.href='/guestbook'">방명록 쓰러가기<i class="edit outline icon"></i></div>
+    </div>
+    <!--카테고리-->
+    <div class="categoryContainer">
+    </div>
+    <!--사이트 정보-->
+    <div></div>
+</div>
+<!--컨텐츠-->
+<div class="contents">
+    <div class="title"><h1 class="tenico">Guest Book</h1></div>
+    <div class="separationLine"></div>
+    <div class="division">
+        <li class="content">Content</li>
+        <li class="user">User</li>
+        <li class="time">Time</li>
+        <li class="btn">수정/삭제</li>
+    </div>
+    <div class="separationLine"></div>
+    <!-- 한줄게시판 시작 -->
+    <div id="guestBook">
+    </div>
+    <div class="separationLine"></div>
+    <div id="guestBookData">
+        <input id="guestBookTarget" type="hidden">
+        <input type="text"
+               id="guestBookContent"
+               placeholder="방명록을 입력해주세요! :D"
+               onkeypress="if(event.keyCode==13) {inputGBook(); return false;}">
+
+        <button type="button" id="guestBookBtn" onclick="inputGBook()">방명록 작성</button>
+    </div>
+</div>
+</body>
+</html>
