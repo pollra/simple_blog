@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -13,6 +15,105 @@
     <style>
         body{
             margin:0px;
+        }
+        #navigation{
+            background-image: linear-gradient(to top, #09203f 0%, #537895 100%);
+            width: 230px;
+            height: 100%;
+            position: fixed;
+            margin: 0px;
+            padding: 0px;
+            top: 0px;
+            left: 0px;
+            overflow: auto;
+        }
+        /*폰트*/
+        @font-face {
+            font-family: 'tenico';
+            src: url("/font/tecnicoBold.ttf") format('truetype');
+        }
+        .tenico{
+            font-family: tenico;
+        }
+        @font-face {
+            font-family: 'netmarbleM';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.1/netmarbleM.woff') format('woff');
+            font-weight: normal; font-style: normal;
+        }
+        .netmarbleM{
+            font-family: netmarbleM;
+        }
+        @font-face {
+            font-family: 'UhBeehyemong';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_five@.2.0/UhBeehyemong.woff') format('woff');
+            font-weight: normal; font-style: normal;
+        }
+        /*로고*/
+        #navigation .logoContainer{
+            text-align: center;
+            padding: 100px 0px 70px 0px;
+        }
+        #navigation .logo{
+            font-family: tenico;
+            font-size: 45px;
+            text-shadow: 2px 8px 6px rgba(0,0,0,0.2), 0px -3px 20px rgba(255,255,255,0.4);
+            color: aliceblue;
+        }
+        .gbookLink{
+            color: white;
+            font-family: UhBeehyemong;
+            margin-top: 10px;
+            cursor: pointer;
+            font-size: 12pt;
+        }
+        .gbookLink:hover{
+            background: rgba(0,0,0,0.2);
+            font-size: 13pt;
+            transition: all .2s ease;
+        }
+        /*
+
+        카테고리
+
+        */
+        .categoryContainer{
+            overflow: auto;
+            font-family: UhBeehyemong;
+            color: white;
+            font-size: 18px;
+            margin-left: 8px;
+        }
+        .categoryContainer li, ul{
+            margin: 0px;
+            padding: 0px;
+            list-style: none;
+        }
+        .categoryContainer .size0{
+            margin-bottom: 10px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+        .categoryList .size1{
+            margin-bottom: 10px;
+            margin-left: 30px;
+            cursor: pointer;
+        }
+        .categoryContainer .size2{
+            margin-bottom: 10px;
+            margin-left: 50px;
+            cursor: pointer;
+        }
+        .size0:hover{
+            font-size: 15pt;
+            transition: all .1s ease;
+        }
+        .size1:hover{
+            font-size: 15pt;
+            transition: all .1s ease;
+        }
+        .size2:hover{
+            font-size: 15pt;
+            transition: all .1s ease;
         }
     </style>
 </head>
@@ -28,8 +129,11 @@
     <div class="categoryContainer">
 
     </div>
-    <!--사이트 정보-->
-    <div class="loginBox"></div>
+    <!--내 정보-->
+    <div class="loginBox">
+        <div class="loginNik"></div>
+        <div class="logoutBtn">로그아웃</div>
+    </div>
 </div>
 </body>
 </html>

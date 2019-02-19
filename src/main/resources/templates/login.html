@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <title>login</title>
     <link href="https://fonts.googleapis.com/css?family=Do+Hyeon" rel="stylesheet">
+    <script
+            src="https://code.jquery.com/jquery-3.3.1.js"
+            integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+            crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/js/login.js"></script>
     <style>
         div, label, input, body, button{
             padding: 0;
@@ -103,7 +108,7 @@
         <label for="inputPw">PW</label>
     </div>
     <div class="btnWrapper">
-        <button type="button">로그인</button>
+        <button type="button" onclick="loginAction(); return false;">로그인</button>
     </div>
 </div>
 </body>

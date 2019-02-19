@@ -122,7 +122,12 @@ public class GBookService {
             throw new InvalidRequestException("[d]작성자와 현재 IP가 다릅니다.");
         }
         // 삭제
-        GBookRepository.deleteOneGBookToNum(num, ip);
+        int result = GBookRepository.deleteOneGBookToNum(num, ip);
+        if(result > 0){
+            log.info("[d] delete complete.");
+        }else if(result <= 0){
+            log.info("[d] delete failed.");
+        }
     }
 
     /**
@@ -161,6 +166,11 @@ public class GBookService {
         }
         // 데이터 업데이트 진행
         result = GBookRepository.updateOneGBookToNumAndContents(num, content);
+        if(result > 0){
+            log.info("[u] update complete.");
+        }else if(result <=0 ){
+            log.info("[u] update failed.");
+        }
         return result;
     }
 }

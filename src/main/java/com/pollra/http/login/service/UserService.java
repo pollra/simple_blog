@@ -6,6 +6,7 @@ import com.pollra.http.login.exceptions.exception.PermissionException;
 import com.pollra.http.login.exceptions.exception.UserNotFoundException;
 import com.pollra.http.login.exceptions.exception.UserServiceException;
 import com.pollra.persistence.UserRepository;
+import org.apache.ibatis.jdbc.Null;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -94,11 +95,17 @@ public class UserService {
 
     // 로그인 액션
     public void loginUser(Map<String, Object> param, HttpServletRequest request){
+        log.info("[Ula] loginUser start");
         HttpSession session = request.getSession();
         // 로그인 되어있는지 확인
-        if(!(session.getAttribute("lu")==null)) { // 로그인 유저
-            log.info("[Ula] You are already signed in.");
-            throw new UserServiceException("이미 로그인 되어있습니다.");
+        try {
+            String loginUser = session.getAttribute("lu").toString().trim();
+            if(!loginUser.equals("")){
+                log.info("[Ula] You are already signed in: "+loginUser);
+                throw new UserNotFoundException("이미 로그인 되어있습니다.");
+            }
+        }catch (NullPointerException e){
+            session.setAttribute("lu","");
         }
         // 넘어온 데이터 처리
         String inputId = param.get("userId").toString();
@@ -108,7 +115,7 @@ public class UserService {
         UserVO userVO = userRepository.selectOneUserVOToUserId(inputId);
         if(userVO == null){
             log.info("[Ul] user not found: "+inputId);
-            throw new UserNotFoundException("해당 유저가 존재하지 않습니다.");
+            throw new DataEntryException("해당 유저가 존재하지 않습니다.");
         }
         // 비밀번호 맞는지 확인
         if(!userVO.getPw().equals(inputPw)){
@@ -121,14 +128,21 @@ public class UserService {
     }
 
     // 로그인 확인
-    public String loginCheck(HttpServletRequest request) throws UserServiceException{
+    public String loginCheck(HttpServletRequest request){
         log.info("[Ulc] loginCheck start.");
         HttpSession session = request.getSession();
-        if(!(session.getAttribute("lu")==null)) { // 로그인 유저
-            log.info("[Ulc] You are already signed in."+session.getAttribute("lu"));
-            return session.getAttribute("lu").toString();
+        try {
+            String loginUser = session.getAttribute("lu").toString().trim();
+            if(loginUser.equals("")){
+                throw new UserNotFoundException("로그인되어있지 않습니다.");
+            }else{
+                log.info("[Ulc] You are already signed in: "+loginUser);
+                return loginUser;
+            }
+        }catch(NullPointerException e){
+            log.info("[Ulc] login data is null");
+            throw new UserNotFoundException("로그인되어있지 않습니다.");
         }
-        throw new UserNotFoundException("로그인되어있지 않습니다.");
     }
 
 }

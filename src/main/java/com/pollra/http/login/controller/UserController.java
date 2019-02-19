@@ -16,10 +16,12 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
+ *
  * Exception processing{@link com.pollra.http.login.exceptions.handler.ApiExceptionHandler}
  *
  */
-@Controller
+@RestController
+@RequestMapping("/user")
 public class UserController {
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
@@ -29,31 +31,19 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/login")
-    public ResponseEntity<?> getLoginCondition(HttpServletRequest request){
-        String loginUser = userService.loginCheck(request);
-        return new ResponseEntity<>(loginUser, HttpStatus.OK);
-    }
-
-    @PostMapping("/login")
-    public ResponseEntity<?> setLoginAction(@RequestBody Map<String, Object> param, HttpServletRequest request){
-        userService.loginUser(param, request);
-        return new ResponseEntity<>("ok", HttpStatus.OK);
-    }
-
-    @PostMapping("/user")
+    @PostMapping        // 유저 회원가입
     public ResponseEntity<?> createUser(@RequestBody Map<String, Object> param){
         userService.createUser(param);
         return new ResponseEntity<>("ok", HttpStatus.OK);
     }
 
-    @PutMapping("/user")
+    @PutMapping         // 유저 정보 업데이트
     public ResponseEntity<?> updateUser(@RequestBody Map<String, Object> param){
         userService.updateUser(param);
         return new ResponseEntity<>("ok", HttpStatus.OK);
     }
 
-    @DeleteMapping("/user")
+    @DeleteMapping      // 회원 탈퇴
     public ResponseEntity<?> deleteUser(@RequestBody Map<String, Object> param){
         userService.deleteUser(param);
         return new ResponseEntity<>("ok", HttpStatus.OK);

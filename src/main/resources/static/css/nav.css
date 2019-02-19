@@ -20,7 +20,8 @@
 @font-face {
     font-family: 'netmarbleM';
     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.1/netmarbleM.woff') format('woff');
-    font-weight: normal; font-style: normal;
+    font-weight: normal;
+    font-style: normal;
 }
 .netmarbleM{
      font-family: netmarbleM;
@@ -28,7 +29,8 @@
 @font-face {
     font-family: 'UhBeehyemong';
     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_five@.2.0/UhBeehyemong.woff') format('woff');
-    font-weight: normal; font-style: normal;
+    font-weight: normal;
+    font-style: normal;
 }
 /*로고*/
 #navigation .logoContainer{
@@ -96,5 +98,43 @@
 }
 .size2:hover{
     font-size: 15pt;
+    transition: all .1s ease;
+}
+
+.loginBox {
+    width: 100%;
+    float: left;
+    position: absolute;
+    bottom: 0px;
+}
+.loginBox div{
+    width: 50%;
+    margin: 0;
+    padding: 5px 0;
+    float: left;
+}
+.loginBox .logoutBtn{
+    width: 50%;
+    height: 100%;
+    background: none;
+    color: #ffffff;
+    border: 0px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 3px 3px 0 0;
+    font-weight: 600;
+}
+.loginBox .loginNik{
+    text-align: center;
+    color: #ffffff;
+    cursor: pointer;
+}
+.loginBox .logoutBtn:hover{
+    background: #507592;
+    transition: all .2s ease;
+}
+.loginBox .loginNik:hover{
+    font-weight: 600;
+    font-size: 15px;
     transition: all .1s ease;
 }

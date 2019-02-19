@@ -3,6 +3,7 @@
  */
 $(document).ready(()=>{
     getCategoryList();
+    loginCheck();
 })
 function getCategoryList(){
     $.ajax({
@@ -89,3 +90,27 @@ function categoryListCreate(result){
     return resultData;
 }
 
+/**
+ * 로그인 관련 기능
+ */
+// 로그인 체크
+function loginCheck(){
+    $.ajax({
+        url:"/login",
+        type:"GET",
+        contentType: "application/json; charset=utf-8",
+        dataType:'json'
+    }).done((result)=>{
+        const loginResult = JSON.parse(result.responseText);
+        if(result !== ""){
+            console.log(`login id : ${loginResult}`);
+            $(".loginNik").text(result);
+
+        }
+    }).fail((result)=>{
+        const error = JSON.parse(result.responseText);  // 날아온 JSON 텍스트 데이터를 JSON 객체로 변환해줌
+        console.log(`${error.message}`);
+        $(".loginNik").text("로그인");
+        $(".loginNik").attr("onclick","location.href='/login/page'");
+    })
+}

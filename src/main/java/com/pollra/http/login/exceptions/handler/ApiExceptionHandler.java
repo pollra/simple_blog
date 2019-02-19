@@ -61,4 +61,6 @@ public class ApiExceptionHandler {
         errorDetail.setMessage(dee.getMessage());
         return new ResponseEntity<>(errorDetail, HttpStatus.NOT_FOUND);
     }
+
+
 }

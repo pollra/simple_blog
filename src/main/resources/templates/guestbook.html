@@ -31,8 +31,11 @@
     <!--카테고리-->
     <div class="categoryContainer">
     </div>
-    <!--사이트 정보-->
-    <div></div>
+    <!--내 정보-->
+    <div class="loginBox">
+        <div class="loginNik"></div>
+        <div class="logoutBtn">로그아웃</div>
+    </div>
 </div>
 <!--컨텐츠-->
 <div class="contents">
@@ -55,7 +58,6 @@
                id="guestBookContent"
                placeholder="방명록을 입력해주세요! :D"
                onkeypress="if(event.keyCode==13) {inputGBook(); return false;}">
-
         <button type="button" id="guestBookBtn" onclick="inputGBook()">방명록 작성</button>
     </div>
 </div>
