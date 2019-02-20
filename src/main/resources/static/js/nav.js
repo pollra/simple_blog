@@ -4,6 +4,7 @@
 $(document).ready(()=>{
     getCategoryList();
     loginCheck();
+    $(".logoutBtn").attr("onclick","logout(); return false;")
 })
 function getCategoryList(){
     $.ajax({
@@ -97,20 +98,38 @@ function categoryListCreate(result){
 function loginCheck(){
     $.ajax({
         url:"/login",
-        type:"GET",
-        contentType: "application/json; charset=utf-8",
-        dataType:'json'
+        type:"get"
     }).done((result)=>{
-        const loginResult = JSON.parse(result.responseText);
         if(result !== ""){
-            console.log(`login id : ${loginResult}`);
+            console.log(`login id : ${result}`);
             $(".loginNik").text(result);
-
+            $(".loginNik").attr("onclick","location.href='/user/info'");
+            $(".logoutBtn").text("로그아웃");
+            $(".logoutBtn").attr("onclick","logout(); return false;");
         }
-    }).fail((result)=>{
-        const error = JSON.parse(result.responseText);  // 날아온 JSON 텍스트 데이터를 JSON 객체로 변환해줌
+    }).fail((errorObject)=>{
+        const error = JSON.parse(errorObject.responseText);  // 날아온 JSON 텍스트 데이터를 JSON 객체로 변환해줌
         console.log(`${error.message}`);
         $(".loginNik").text("로그인");
         $(".loginNik").attr("onclick","location.href='/login/page'");
+        $(".logoutBtn").text("회원가입");
+        $(".logoutBtn").attr("onclick","location.href='/signup'");
+    })
+}
+// 로그아웃 기능
+function logout(){
+    console.log("logout action start.");
+    $.ajax({
+        url: "/logout",
+        type: "get"
+    }).done((result)=>{
+        console.log("logout complete.");
+        $(".loginNik").text("로그인");
+        $(".loginNik").attr("onclick","location.href='/login/page'");
+        $(".logoutBtn").text("회원가입");
+        $(".logoutBtn").attr("onclick","location.href='/signup'");
+    }).fail(()=>{
+        console.log("logout failed.");
+        alert("로그아웃 실패.");
     })
 }

@@ -18,7 +18,6 @@ import java.util.Map;
  *
  */
 @RestController
-@RequestMapping("/login")
 public class LoginController {
     private static final Logger log = LoggerFactory.getLogger(LoginController.class);
 
@@ -28,19 +27,25 @@ public class LoginController {
         this.userService = userService;
     }
 
-    @GetMapping   // 로그인 상태 체크
+    @GetMapping("/login")   // 로그인 상태 체크
     public ResponseEntity<?> getLoginCondition(HttpServletRequest request){
         String loginUser = userService.loginCheck(request);
         return new ResponseEntity<>(loginUser, HttpStatus.OK);
     }
 
-    @PostMapping  // 로그인 시도
+    @PostMapping("/login")  // 로그인 시도
     public ResponseEntity<?> setLoginAction(@RequestBody Map<String, Object> param, HttpServletRequest request){
         userService.loginUser(param, request);
         return new ResponseEntity<>("ok", HttpStatus.OK);
     }
 
-    @GetMapping("page")
+    @GetMapping("/logout")
+    public ResponseEntity<?> setLogoutAction(HttpServletRequest request){
+        userService.logoutUser(request);
+        return new ResponseEntity<>("ok", HttpStatus.OK);
+    }
+
+    @GetMapping("/login/page")
     public ModelAndView goLoginPage(){
         ModelAndView view = new ModelAndView("login");
         return view;

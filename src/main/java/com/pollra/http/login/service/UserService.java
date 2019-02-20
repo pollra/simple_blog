@@ -145,4 +145,21 @@ public class UserService {
         }
     }
 
+    // 로그아웃
+    public void logoutUser(HttpServletRequest request){
+        HttpSession session = request.getSession();
+        String loginUser = "";
+        try{
+            loginUser = session.getAttribute("lu").toString().trim();
+        } catch ( NullPointerException e){
+            log.info("[lo] 로그인 되어있지 않습니다.");
+            throw new PermissionException("로그인 되어있지 않습니다.");
+        }
+        if(loginUser.equals("")){
+            log.info("[lo] 해당 아이디를 찾을 수 없습니다.");
+            throw new UserNotFoundException("해당 아이디를 찾을 수 없습니다.");
+        }
+        session.setAttribute("lu","");
+    }
+
 }

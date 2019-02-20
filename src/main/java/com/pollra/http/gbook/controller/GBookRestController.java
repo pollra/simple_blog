@@ -26,7 +26,7 @@ public class GBookRestController {
     @PostMapping("")
     public ResponseEntity<String> inputData(@RequestBody Map<String, Object> param, HttpServletRequest request){
         try {
-            GBookService.createGBook(param.get("content").toString(), request.getRemoteAddr());
+            GBookService.createGBook(param.get("content").toString(), request);
             log.info("데이터 저장 완료.");
             return new ResponseEntity<>("작성완료", HttpStatus.OK);
         } catch (UserNotFoundException e) {
@@ -66,7 +66,7 @@ public class GBookRestController {
         try {
             GBookService.deleteOneGBook(
                     Integer.parseInt(param.get("gbookNum").toString()),
-                    request.getRemoteAddr()
+                    request
             );
             return new ResponseEntity<>("삭제완료",HttpStatus.OK);
         } catch (DataEntryException e) { // 입력데이터 없음
@@ -105,7 +105,7 @@ public class GBookRestController {
             result = GBookService.updateOneGBook(
                     Integer.parseInt(param.get("gbookNum").toString()),
                     param.get("gbookContent").toString(),
-                    request.getRemoteAddr()
+                    request
             );
             if(result == 0) return new ResponseEntity<>("변경 실패", HttpStatus.INTERNAL_SERVER_ERROR);
             return new ResponseEntity<>("변경 성공", HttpStatus.OK);

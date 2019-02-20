@@ -3,10 +3,13 @@ package com.pollra.http.gbook.service;
 import com.pollra.http.gbook.domain.GBookVO;
 import com.pollra.http.gbook.exceptions.*;
 import com.pollra.persistence.GBookRepository;
+import org.apache.ibatis.jdbc.Null;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -31,11 +34,21 @@ public class GBookService {
      * @return
      * -1 : 데이터가 입력되지 않았습니다.
      */
-    public void createGBook(String content, String ip) throws GBookServiceException {
+    public void createGBook(String content, HttpServletRequest request) throws GBookServiceException {
         int dataEntryResult;
         GBookVO insertNewGBook = new GBookVO();
+        HttpSession session = request.getSession();
+        String writer = request.getRemoteAddr();
         // 데이터를 정리
-        insertNewGBook.setWriter(ip.trim());
+        try {
+             String LuData = session.getAttribute("lu").toString().trim();
+             if(!LuData.equals("")){
+                 writer = LuData;
+             }
+        } catch (NullPointerException e) {
+            log.info("[GBc] writer is null.");
+        }
+        insertNewGBook.setWriter(writer.trim());
         insertNewGBook.setContents(content.trim());
         insertNewGBook.setDate(
                 new SimpleDateFormat("yy.MM.dd")
@@ -48,13 +61,13 @@ public class GBookService {
         // 받아온 데이터를 검사
         if(insertNewGBook.check() < 1) {
             log.info("[c]작성자를 확인할 수 없습니다.");
-            throw new UserNotFoundException("[c]작성자를 확인할 수 없습니다.");
+            throw new UserNotFoundException("작성자를 확인할 수 없습니다.");
         }
 
         dataEntryResult = GBookRepository.insertOneGBookToGBookVO(insertNewGBook);
         if(dataEntryResult <= 0){
             log.info("[c]데이터 저장에 실패했습니다.");
-            throw new DataEntryException("[c]데이터 저장에 실패했습니다.");
+            throw new DataEntryException("데이터 저장에 실패했습니다.");
         }
         // 데이터 저장에 성공
     }
@@ -102,24 +115,32 @@ public class GBookService {
      * GBookNotFoundException
      * InvalidRequestException
      */
-    public void deleteOneGBook(int num, String ip) throws GBookServiceException {
+    public void deleteOneGBook(int num, HttpServletRequest request) throws GBookServiceException {
+        String ip = request.getRemoteAddr();
+        HttpSession session = request.getSession();
+        String loginUser = "";
+        try {
+            loginUser = session.getAttribute("lu").toString();
+        }catch (NullPointerException e){
+            log.info("[d] 로그인 되지 않은 유저입니다.");
+        }
         if(num == 0 || ip.equals("")){
-            log.info("[d]입력된 데이터가 없습니다.");
-            throw new DataEntryException("[d]입력된 데이터가 없습니다.");
+            log.info("[d]입력되지 않은 데이터가 존재합니다.");
+            throw new DataEntryException("입력되지 않은 데이터가 존재합니다.");
         }
         // 삭제할 글이 존재하는지 확인
         GBookVO targetBoard = GBookRepository.selectOneGBookToNum(num);
         if(targetBoard.check() <= 0){
             log.info("[d]삭제하려는 글이 존재하지 않습니다.");
-            throw new GBookNotFoundException("[d]삭제하려는 글이 존재하지 않습니다.");
+            throw new GBookNotFoundException("삭제하려는 글을 인식하지 못했습니다.");
         }
         if(ip.equals("0:0:0:0:0:0:0:1")){
             ip = targetBoard.getWriter();
         }
         // 글쓴이의 ip주소가 일치하는지 확인. (비밀번호 대용)
-        if(!targetBoard.getWriter().equals(ip)){
+        if(!targetBoard.getWriter().equals(loginUser)){
             log.info("[d]작성자와 현재 IP가 다릅니다.");
-            throw new InvalidRequestException("[d]작성자와 현재 IP가 다릅니다.");
+            throw new InvalidRequestException("권한이 없습니다.");
         }
         // 삭제
         int result = GBookRepository.deleteOneGBookToNum(num, ip);
@@ -134,15 +155,23 @@ public class GBookService {
      *
      * @param num
      * @param content
-     * @param ip
+     * @param
      * @return
      * @throws GBookServiceException
      * DataEntryException
      * GBookNotFoundException
      * InvalidRequestException
      */
-    public int updateOneGBook(int num, String content, String ip)throws GBookServiceException {
+    public int updateOneGBook(int num, String content, HttpServletRequest request)throws GBookServiceException {
         int result=0;
+        String loginUser = "";
+        HttpSession session = request.getSession();
+        String ip = request.getRemoteAddr();
+        try {
+            loginUser = session.getAttribute("lu").toString();
+        }catch (NullPointerException e){
+            log.info("[d] 로그인 되지 않은 유저입니다.");
+        }
         // 넘어온 데이터가 null 인지?
         if(num <0 || content.equals("") || ip.equals("")){
             log.info("[u]입력된 데이터가 없습니다.");
@@ -160,9 +189,9 @@ public class GBookService {
         }
 
         // 해당 데이터를 수정할 권한이 있는지?
-        if(!targetBoard.getWriter().equals(ip)){
-            log.info("[u]작성자와 현재 IP가 다릅니다.");
-            throw new InvalidRequestException("[u]작성자와 현재 IP가 다릅니다.");
+        if(!targetBoard.getWriter().equals(loginUser)){
+            log.info("[u] 접속중인 정보와 글쓴이의 정보가 서로 다릅니다.");
+            throw new InvalidRequestException("권한이 없습니다.");
         }
         // 데이터 업데이트 진행
         result = GBookRepository.updateOneGBookToNumAndContents(num, content);

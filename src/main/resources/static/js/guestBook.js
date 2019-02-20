@@ -87,6 +87,7 @@ var updateGBook = function (num, content) {
             $("#guestBookContent").val("");
             getGBookList();
         }).fail(function (result) {
+            alert("권한이 없습니다.");
             console.log("방명록 업데이트 실패: " + result);
         })
     }
