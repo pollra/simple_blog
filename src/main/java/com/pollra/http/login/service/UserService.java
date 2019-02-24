@@ -48,23 +48,52 @@ public class UserService {
     }
 
     // 정보 수정
-    public void updateUser(Map<String, Object> param){
+    public void updateUser(Map<String, Object> param, HttpServletRequest request){
         log.info("[Uu] updateUser start");
+
         // 수정 데이터 추출
-        UserVO inputUserVO = new UserVO(param);
-        if(inputUserVO.check()){
-            // incorrect : 1. 부정확한, 맞지 않는, 사실이 아닌   2. (규범·규칙에) 맞지 않는
-            log.info("[Uu] data entry is incorrect.");
-            throw new DataEntryException("data entry is incorrect.");
+        HttpSession session = request.getSession();
+
+        // 로그인 유무 체크
+        if(session.getAttribute("lu").equals("")){
+            log.info("[Uu] 로그인값이 존재하지 않습니다.");
+            throw new PermissionException("데이터가 올바르지 않습니다.");
         }
-//        UserVO importedUserVO = userRepository.selectOneUserVOToNum(inputUserVO.getNum());
-        // 데이터 업데이트 시도
-        if(userRepository.updateOneUserToUserVO(inputUserVO)>0){
-            log.info("[Uu] data update complete.");
-            return;
+        try {
+            // 옵션 불러오기
+            String option = param.get("option").toString().trim();
+            if (option.equals("pw")) {
+                String newPassword = param.get("newPassword").toString().trim();
+                if(newPassword.equals("")){
+                    log.info("[Uu] 입력된 데이터중 필수항목이 누락되었습니다: newPassword");
+                    throw new DataEntryException("데이터가 올바르지 않습니다.");
+                }
+                if(userRepository.updateOneUserToIdAndPassword(session.getAttribute("lu").toString(), newPassword)>0){
+                    log.info("[Uu] 데이터가 성공적으로 전송되었습니다.");
+                    return;
+                }
+                log.info("[Uu] 데이터 전송과정 문제발생 id: "+session.getAttribute("lu").toString()+" / password: "+ newPassword);
+                throw new UserServiceException("데이터 전송과정에서 문제가 발생했습니다.");
+            } else if (option.equals("name")) {
+                String newName = param.get("newName").toString().trim();
+                if(newName.equals("")){
+                    log.info("[Uu] 입력된 데이터중 필수항목이 누락되었습니다: newName");
+                    throw new DataEntryException("데이터가 올바르지 않습니다.");
+                }
+                if(userRepository.updateOneUserToIdAndName(session.getAttribute("lu").toString(), newName)>0){
+                    log.info("[Uu] 데이터가 성공적으로 전송되었습니다.");
+                    return;
+                }
+                log.info("[Uu] 데이터 전송과정 문제발생 id: "+session.getAttribute("lu").toString()+" / name: "+ newName);
+                throw new UserServiceException("데이터 전송과정에서 문제가 발생했습니다.");
+            } else {
+                log.info("[Uu] data entry is incorrect.");
+                throw new DataEntryException("데이터가 올바르지 않습니다.");
+            }
+        }catch (NullPointerException e){
+            log.info("[Uu] data entry is null.");
+            throw new DataEntryException("데이터가 올바르지 않습니다.");
         }
-        log.info("[Uu] data update failed.");
-        throw new UserServiceException("data update failed.");
     }
 
     // 회원 탈퇴

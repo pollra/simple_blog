@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
@@ -32,8 +33,8 @@ public class UserRestController {
     }
 
     @PutMapping         // 유저 정보 업데이트
-    public ResponseEntity<?> updateUser(@RequestBody Map<String, Object> param){
-        userService.updateUser(param);
+    public ResponseEntity<?> updateUser(@RequestBody Map<String, Object> param, HttpServletRequest request){
+        userService.updateUser(param, request);
         return new ResponseEntity<>("ok", HttpStatus.OK);
     }
 

@@ -22,7 +22,11 @@ public interface UserRepository {
     @Delete("DELETE FROM public.user WHERE num = #{num}")
     public int deleteOneUserToNum(@Param("num") int num);
 
-    // 회원정보로 회원정보 수정
-    @Update("UPDATE public.user SET id = #{id}, pw = #{pw}, name = #{name} WHERE num = #{num}")
-    public int updateOneUserToUserVO(UserVO userVO);
+    // 이름 수정
+    @Update("UPDATE public.user SET name = #{name} WHERE id = #{id}")
+    public int updateOneUserToIdAndName(@Param("id") String id, @Param("name") String name);
+
+    // 비밀번호 수정
+    @Update("UPDATE public.user SET pw = #{pw} WHERE id = #{id}")
+    public int updateOneUserToIdAndPassword(@Param("id") String id, @Param("pw") String newPassword);
 }
