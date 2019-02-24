@@ -1,10 +1,540 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>회원가입</title>
+    <script
+            src="https://code.jquery.com/jquery-3.3.1.js"
+            integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+            crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/js/nav.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.9/semantic.min.css">
+    <style>
+        body{
+            margin: 0px;
+            height: 100%;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .contents{
+            height: 100%; /* 테스트를 위해 스크롤 생성 */
+            /*border: 1px solid slategray;*/
+            border-radius: 5px;
+            margin: 40px 230px 0px 230px;
+            padding: 0px;
+            width: 53%;
+            min-width: 700px;
+            position: absolute;
+            display: flex;
+            z-index: 1;
+        }
+        @font-face {
+            font-family: 'tenico';
+            src: url("/font/tecnicoBold.ttf") format('truetype');
+        }
+        .tenico{
+            font-family: tenico;
+        }
+        @font-face {
+            font-family: 'UhBeehyemong';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_five@.2.0/UhBeehyemong.woff') format('woff');
+            font-weight: normal; font-style: normal;
+        }
+        .beehyemong{
+            font-family: UhBeehyemong;
+        }
+        @font-face {
+            font-family: 'netmarbleM';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.1/netmarbleM.woff') format('woff');
+            font-weight: normal; font-style: normal;
+        }
+        .netmarbleM{
+            font-family: netmarbleM;
+        }
+        #navigation{
+            background-image: linear-gradient(to top, #09203f 0%, #537895 100%);
+            width: 230px;
+            height: 100%;
+            position: fixed;
+            margin: 0px;
+            padding: 0px;
+            top: 0px;
+            left: 0px;
+            overflow: auto;
+        }
+        /*폰트*/
+        @font-face {
+            font-family: 'tenico';
+            src: url("/font/tecnicoBold.ttf") format('truetype');
+        }
+        .tenico{
+            font-family: tenico;
+        }
+        @font-face {
+            font-family: 'netmarbleM';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.1/netmarbleM.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+        .netmarbleM{
+            font-family: netmarbleM;
+        }
+        @font-face {
+            font-family: 'UhBeehyemong';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_five@.2.0/UhBeehyemong.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+        /*로고*/
+        #navigation .logoContainer{
+            text-align: center;
+            padding: 100px 0px 70px 0px;
+        }
+        #navigation .logo{
+            font-family: tenico;
+            font-size: 45px;
+            text-shadow: 2px 8px 6px rgba(0,0,0,0.2), 0px -3px 20px rgba(255,255,255,0.4);
+            color: aliceblue;
+        }
+        .gbookLink{
+            color: white;
+            font-family: UhBeehyemong;
+            margin-top: 10px;
+            cursor: pointer;
+            font-size: 12pt;
+        }
+        .gbookLink:hover{
+            background: rgba(0,0,0,0.2);
+            font-size: 13pt;
+            transition: all .2s ease;
+        }
+        /*
+
+        카테고리
+
+        */
+        .categoryContainer{
+            overflow: auto;
+            font-family: UhBeehyemong;
+            color: white;
+            font-size: 18px;
+            margin-left: 8px;
+        }
+        .categoryContainer li, ul{
+            margin: 0px;
+            padding: 0px;
+            list-style: none;
+        }
+
+        .categoryContainer .size0{
+            margin-bottom: 10px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+        .categoryList .size1{
+            margin-bottom: 10px;
+            margin-left: 30px;
+            cursor: pointer;
+        }
+        .categoryContainer .size2{
+            margin-bottom: 10px;
+            margin-left: 50px;
+            cursor: pointer;
+        }
+        .size0:hover{
+            font-size: 15pt;
+            transition: all .1s ease;
+        }
+        .size1:hover{
+            font-size: 15pt;
+            transition: all .1s ease;
+        }
+        .size2:hover{
+            font-size: 15pt;
+            transition: all .1s ease;
+        }
+
+        .loginBox {
+            width: 100%;
+            float: left;
+            position: absolute;
+            bottom: 0px;
+        }
+        .loginBox div{
+            width: 50%;
+            margin: 0;
+            padding: 5px 0;
+            float: left;
+        }
+        .loginBox .logoutBtn{
+            width: 50%;
+            height: 100%;
+            background: none;
+            color: #ffffff;
+            border: 0px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 3px 3px 0 0;
+            font-weight: 600;
+        }
+        .loginBox .loginNik{
+            text-align: center;
+            color: #ffffff;
+            cursor: pointer;
+        }
+        .loginBox .logoutBtn:hover{
+            background: #507592;
+            transition: all .2s ease;
+        }
+        .loginBox .loginNik:hover{
+            font-weight: 600;
+            font-size: 15pt;
+            transition: all .1s ease;
+        }
+        .statusNav{
+            background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+            width: 100%;
+            height: 40px;
+            list-style: none;
+            margin: 0px 0 0 230px;
+            padding: 0px;
+            position: fixed;
+            z-index: 99;
+        }
+        .statusNav li{
+            margin: 5px 5px;
+            padding: 8px 15px 0px 15px;
+            text-align: center;
+            float: left;
+            font-family: tenico;
+            font-size: 15pt;
+            height: 35px;
+        }
+        .statusNav li:hover{
+            background: #507592;
+            color: white;
+            cursor: pointer;
+            border-radius: 3px 3px 0px 0px;
+            transition: all .2s ease;
+        }
+        .no_drag {
+            -ms-user-select: none;
+            -moz-user-select: -moz-none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            user-select:none;
+        }
+        .myInfo{
+
+        }
+        .infoData{
+            font-size: 15pt;
+            font-family: tenico;
+            padding: 5px;
+        }
+        .sell{
+            border: 1px solid #537895;
+            width:700px;
+            margin: 5px;
+            border-radius: 4px;
+        }
+        .dataText{
+            width: 700px;
+            display: inherit;
+        }
+        .dataInput{
+            outline: none;
+            border:0px;
+            width: 70%;
+            font-family: tenico;
+            font-size: 14pt;
+            margin: 5px 0px 5px 10px;
+        }
+        .dataInfo{
+            font-size: 14pt;
+            font-family: tenico;
+            width: 25%;
+            display: inline-block;
+        }
+        .paragraph{
+            width: 100%;
+        }
+        .dataExplanation{
+            font-family: tenico;
+            font-size: 11pt;
+            color: gray;
+            width: 100%;
+            display: block;
+            margin: 5px;
+            padding: 0;
+        }
+        .modifiedBtn{
+            background: #507592;
+            color:white;
+            border: 0px;
+            border-radius: 3px;
+            outline: none;
+        }
+        .btnSet{
+            z-index: 100;
+            position: fixed;
+            box-sizing: border-box;
+            right: 0px;
+            bottom: 0px;
+            margin: 20px;
+        }
+        .btnSet button{
+            color:white;
+            border: 0px;
+            border-radius: 3px;
+            outline: none;
+            font-size: 25pt;
+            cursor: pointer;
+            box-shadow: 3px 2px 9px 0px gray;
+            padding: 5px 20px;
+            margin-left: 20px;
+        }
+        .resetBtn{
+            background: darkred;
+        }
+        .actionBtn{
+            border: 0px;
+            border-radius: 4px;
+            padding: 5px 15px;
+            text-align: center;
+            font-size: 13pt;
+            color: white;
+            float: right;
+            outline: none;
+            cursor: pointer;
+        }
+        .no_Action{
+            cursor: no-drop;
+        }
+        .categoryDeleteSelect{
+            font-size: 15px;
+            width: 400px;
+            height: 25px;
+            border: 1px solid #507592;
+            border-radius: 4px;
+        }
+        .categoryUpdateSelect{
+            font-size: 15px;
+            width: 200px;
+            height: 25px;
+            border: 1px solid #507592;
+            border-radius: 4px;
+        }
+        .categoryUpdateInput{
+            outline: none;
+            border:0px;
+            width: 50%;
+            font-family: tenico;
+            font-size: 14pt;
+            margin: 5px 0px 5px 10px;
+        }
+        .goGBookPage{
+            width: 600px;
+            height: 50px;
+            border: 0px;
+            border-radius: 4px;
+            font-size: 17pt;
+            word-spacing:1px;
+            background: #09203f;
+            margin: 10px;
+            color: white;
+        }
+        .goGBookPage:hover{
+            background: #507592;
+            transition: all .2s ease;
+        }
+    </style>
+    <script>
+        var myInfoHtml =
+            "<div class='myInfo'>" +
+                "<div class='paragraph'>" +
+                    "<div class='dataExplanation'>" +
+                    "가입 데이터를 수정합니다.<br>" +
+                    "수정하고싶은 데이터들을 적고, 화면의 오른쪽 아래에 위치한 <button class='modifiedBtn'>수정</button> 버튼을 이용해 <br>" +
+                    "데이터를 수정할 수 있습니다." +
+                    "</div>" +
+                "</div>" +
+                "<div class='infoData sell'>" +
+                    "<label class='dataText'>아이디</label>" +
+                    "<span class='dataExplanation'>" +
+                    "아이디를 변경해야 하는 특수한 상황이라면 관리자에게 문의 주시길 바랍니다." +
+                    "</span>" +
+                    "<label class='dataInput'>Pollra</label>" +
+                    "<!--<input class='dataI' placeholder='Pollra'>-->" +
+                "</div>" +
+                "<div class='infoData sell'>" +
+                    "<label class='dataText' for='prepw'>비밀번호 변경</label>" +
+                    "<div class='paragraph' for='prepw'>" +
+                        "<span class='dataExplanation'>" +
+                            "비밀번호를 변경합니다.<br>" +
+                            "비밀번호는 반드시 영문, 숫자, 특수문자만 사용할 수 있습니다.<br>" +
+                            "기존 비밀번호를 적고 변경할 비밀번호를 기입한 뒤 <button class='modifiedBtn'>수정</button>버튼을 이용해 수정합니다." +
+                        "</span>" +
+                    "</div>" +
+                    "<div class='paragraph'>" +
+                        "<label class='dataInfo' for='prepw'>기존 비밀번호</label>" +
+                        "<input class='dataInput' id='prepw' type='password' placeholder='기존 비밀번호'>" +
+                    "</div>" +
+                    "<div class='paragraph'>" +
+                        "<label class='dataInfo' for='nexpw'>새로운 비밀번호</label>" +
+                        "<input class='dataInput' id='nexpw' type='password' placeholder='...'>" +
+                    "</div>" +
+                    "<div class='paragraph'>" +
+                        "<label class='dataInfo' for='repw'>재입력</label>" +
+                        "<input class='dataInput' id='repw' type='password' placeholder='...'>" +
+                    "</div>" +
+                "</div>" +
+                "<div class='infoData sell'>" +
+                    "<label class='dataText' for='updateName'>이름</label>" +
+                    "<span class='dataExplanation'>이름을 수정합니다. 수정하고싶은 이름을 적고 <button class='modifiedBtn'>수정</button>버튼을 이용해 수정합니다.</span>" +
+                    "<input class='dataInput' id='updateName' placeholder='이승근'>" +
+                "</div>" +
+                "<div class='infoData sell'>" +
+                    "<label class='dataText'>권한</label>" +
+                    "<span class='dataExplanation'>권한을 부여합니다. 관리자만이 수정할 수 있습니다.</span>" +
+                    "<label class='dataInput'>관리자</label>" +
+                "</div>" +
+            "</div>";
+        var cateInfoHtml =
+            "<div class='cateInfo'>" +
+                "<div class='paragraph'>" +
+                    "<label class='dataExplanation'>블로그의 카테고리를 추가, 수정 또는 삭제 합니다.<br>" +
+                    "</label>" +
+                "</div>" +
+                "<div class='infoData sell'>" +
+                    "<label class='dataText'>카테고리 추가</label>" +
+                    "<label class='dataExplanation'>" +
+                        "카테고리를 추가합니다. 오른쪽의 추가 버튼을 이용해 왼쪽의 네비게이션 바에 바로 적용시킵니다." +
+                    "</label>" +
+                    "<input class='dataInput' placeholder='카테고리 입력'>" +
+                    "<button class='actionBtn' style='background: #507592'>추가</button>" +
+                "</div>" +
+                "<div class='infoData sell'>" +
+                    "<label class='dataText'>카테고리 수정</label>" +
+                    "<label class='dataExplanation'>" +
+                        "카테고리를 수정합니다. 오른쪽의 수정 버튼을 이용해 왼쪽의 네비게이션 바를 선택해서 수정합니다." +
+                    "</label>" +
+                    "<select class='categoryUpdateSelect'>" +
+                        "<option value='1'>1</option>" +
+                        "<option value='2'>2</option>" +
+                        "<option value='3'>3</option>" +
+                    "</select>" +
+                    "<input class='categoryUpdateInput' placeholder='왼쪽에서 선택하면 이곳에 표시됩니당'>" +
+                    "<button class='actionBtn' style='background: green'>수정</button>" +
+                "</div>" +
+                "<div class='infoData sell'>" +
+                    "<label class='dataText'>카테고리 삭제</label>" +
+                    "<label class='dataExplanation'>" +
+                        "카테고리를 삭제합니다. 오른쪽의 삭제 버튼을 이용해 왼쪽의 네비게이션 바에서 바로 삭제합니다." +
+                    "</label>" +
+                    "<select class='categoryDeleteSelect'>" +
+                        "<option value='1'>1</option>" +
+                        "<option value='2'>2</option>" +
+                        "<option value='3'>3</option>" +
+                    "</select>" +
+                    "<button class='actionBtn' style='background: darkred'>삭제</button>" +
+                "</div>" +
+                "<div class='infoData sell'>" +
+                    "<label class='dataText'>카테고리 비공개</label>" +
+                    "<label class='dataExplanation'>" +
+                        "카테고리 하나를 선택해서 비공개로 만듭니다. <br>" +
+                        "이 공개 설정은 자신만 볼 수 있으며 '운영자' 권한 이상만이 사용할 수 있습니다." +
+                    "</label>" +
+                    "<input class='dataInput' placeholder='카테고리 입력'>" +
+                    "<button class='actionBtn no_Action' style='background: gray'>적용</button>" +
+                "</div>" +
+            "</div>";
+        var gbInfoHtml =
+            "<div class='gbInfo'>" +
+                "<div class='paragraph'>" +
+                    "<label class='dataExplanation'>" +
+                    "방명록을 관리합니다. <br>" +
+                    "운영자 이상의 등급만 관리할 수 있습니다.<br>" +
+                    "</label>" +
+                    "<button class='goGBookPage' onclick='location.href=\'/guestbook\''>방명록 관리</button>" +
+                "</div>" +
+            "</div>";
+        var buttonSet = "<button class='modifiedBtn'>수정</button>" +
+            "    <button class='resetBtn'>리셋</button>";
+        $(document).ready(()=>{
+            $(".contents").html("");
+            $(".contents").html(myInfoHtml);
+            $(".btnSet").html("");
+            $(".btnSet").html(buttonSet);
+        });
+        function openStatus(methodName){
+            switch (methodName) {
+                case "myInfo":
+                    $(".contents").html("");
+                    $(".contents").html(myInfoHtml);
+                    $(".btnSet").html("");
+                    $(".btnSet").html(buttonSet);
+                    break;
+                case "cateInfo":
+                    $(".contents").html("");
+                    $(".contents").html(cateInfoHtml);
+                    $(".btnSet").html("");
+                    $(".btnSet").html("");
+                    break;
+                case "gbInfo":
+                    $(".contents").html("");
+                    $(".contents").html(gbInfoHtml);
+                    $(".btnSet").html("");
+                    $(".btnSet").html("");
+                    break;
+                default:
+                    alert("미구현된 기능입니다.");
+            }
+        }
+    </script>
 </head>
 <body>
+
+<!--네비게이션-->
+<div id="navigation">
+    <!--로고-->
+    <div class="logoContainer no-drag">
+        <label class="logo">Pollra</label>
+        <div class="gbookLink" onclick="location.href='/guestbook'">방명록 쓰러가기<i class="edit outline icon"></i></div>
+    </div>
+    <!--카테고리-->
+    <div class="categoryContainer">
+    </div>
+    <!--내 정보-->
+    <div class="loginBox">
+        <div class="loginNik"></div>
+        <div class="logoutBtn"></div>
+    </div>
+</div>
+<!-- 내 정보 네비게이션 -->
+<div class="statusNav">
+    <li class="no_drag" onclick="openStatus('myInfo'); return false;">내 정보</li>       <!-- myInfo -->
+    <li class="no_drag" onclick="openStatus('cateInfo'); return false;">카테고리</li>       <!-- cateInfo -->
+    <li class="no_drag" onclick="openStatus('gbInfo'); return false;">방명록 관리</li>     <!-- gbInfo -->
+    <li class="no_drag" onclick="openStatus('boardInfo'); return false;">글</li>            <!-- boardInfo -->
+    <li class="no_drag" onclick="openStatus('users'); return false;">가입 신청 유저</li>  <!-- users -->
+    <li class="no_drag" onclick="openStatus('statistics'); return false;">통계</li>           <!-- statistics -->
+</div>
+<!-- 컨텐츠 -->
+<div class="contents no_drag">
+    <div class="gbInfo">
+        <div class="paragraph">
+            <label class="dataExplanation">
+                방명록을 관리합니다. <br>
+                운영자 이상의 등급만 관리할 수 있습니다.<br>
+            </label>
+            <button class="goGBookPage" onclick="location.href='/guestbook'">방명록 관리</button>
+        </div>
+    </div>
+</div>
+
+<div class="btnSet">
+</div>
 
 </body>
 </html>

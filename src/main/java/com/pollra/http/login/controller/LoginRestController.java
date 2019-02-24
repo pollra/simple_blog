@@ -1,7 +1,6 @@
 package com.pollra.http.login.controller;
 
 import com.pollra.http.login.service.UserService;
-import com.pollra.persistence.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -18,12 +17,12 @@ import java.util.Map;
  *
  */
 @RestController
-public class LoginController {
-    private static final Logger log = LoggerFactory.getLogger(LoginController.class);
+public class LoginRestController {
+    private static final Logger log = LoggerFactory.getLogger(LoginRestController.class);
 
     private UserService userService;
 
-    public LoginController(UserService userService) {
+    public LoginRestController(UserService userService) {
         this.userService = userService;
     }
 
