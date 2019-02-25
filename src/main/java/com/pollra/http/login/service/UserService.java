@@ -48,6 +48,16 @@ public class UserService {
     }
 
     // 정보 수정
+
+    /**
+     * 정보 수정
+     * 옵션 2가지
+     * 비밀번호 변경(option, newPassword)
+     * 이름 변경(option, newName)
+     *
+     * @param param
+     * @param request
+     */
     public void updateUser(Map<String, Object> param, HttpServletRequest request){
         log.info("[Uu] updateUser start");
 

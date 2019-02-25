@@ -34,7 +34,7 @@ var myInfoHtml =
     "</div>" +
     "<div class='paragraph'>" +
     "<label class='dataInfo' for='repw'>재입력</label>" +
-    "<input class='dataInput' id='repw' type='password' placeholder='...'>" +
+    "<input class='dataInput' id='repw' type='password' placeholder='...' onclick='outLineSetNone(); return '>" +
     "</div>" +
     "</div>" +
     "<div class='infoData sell'>" +
@@ -47,6 +47,13 @@ var myInfoHtml =
     "<span class='dataExplanation'>권한을 부여합니다. 관리자만이 수정할 수 있습니다.</span>" +
     "<label class='dataInput'>관리자</label>" +
     "</div>" +
+    "<button class='modifiedBtn' style='" +
+    "float: right;" +
+    "height: 50px;" +
+    "margin: 5px;" +
+    "width: 150px;" +
+    "font-size: 20pt;" +
+    "' onclick='updateFunction(`name`);return false;'>수정</button>" +
     "</div>";
 
 var cateInfoHtml =
@@ -117,7 +124,6 @@ $(document).ready(()=>{
     $(".contents").html("");
     $(".contents").html(myInfoHtml);
     $(".btnSet").html("");
-    $(".btnSet").html(buttonSet);
 });
 
 function openStatus(methodName){
@@ -126,7 +132,6 @@ function openStatus(methodName){
             $(".contents").html("");
             $(".contents").html(myInfoHtml);
             $(".btnSet").html("");
-            $(".btnSet").html(buttonSet);
             break;
         case "cateInfo":
             $(".contents").html("");
@@ -150,6 +155,84 @@ function updatePasswordAction(){
         data: JSON.stringify({"option":"pw","newPassword":$("#nexpw").val()}),
         contentType:"application/json; charset=utf-8;"
     }).done((result)=>{
-
+        $(".prepw").val("");
+        $(".nexpw").val("");
+        $(".repw").val("");
+        alert("비밀번호 변경에 성공했습니다.");
+    }).fail((result)=>{
+        console.log("[!] password update failed.");
+        const error = JSON.parse(result.responseText);  // 날아온 JSON 텍스트 데이터를 JSON 객체로 변환해줌
+        alert(error.message);
     })
+}
+// 이름 변경
+function updateNameAction(){
+    $.ajax({
+        url: "/user",
+        type: "put",
+        data: JSON.stringify({"option":"name","newName":$("#updateName").val()}),
+        contentType:"application/json; charset=utf-8;"
+    }).done((result)=>{
+        $(".updateName").val("");
+        alert("이름 변경에 성공했습니다.");
+    }).fail((result)=>{
+        console.log("[!] name update failed.");
+        const error = JSON.parse(result.responseText);  // 날아온 JSON 텍스트 데이터를 JSON 객체로 변환해줌
+        alert(error.message);
+    })
+}
+// 데이터 확인
+function checkUpdateNameData(){
+    const prevName = $("#updateName").attr("placeholder");
+    const inputName = $("#updateName").val();
+
+    if(prevName === inputName){
+        alert("데이터가 같습니다.");
+        return false;
+    }
+    if(inputName.length < 2 || inputName.length > 10){
+        alert("이름은 반드시 2~10글자여야 합니다.");
+        return false;
+    }
+    return true;
+}
+// 데이터 확인
+function checkUpdateNameData(){
+    const prevPassword = $("#prepw").val();
+    const inputPassword = $("#nexpw").val();
+    const reInputPassword = $("#repw").val();
+
+    // 확인을 위해 입력한 비밀번호가 맞는지 확인
+
+    // 이전 비밀번호와 같은 비밀번호인지 확인
+    if(inputPassword === prevPassword){
+        alert("이전 비밀번호와 똑같이 설정할 수 없습니다.");
+        return false;
+    }
+
+    // 새로 입력한 비밀번호 일치 확인
+    if(!(inputPassword === reInputPassword)){
+        $("#repw").attr("placeholder","일치하지 않습니다.");
+        $("#repw").css("border","1px solid red");
+        $("#repw").css("border-radius","4px");
+        $("#repw").val("");
+        return false;
+    }
+    return true;
+}
+function updateFunction(option){
+    if(option==="name"){
+        if(checkUpdateNameData()){
+            updateNameAction();
+        }
+    }
+    if(option==="pw"){
+        if(checkUpdateNameData()){
+            updatePasswordAction();
+        }
+    }
+}
+function outLineSetNone(){
+    $("#repw").css("border","0px");
+    $("#repw").attr("placeholder","...");
 }

@@ -16,11 +16,19 @@ public class MyInterceptorConfig implements WebMvcConfigurer {
     @Qualifier(value = "loginInterceptor")
     private HandlerInterceptor loginInterceptor;
 
+    @Autowired
+    @Qualifier(value = "allPageInterceptor")
+    private HandlerInterceptor allPageInterceptor;
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         PathMatcher pathMatcher = new AntPathMatcher("/");
+        registry.addInterceptor(allPageInterceptor).pathMatcher(pathMatcher)
+                .addPathPatterns("/**")
+                .excludePathPatterns();
         registry.addInterceptor(loginInterceptor).pathMatcher(pathMatcher)
-                .addPathPatterns("/*")  // Using interceptor
+                .addPathPatterns("/user*")  // Using interceptor
                 .excludePathPatterns(); // Exclude interceptor
+
     }
 }

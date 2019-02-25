@@ -8,17 +8,23 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+/**
+ * 반드시 로그인이 필요한 페이지에서만 구동되는 인터셉터
+ */
 @Component
 public class LoginInterceptor extends HandlerInterceptorAdapter {
 
     private static final Logger log = LoggerFactory.getLogger(LoginInterceptor.class);
 
-
-
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        log.info("[inter] login / start.");
+        try{
 
+        }
+        log.info("[inter] login / end.");
         return super.preHandle(request, response, handler);
     }
 
