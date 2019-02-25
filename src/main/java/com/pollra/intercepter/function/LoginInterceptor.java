@@ -21,9 +21,6 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         log.info("[inter] login / start.");
-        try{
-
-        }
         log.info("[inter] login / end.");
         return super.preHandle(request, response, handler);
     }
