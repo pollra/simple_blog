@@ -36,24 +36,23 @@ var myInfoHtml =
     "<label class='dataInfo' for='repw'>재입력</label>" +
     "<input class='dataInput' id='repw' type='password' placeholder='...' onclick='outLineSetNone(); return '>" +
     "</div>" +
+    "<div class='paragraph btnParagraph'>" +
+    "<button class='actionBtn' onclick='updateFunction(`pw`);return false;'>수정</button>" +
+    "</div>"+
     "</div>" +
     "<div class='infoData sell'>" +
     "<label class='dataText' for='updateName'>이름</label>" +
     "<span class='dataExplanation'>이름을 수정합니다. 수정하고싶은 이름을 적고 <button class='modifiedBtn'>수정</button>버튼을 이용해 수정합니다.</span>" +
     "<input class='dataInput' id='updateName' placeholder='이승근'>" +
+    "<div class='paragraph btnParagraph'>" +
+    "<button class='actionBtn' onclick='updateFunction(`name`);return false;'>수정</button>"+
+    "</div>" +
     "</div>" +
     "<div class='infoData sell'>" +
     "<label class='dataText'>권한</label>" +
     "<span class='dataExplanation'>권한을 부여합니다. 관리자만이 수정할 수 있습니다.</span>" +
     "<label class='dataInput'>관리자</label>" +
     "</div>" +
-    "<button class='modifiedBtn' style='" +
-    "float: right;" +
-    "height: 50px;" +
-    "margin: 5px;" +
-    "width: 150px;" +
-    "font-size: 20pt;" +
-    "' onclick='updateFunction(`name`);return false;'>수정</button>" +
     "</div>";
 
 var cateInfoHtml =
@@ -116,6 +115,7 @@ var gbInfoHtml =
     "<button class='goGBookPage' onclick='location.href=\'/guestbook\''>방명록 관리</button>" +
     "</div>" +
     "</div>";
+
 $(document).ready(()=>{
     $(".contents").html("");
     $(".contents").html(myInfoHtml);
@@ -123,6 +123,7 @@ $(document).ready(()=>{
 });
 
 function openStatus(methodName){
+    console.log("[openStatus] start")
     switch (methodName) {
         case "myInfo":
             $(".contents").html("");
@@ -143,24 +144,37 @@ function openStatus(methodName){
             alert("미구현된 기능입니다.");
     }
 }
-function updateFunction(option){
-    if(option==="name"){
-        if(checkUpdateNameData()){
-            updateNameAction();
+
+function updateFunction(actionMethod = ""){
+    console.log("[updateFunction] start")
+    if(actionMethod === "paName"){
+        if(dataEntryCheck(optionCheck())){
+            updatePwName();
         }
+        return;
     }
-    if(option==="pw"){
-        if(checkUpdateNameData()){
-            updatePasswordAction();
+    if(actionMethod === "name"){
+        if(dataEntryCheck(optionCheck())){
+            updateName();
         }
+        return;
+    }
+    if(actionMethod === "pw"){
+        if(dataEntryCheck(optionCheck())){
+            updatePassword();
+        }
+        return;
+    }
+    if(actionMethod === ""){
+        console.log("updateFunction-actionMethod is null");
     }
 }
 
 class MyInfo{
     constructor(){
         // private
-        this._object_originalPassword = $("#repw");
-        this._object_newInputPassword = $("#prepw");
+        this._object_originalPassword = $("#prepw");
+        this._object_newInputPassword = $("#nexpw");
         this._object_reEnterPassword = $("#repw");
         this._object_newInputName = $("#updateName");
         this._passwordRegex = /^.*(?=^.{8,20}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
@@ -198,77 +212,247 @@ class MyInfo{
                     const error = JSON.parse(result.responseText);  // 날아온 JSON 텍스트 데이터를 JSON 객체로 변환해줌
                     alert(error.message);
                 })
+            },
+            passwordName:()=>{
+                console.log("[MyInfo.update.password] start");
+                $.ajax({
+                    url: "/user",
+                    type: "put",
+                    data: JSON.stringify({
+                        "option":"pwName",
+                        "newPassword":$("#nexpw").val(),
+                        "newName":$("#updateName").val()
+                    }),
+                    contentType:"application/json; charset=utf-8;"
+                }).done((result)=>{
+                    $(".prepw").val("");
+                    $(".nexpw").val("");
+                    $(".repw").val("");
+                    $("#updateName").val("");
+                    alert("내 정보 수정에 성공했습니다.");
+                }).fail((result)=>{
+                    console.log("[!] info update failed.");
+                    const error = JSON.parse(result.responseText);  // 날아온 JSON 텍스트 데이터를 JSON 객체로 변환해줌
+                    alert(error.message);
+                })
             }
         };
-        this.option = "";
+        this.option;
     }
+}
 
-    /**
-     * this.option 을 사용하기 전, 반드시 이 함수를 실행해야 함.
-     * @returns {string}
-     */
-    get optionSet(){
-        if(this._object_newInputName.val().length > 0){
-            this.option = "name";
-            return "name";
+/**
+ * 데이터 유효성 검사
+ * 데이터의 길이 검사
+ * 데이터 입력 검사
+ * this._object_originalPassword = $("#prepw");
+   this._object_newInputPassword = $("#nexpw");
+   this._object_reEnterPassword = $("#repw");
+   this._object_newInputName = $("#updateName");
+ * @param _option
+ * @returns {boolean}
+ */
+function dataEntryCheck(_option = ""){
+    console.log("[dataEntryCheck] start");
+    const originalPassword = $("#prepw");
+    const newInputPassword = $("#nexpw");
+    const reEnterPassword = $("#repw");
+    const newInputName = $("#updateName");
+    const passwordRegex = /^.*(?=^.{7,21}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
+    if(_option === "name"){
+        if(newInputName.val().length <= 0){  // 데이터가 없을경우
+            return false;
         }
-        if(this._object_originalPassword.val().length > 0){
-            this.option = "pw";
-            return "pw";
-        }else{
-            console.log("[MyInfo.optionSet] none : 옵션을 찾을 수 없습니다.");
-            return "";
+        if(newInputName.val() === newInputName.attr("placeholder")){
+            alert("기존의 이름과 같은 이름으로 지정할 수 없습니다.");
+            return false;
         }
+        return true;
     }
-
-    dataEntryCheck(_option = this.option){
-        if(_option === "name"){
-            if(this._object_newInputName.val().length <= 0){  // 데이터가 없을경우
-                return false;
-            }
-            if(this._object_newInputName.val() === this._object_newInputName.attr("placeholder")){
-                alert("기존의 이름과 같은 이름으로 지정할 수 없습니다.");
-                return false;
-            }
-            return true;
+    if(_option === "pw"){
+        console.log(
+`[dataEntryCheck]
+ originalPassword : ${originalPassword.val().length}
+ newInputPassword : ${newInputPassword.val().length}
+ reEnterPassword : ${reEnterPassword.val().length}`);
+        if(originalPassword.val().length <= 0){    // 데이터가 없을경우
+            console.log("[dataEntryCheck] pw : originalPassword 데이터가 입력되지 않았습니다.");
+            return false;
         }
-        if(_option === "pw"){
-            if(this._object_originalPassword.val().length <= 0){    // 데이터가 없을경우
-                console.log("[MyInfo.dataEntryCheck] pw : originalPassword 데이터가 입력되지 않았습니다.");
-                return false;
-            }
-            if(this._object_newInputPassword.val().length <= 0){
-                console.log("[MyInfo.dataEntryCheck] pw : newInputPassword 데이터가 입력되지 않았습니다.");
-                return false;
-            }
-            if(this._object_reEnterPassword.val().length <= 0){
-                console.log("[MyInfo.dataEntryCheck] pw : reEnterPassword 데이터가 입력되지 않았습니다.");
-                return false;
-            }
-
-            // 데이터 유효성 검사
-            if(this._object_originalPassword.val() === this._object_newInputPassword.val()){
-                alert("새로 지정하는 비밀번호는 기존 번호와 같을 수 없습니다.");
-                return false;
-            }
-            if(!(this._object_newInputPassword.val() === this._object_reEnterPassword.val())){
-                alert("재입력한 비밀번호를 다시 확인해주십시오.");
-                return false;
-            }
-            if(this._object_newInputPassword.val().length < 8 || this._object_newInputPassword.val().length > 20){
-                alert("비밀번호는 8~20자리로. 영문(대/소문자), 숫자, 특수문자만 사용할 수 있습니다.");
-                return false;
-            }
-            if(!this._passwordRegex.test(this._object_newInputPassword.val())){
-                alert("비밀번호는 8~20자리로. 영문(대/소문자), 숫자, 특수문자만 사용할 수 있습니다.");
-                return false;
-            }
-            return true;
-        }else{
-            console.log("[MyInfo.dataEntryCheck] pw : _option 데이터가 초기화 되지 않았거나 옵션을 찾을 수 없습니다.");
+        if(newInputPassword.val().length <= 0){
+            console.log("[dataEntryCheck] pw : newInputPassword 데이터가 입력되지 않았습니다.");
+            return false;
+        }
+        if(reEnterPassword.val().length <= 0){
+            console.log("[dataEntryCheck] pw : reEnterPassword 데이터가 입력되지 않았습니다.");
             return false;
         }
 
+        // 데이터 유효성 검사
+        if(originalPassword.val() === newInputPassword.val()){
+            alert("새로 지정하는 비밀번호는 기존 번호와 같을 수 없습니다.");
+            return false;
+        }
+        if(!(newInputPassword.val() === reEnterPassword.val())){
+            alert("재입력한 비밀번호를 다시 확인해주십시오.");
+            return false;
+        }
+        if(newInputPassword.val().length <= 8 || newInputPassword.val().length >= 20){
+            alert("비밀번호는 8~20자리로. 영문(대/소문자), 숫자, 특수문자만 사용할 수 있습니다.");
+            return false;
+        }
+        if(!passwordRegex.test(newInputPassword.val())){
+            alert("비밀번호는 8~20자리로. 영문(대/소문자), 숫자, 특수문자만 사용할 수 있습니다. - R");
+            return false;
+        }
+        return true;
+    }
+    if(_option === "pwName"){
+        if(newInputName.val().length <= 0){  // 데이터가 없을경우
+            return false;
+        }
+        if(newInputName.val() === newInputName.attr("placeholder")){
+            alert("기존의 이름과 같은 이름으로 지정할 수 없습니다.");
+            return false;
+        }
+
+        if(originalPassword.val().length <= 0){    // 데이터가 없을경우
+            console.log("[dataEntryCheck] pw : originalPassword 데이터가 입력되지 않았습니다.");
+            return false;
+        }
+        if(newInputPassword.val().length <= 0){
+            console.log("[dataEntryCheck] pw : newInputPassword 데이터가 입력되지 않았습니다.");
+            return false;
+        }
+        if(reEnterPassword.val().length <= 0){
+            console.log("[dataEntryCheck] pw : reEnterPassword 데이터가 입력되지 않았습니다.");
+            return false;
+        }
+
+        // 데이터 유효성 검사
+        if(originalPassword.val() === newInputPassword.val()){
+            alert("새로 지정하는 비밀번호는 기존 번호와 같을 수 없습니다.");
+            return false;
+        }
+        if(!(newInputPassword.val() === reEnterPassword.val())){
+            alert("재입력한 비밀번호를 다시 확인해주십시오.");
+            return false;
+        }
+        if(newInputPassword.val().length <= 8 || newInputPassword.val().length >= 20){
+            alert("비밀번호는 8~20자리로. 영문(대/소문자), 숫자, 특수문자만 사용할 수 있습니다.");
+            return false;
+        }
+        if(!passwordRegex.test(newInputPassword.val())){
+            alert("비밀번호는 8~20자리로. 영문(대/소문자), 숫자, 특수문자만 사용할 수 있습니다.");
+            return false;
+        }
+        return true;
+    }else{
+        console.log("[dataEntryCheck] pw : _option 데이터가 초기화 되지 않았거나 옵션을 찾을 수 없습니다.");
+        return false;
     }
 
+}
+
+/**
+ * 옵션 체크
+ * pwName / name / pw
+ * @returns {string}
+ */
+function optionCheck(){
+    console.log("[optionCheck] start");
+    const originalPassword = $("#prepw");
+    const newInputPassword = $("#nexpw");
+    const reEnterPassword = $("#repw");
+    const newInputName = $("#updateName");
+    if(newInputName.val().length > 0 && originalPassword.val().length > 0){
+        console.log("select Option : pwName");
+        this.option = "pwName";
+        return "pwName";
+    }
+    if(newInputName.val().length > 0){
+        console.log("select Option : name");
+        this.option = "name";
+        return "name";
+    }
+    if(originalPassword.val().length > 0){
+        console.log("select Option : pw");
+        this.option = "pw";
+        return "pw";
+    }else{
+        console.log("[optionCheck] none : 옵션을 찾을 수 없습니다.");
+        return "";
+    }
+}
+
+/**
+ * ajax put method - pwName
+ * ajax 요청 데이터를 업데이트 함
+ */
+function updatePwName(){
+    console.log("[updatePwName] start");
+    $.ajax({
+        url: "/user",
+        type: "put",
+        data: JSON.stringify({
+            "option":"pwName",
+            "newPassword":$("#nexpw").val(),
+            "newName":$("#updateName").val()
+        }),
+        contentType:"application/json; charset=utf-8;"
+    }).done((result)=>{
+        $(".prepw").val("");
+        $(".nexpw").val("");
+        $(".repw").val("");
+        $("#updateName").val("");
+        alert("내 정보 수정에 성공했습니다.");
+    }).fail((result)=>{
+        console.log("[!] info update failed.");
+        const error = JSON.parse(result.responseText);  // 날아온 JSON 텍스트 데이터를 JSON 객체로 변환해줌
+        alert(error.message);
+    })
+};
+
+/**
+ * ajax put method - pw
+ * ajax 요청 데이터를 업데이트 함
+ */
+function updatePassword(){
+    console.log("[updatePassword] start");
+    $.ajax({
+        url: "/user",
+        type: "put",
+        data: JSON.stringify({"option":"pw","newPassword":$("#nexpw").val()}),
+        contentType:"application/json; charset=utf-8;"
+    }).done((result)=>{
+        $(".prepw").val("");
+        $(".nexpw").val("");
+        $(".repw").val("");
+        alert("비밀번호 변경에 성공했습니다.");
+    }).fail((result)=>{
+        console.log("[!] password update failed.");
+        const error = JSON.parse(result.responseText);  // 날아온 JSON 텍스트 데이터를 JSON 객체로 변환해줌
+        alert(error.message);
+    })
+}
+
+/**
+ * ajax put method - name
+ * ajax 요청 데이터를 업데이트 함
+ */
+function updateName(){
+    console.log("[updateName] start");
+    $.ajax({
+        url: "/user",
+        type: "put",
+        data: JSON.stringify({"option":"name","newName":$("#updateName").val()}),
+        contentType:"application/json; charset=utf-8;"
+    }).done((result)=>{
+        $(".updateName").val("");
+        alert("이름 변경에 성공했습니다.");
+    }).fail((result)=>{
+        console.log("[!] name update failed.");
+        const error = JSON.parse(result.responseText);  // 날아온 JSON 텍스트 데이터를 JSON 객체로 변환해줌
+        alert(error.message);
+    })
 }

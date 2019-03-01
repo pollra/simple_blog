@@ -29,4 +29,8 @@ public interface UserRepository {
     // 비밀번호 수정
     @Update("UPDATE public.user SET pw = #{pw} WHERE id = #{id}")
     public int updateOneUserToIdAndPassword(@Param("id") String id, @Param("pw") String newPassword);
+
+    // 이름, 비밀번호 동시수정
+    @Update("UPDATE public.user SET pw = #{pw}, name = #{name} WHERE id = #{id}")
+    public int updateOneUserToIdAndPasswordAndName(@Param("id") String id, @Param("pw") String newPassword, @Param("name") String name);
 }

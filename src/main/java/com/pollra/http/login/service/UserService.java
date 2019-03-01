@@ -96,8 +96,29 @@ public class UserService {
                 }
                 log.info("[Uu] 데이터 전송과정 문제발생 id: "+session.getAttribute("lu").toString()+" / name: "+ newName);
                 throw new UserServiceException("데이터 전송과정에서 문제가 발생했습니다.");
-            } else {
-                log.info("[Uu] data entry is incorrect.");
+            } else if(option.equals("pwName")){
+                String newName = param.get("newName").toString().trim();
+                String newPassword = param.get("newPassword").toString().trim();
+                if(newName.equals("") && newPassword.equals("")){
+                    log.info("[Uu] 입력된 데이터중 필수항목이 누락되었습니다: newName, newPassword");
+                    throw new DataEntryException("데이터가 올바르지 않습니다.");
+                }
+                if(newName.equals("")){
+                    log.info("[Uu] 입력된 데이터중 필수항목이 누락되었습니다: newName");
+                    throw new DataEntryException("데이터가 올바르지 않습니다.");
+                }
+                if(newPassword.equals("")){
+                    log.info("[Uu] 입력된 데이터중 필수항목이 누락되었습니다: newPassword");
+                    throw new DataEntryException("데이터가 올바르지 않습니다.");
+                }
+                if(userRepository.updateOneUserToIdAndPasswordAndName(session.getAttribute("lu").toString(), newName, newPassword)>0){
+                    log.info("[Uu] 데이터가 성공적으로 전송되었습니다.");
+                    return;
+                }
+                log.info("[Uu] 데이터 전송과정 문제발생 id: "+session.getAttribute("lu").toString()+" / name: "+ newName + " / password: " + newPassword);
+                throw new UserServiceException("데이터 전송과정에서 문제가 발생했습니다.");
+            }else {
+                log.info("[Uu] data entry is incorrect. option: "+ option);
                 throw new DataEntryException("데이터가 올바르지 않습니다.");
             }
         }catch (NullPointerException e){
