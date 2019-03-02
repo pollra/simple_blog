@@ -59,20 +59,29 @@ var cateInfoHtml =
     "<div class='cateInfo'>" +
     "<div class='paragraph'>" +
     "<label class='dataExplanation'>블로그의 카테고리를 추가, 수정 또는 삭제 합니다.<br>" +
+    "모든 기능은 즉시 적용되며 왼쪽의 카테고리 창에서 확인할 수 있습니다." +
     "</label>" +
     "</div>" +
     "<div class='infoData sell'>" +
     "<label class='dataText'>카테고리 추가</label>" +
     "<label class='dataExplanation'>" +
-    "카테고리를 추가합니다. 오른쪽의 추가 버튼을 이용해 왼쪽의 네비게이션 바에 바로 적용시킵니다." +
+    "카테고리를 추가합니다.<br>" +
+    "왼쪽의 선택창에서 상위 카테고리를 선택한 뒤 오른쪽의 입력창에서 카테고리의 이름을 입력합니다.<br>" +
+    "최 상위 카테고리로 지정하고 싶다면 'none'으로 지정하고 이름을 입력하면 됩니다."+
     "</label>" +
-    "<input class='dataInput' placeholder='카테고리 입력' id='inputCate'>" +
+    "<select class='categoryParentSelect' id='parentTargetCate'>" +
+    "<option value='default'>none</option>" +
+    "<option value='2'>2</option>" +
+    "<option value='3'>3</option>" +
+    "</select>" +
+    "<input class='categoryParentInput' placeholder='카테고리 입력' id='inputCate'>" +
     "<button class='actionBtn' style='background: #507592'>추가</button>" +
     "</div>" +
     "<div class='infoData sell'>" +
     "<label class='dataText'>카테고리 수정</label>" +
     "<label class='dataExplanation'>" +
-    "카테고리를 수정합니다. 오른쪽의 수정 버튼을 이용해 왼쪽의 네비게이션 바를 선택해서 수정합니다." +
+    "카테고리를 수정합니다.<br>" +
+    "왼쪽의 선택창에서 수정할 카테고리를 선택 후 오른쪽의 입력창에서 수정될 값을 입력합니다." +
     "</label>" +
     "<select class='categoryUpdateSelect' id='updateTargetCate'>" +
     "<option value='1'>1</option>" +
