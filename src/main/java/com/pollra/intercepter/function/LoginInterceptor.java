@@ -21,6 +21,15 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         log.info("[inter] login / start.");
+        HttpSession session = request.getSession();
+        try {
+            String loginUser = session.getAttribute("lu").toString();
+        }catch (NullPointerException e){
+            log.info("[inter] login info is null. redirect loginPage");
+            session.setAttribute("lu","");
+            response.sendRedirect("/login/page");
+        }
+
         log.info("[inter] login / end.");
         return super.preHandle(request, response, handler);
     }

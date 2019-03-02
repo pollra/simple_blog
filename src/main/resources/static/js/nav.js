@@ -114,6 +114,10 @@ function loginCheck(){
         $(".loginNik").attr("onclick","location.href='/login/page'");
         $(".logoutBtn").text("회원가입");
         $(".logoutBtn").attr("onclick","location.href='/signup'");
+        console.log("[loginCheck] location.pathname.indexOf(\"/user\") : "+ location.pathname.indexOf("/user"));
+        if(location.pathname.indexOf("/user")!== -1){
+            location.href = "/login/page";
+        }
     })
 }
 // 로그아웃 기능
@@ -124,6 +128,10 @@ function logout(){
         type: "get"
     }).done((result)=>{
         console.log("logout complete.");
+        console.log("[logout] location.pathname.indexOf(\"/user\") : "+ location.pathname.indexOf("/user"));
+        if(!(location.pathname.indexOf("/user") === -1)){
+            location.href = "/login/page";
+        }
         $(".loginNik").text("로그인");
         $(".loginNik").attr("onclick","location.href='/login/page'");
         $(".logoutBtn").text("회원가입");

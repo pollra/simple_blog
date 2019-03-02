@@ -20,7 +20,7 @@ var myInfoHtml =
     "<div class='paragraph' for='prepw'>" +
     "<span class='dataExplanation'>" +
     "비밀번호를 변경합니다.<br>" +
-    "비밀번호는 반드시 영문, 숫자, 특수문자만 사용할 수 있습니다.<br>" +
+    "비밀번호는 반드시 8~20자리로. 영문(대/소문자), 숫자, 특수문자를 섞어야 합니다.<br>" +
     "기존 비밀번호를 적고 변경할 비밀번호를 기입한 뒤 <button class='modifiedBtn'>수정</button>버튼을 이용해 수정합니다." +
     "</span>" +
     "</div>" +
@@ -258,8 +258,11 @@ function dataEntryCheck(_option = ""){
     const newInputPassword = $("#nexpw");
     const reEnterPassword = $("#repw");
     const newInputName = $("#updateName");
-    const passwordRegex = /^.*(?=^.{7,21}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
+    const passwordRegex = /^.*(?=^.{8,20}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
     if(_option === "name"){
+        console.log(
+            `[dataEntryCheck] name : {
+ newInputName : ${newInputName.val().length}}`);
         if(newInputName.val().length <= 0){  // 데이터가 없을경우
             return false;
         }
@@ -271,10 +274,10 @@ function dataEntryCheck(_option = ""){
     }
     if(_option === "pw"){
         console.log(
-`[dataEntryCheck]
+`[dataEntryCheck] pw : {
  originalPassword : ${originalPassword.val().length}
  newInputPassword : ${newInputPassword.val().length}
- reEnterPassword : ${reEnterPassword.val().length}`);
+ reEnterPassword : ${reEnterPassword.val().length}}`);
         if(originalPassword.val().length <= 0){    // 데이터가 없을경우
             console.log("[dataEntryCheck] pw : originalPassword 데이터가 입력되지 않았습니다.");
             return false;
@@ -297,17 +300,20 @@ function dataEntryCheck(_option = ""){
             alert("재입력한 비밀번호를 다시 확인해주십시오.");
             return false;
         }
-        if(newInputPassword.val().length <= 8 || newInputPassword.val().length >= 20){
-            alert("비밀번호는 8~20자리로. 영문(대/소문자), 숫자, 특수문자만 사용할 수 있습니다.");
-            return false;
-        }
         if(!passwordRegex.test(newInputPassword.val())){
-            alert("비밀번호는 8~20자리로. 영문(대/소문자), 숫자, 특수문자만 사용할 수 있습니다. - R");
+            alert("비밀번호는 반드시 8~20자리로. 영문(대/소문자), 숫자, 특수문자를 섞어야 합니다.");
             return false;
         }
         return true;
     }
     if(_option === "pwName"){
+        console.log(
+`[dataEntryCheck] pwName : {
+ originalPassword : ${originalPassword.val().length}
+ newInputPassword : ${newInputPassword.val().length}
+ reEnterPassword : ${reEnterPassword.val().length}
+ newInputName : ${newInputName.val().length}
+ }`);
         if(newInputName.val().length <= 0){  // 데이터가 없을경우
             return false;
         }
@@ -338,12 +344,8 @@ function dataEntryCheck(_option = ""){
             alert("재입력한 비밀번호를 다시 확인해주십시오.");
             return false;
         }
-        if(newInputPassword.val().length <= 8 || newInputPassword.val().length >= 20){
-            alert("비밀번호는 8~20자리로. 영문(대/소문자), 숫자, 특수문자만 사용할 수 있습니다.");
-            return false;
-        }
         if(!passwordRegex.test(newInputPassword.val())){
-            alert("비밀번호는 8~20자리로. 영문(대/소문자), 숫자, 특수문자만 사용할 수 있습니다.");
+            alert("비밀번호는 반드시 8~20자리로. 영문(대/소문자), 숫자, 특수문자를 섞어야 합니다.");
             return false;
         }
         return true;
@@ -367,17 +369,14 @@ function optionCheck(){
     const newInputName = $("#updateName");
     if(newInputName.val().length > 0 && originalPassword.val().length > 0){
         console.log("select Option : pwName");
-        this.option = "pwName";
         return "pwName";
     }
     if(newInputName.val().length > 0){
         console.log("select Option : name");
-        this.option = "name";
         return "name";
     }
     if(originalPassword.val().length > 0){
         console.log("select Option : pw");
-        this.option = "pw";
         return "pw";
     }else{
         console.log("[optionCheck] none : 옵션을 찾을 수 없습니다.");
@@ -401,9 +400,9 @@ function updatePwName(){
         }),
         contentType:"application/json; charset=utf-8;"
     }).done((result)=>{
-        $(".prepw").val("");
-        $(".nexpw").val("");
-        $(".repw").val("");
+        $("#prepw").val("");
+        $("#nexpw").val("");
+        $("#repw").val("");
         $("#updateName").val("");
         alert("내 정보 수정에 성공했습니다.");
     }).fail((result)=>{
@@ -425,9 +424,9 @@ function updatePassword(){
         data: JSON.stringify({"option":"pw","newPassword":$("#nexpw").val()}),
         contentType:"application/json; charset=utf-8;"
     }).done((result)=>{
-        $(".prepw").val("");
-        $(".nexpw").val("");
-        $(".repw").val("");
+        $("#prepw").val("");
+        $("#nexpw").val("");
+        $("#repw").val("");
         alert("비밀번호 변경에 성공했습니다.");
     }).fail((result)=>{
         console.log("[!] password update failed.");
@@ -448,7 +447,7 @@ function updateName(){
         data: JSON.stringify({"option":"name","newName":$("#updateName").val()}),
         contentType:"application/json; charset=utf-8;"
     }).done((result)=>{
-        $(".updateName").val("");
+        $("#updateName").val("");
         alert("이름 변경에 성공했습니다.");
     }).fail((result)=>{
         console.log("[!] name update failed.");
