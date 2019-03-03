@@ -34,7 +34,7 @@ public class CategoryService {
         categoryVO.setLevel(Integer.parseInt(param.get("categoryLevel").toString()));
         categoryVO.setName(param.get("categoryName").toString());
         categoryVO.setUrl(param.get("categoryUrl").toString());
-        categoryVO.setVisible(Integer.parseInt(param.get("categoryVisible").toString()));
+        categoryVO.setVisible(1);
 
         // 데이터 검사
         if(categoryVO.check() <= 0){

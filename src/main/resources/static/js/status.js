@@ -70,12 +70,12 @@ var cateInfoHtml =
     "최 상위 카테고리로 지정하고 싶다면 'none'으로 지정하고 이름을 입력하면 됩니다."+
     "</label>" +
     "<select class='categoryParentSelect' id='parentTargetCate'>" +
-    "<option value='default'>none</option>" +
-    "<option value='2'>2</option>" +
-    "<option value='3'>3</option>" +
+    "<option class='0' value='default' val='0' name='0'>none</option>" +
+    "<option class='2' value='2' val='2' name='1'>이거val2임</option>" +
+    "<option class='3' value='3' val='3' name='2'>이거val3임</option>" +
     "</select>" +
     "<input class='categoryParentInput' placeholder='카테고리 입력' id='inputCate'>" +
-    "<button class='actionBtn' style='background: #507592'>추가</button>" +
+    "<button class='actionBtn' style='background: #507592' onclick='addCategory(); return false;'>추가</button>" +
     "</div>" +
     "<div class='infoData sell'>" +
     "<label class='dataText'>카테고리 수정</label>" +
