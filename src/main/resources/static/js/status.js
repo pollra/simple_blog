@@ -1,3 +1,5 @@
+document.write("<script src='category.js'></script>");
+
 var myInfoHtml =
     "<div class='myInfo'>" +
     "<div class='paragraph'>" +
@@ -70,12 +72,10 @@ var cateInfoHtml =
     "최 상위 카테고리로 지정하고 싶다면 'none'으로 지정하고 이름을 입력하면 됩니다."+
     "</label>" +
     "<select class='categoryParentSelect' id='parentTargetCate'>" +
-    "<option class='0' value='default' val='0' name='0'>none</option>" +
-    "<option class='2' value='2' val='2' name='1'>이거val2임</option>" +
-    "<option class='3' value='3' val='3' name='2'>이거val3임</option>" +
+    "<option class='0' value='0' name='0'>default</option>" +
     "</select>" +
     "<input class='categoryParentInput' placeholder='카테고리 입력' id='inputCate'>" +
-    "<button class='actionBtn' style='background: #507592' onclick='addCategory(); return false;'>추가</button>" +
+    "<button class='actionBtn' style='background: #507592' onclick='add_Category(); return false;'>추가</button>" +
     "</div>" +
     "<div class='infoData sell'>" +
     "<label class='dataText'>카테고리 수정</label>" +
@@ -84,12 +84,10 @@ var cateInfoHtml =
     "왼쪽의 선택창에서 수정할 카테고리를 선택 후 오른쪽의 입력창에서 수정될 값을 입력합니다." +
     "</label>" +
     "<select class='categoryUpdateSelect' id='updateTargetCate'>" +
-    "<option value='1'>1</option>" +
-    "<option value='2'>2</option>" +
-    "<option value='3'>3</option>" +
+    "<option class='0' value='0' name='0'>default</option>" +
     "</select>" +
     "<input class='categoryUpdateInput' placeholder='왼쪽에서 선택하면 이곳에 표시됩니당' id='updateCate'>" +
-    "<button class='actionBtn' style='background: green'>수정</button>" +
+    "<button class='actionBtn' style='background: green' onclick='update_Category();return false;'>수정</button>" +
     "</div>" +
     "<div class='infoData sell'>" +
     "<label class='dataText'>카테고리 삭제</label>" +
@@ -97,11 +95,9 @@ var cateInfoHtml =
     "카테고리를 삭제합니다. 오른쪽의 삭제 버튼을 이용해 왼쪽의 네비게이션 바에서 바로 삭제합니다." +
     "</label>" +
     "<select class='categoryDeleteSelect' id='deleteTargetCate'>" +
-    "<option value='1'>1</option>" +
-    "<option value='2'>2</option>" +
-    "<option value='3'>3</option>" +
+    "<option class='0' value='0' name='0'>default</option>" +
     "</select>" +
-    "<button class='actionBtn' style='background: darkred'>삭제</button>" +
+    "<button class='actionBtn' style='background: darkred' onclick='delete_Category();return false;'>삭제</button>" +
     "</div>" +
     "<div class='infoData sell'>" +
     "<label class='dataText'>카테고리 비공개</label>" +
@@ -143,6 +139,9 @@ function openStatus(methodName){
             $(".contents").html("");
             $(".contents").html(cateInfoHtml);
             $(".btnSet").html("");
+            $(document).ready(()=>{
+                get_CategoryList('all');
+            });
             break;
         case "gbInfo":
             $(".contents").html("");

@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -29,13 +30,23 @@ public class CategoryService {
      * @throws CategoryServiceException
      */
     public void insertOneData(Map<String, Object> param) throws CategoryServiceException {
+        int parentLevel = Integer.parseInt(param.get("parentLevel").toString());
         CategoryVO categoryVO = new CategoryVO();
         categoryVO.setParent(Integer.parseInt(param.get("categoryParent").toString()));
-        categoryVO.setLevel(Integer.parseInt(param.get("categoryLevel").toString()));
-        categoryVO.setName(param.get("categoryName").toString());
-        categoryVO.setUrl(param.get("categoryUrl").toString());
+        categoryVO.setLevel(0);
+        System.out.println("parent: "+(categoryVO.getParent() > 0));
+        if(categoryVO.getParent() > 0){
+            categoryVO.setLevel(0);
+            if(parentLevel == 0){
+                categoryVO.setLevel(1);
+            }else if(parentLevel > 0){
+                categoryVO.setLevel(2);
+            }
+        }
         categoryVO.setVisible(1);
-
+        categoryVO.setName(param.get("categoryName").toString());
+        categoryVO.setUrl("");
+        log.info(parentLevel + " : "+categoryVO.toString());
         // 데이터 검사
         if(categoryVO.check() <= 0){
             throw new DataEntryException("[Ci] name 의 데이터가 빈 문자열입니다.");
@@ -73,14 +84,24 @@ public class CategoryService {
      * 카테고리 삭제
      * @param param
      */
-    public void deleteOneCategory(Map<String, Object> param) throws CategoryServiceException{
-        int targetNum = Integer.parseInt(param.get("categoryNum").toString());
-        int result = categoryRepository.deleteOneCategoryToNum(targetNum);
+    public void deleteOneCategory(Map<String, Object> param, HttpServletRequest request) throws CategoryServiceException{
+        int targetNum = Integer.parseInt(param.get("deleteTarget").toString());
+        int result=0;
+        if(!request.getSession().getAttribute("lu").toString().equals("")){
+            if(request.getRemoteAddr().equals("0:0:0:0:0:0:0:1")){
+                result = categoryRepository.deleteOneCategoryToNum(targetNum);
+            }else {
+                log.info("[Cd] 권한이 없습니다.");
+            }
+        }else{
+            throw new DataEntryException("[Cd] 권한이 없습니다.");
+        }
         if(result > 0){
             log.info("[good] 데이터 삭제 성공");
+            return;
+        }else {
+            throw new DataEntryException("[Cd] 데이터 삭제 실패");
         }
-        throw new DataEntryException("[Cd] 데이터 삭제 실패");
-
     }
 
     /**

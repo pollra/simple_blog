@@ -46,7 +46,7 @@ public class CategoryRestController {
     }
 
     @PostMapping("/category")
-    public ResponseEntity<?> setCategory(@PathVariable Map<String, Object> param, HttpServletRequest request){
+    public ResponseEntity<?> setCategory(@RequestBody Map<String, Object> param, HttpServletRequest request){
         log.info("[R!set] 카테고리 SET 명령 실행");
         if(!request.getRemoteAddr().equals("0:0:0:0:0:0:0:1")){
             return new ResponseEntity<>("권한이 없습니다.",HttpStatus.BAD_REQUEST);
@@ -63,14 +63,14 @@ public class CategoryRestController {
     }
 
     @DeleteMapping("/category")
-    public ResponseEntity<?> deleteCategory(@PathVariable Map<String, Object> param, HttpServletRequest request){
+    public ResponseEntity<?> deleteCategory(@RequestBody Map<String, Object> param, HttpServletRequest request){
         log.info("[R!del] 카테고리 DELETE 명령 실행");
         if(!request.getRemoteAddr().equals("0:0:0:0:0:0:0:1")) {
             return new ResponseEntity<>("권한이 없습니다.",HttpStatus.BAD_REQUEST);
         }
 
         try {
-            categoryService.deleteOneCategory(param);
+            categoryService.deleteOneCategory(param, request);
         }catch (DataEntryException e){
             return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
         }catch (CategoryServiceException e) {
@@ -82,7 +82,7 @@ public class CategoryRestController {
     }
 
     @PutMapping("/category")
-    public ResponseEntity<?> updateCategory(@PathVariable Map<String, Object> param, HttpServletRequest request){
+    public ResponseEntity<?> updateCategory(@RequestBody Map<String, Object> param, HttpServletRequest request){
         log.info("[R!upd] 카테고리 UPDATE 명령 실행");
         try {
             categoryService.updateOneCategory(param);

@@ -3,10 +3,9 @@ package com.pollra.http.category.domain;
 import lombok.*;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
+@NoArgsConstructor @AllArgsConstructor
+@Getter @Setter
+@ToString
 public class CategoryVO {
     private int num;
     private int parent;

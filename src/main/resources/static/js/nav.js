@@ -23,31 +23,36 @@ function getCategoryList(){
 }
 
 function categoryCheck(category, parentNum){
+    var resultTF = false;
     $.each(category, (i, obj)=>{
         if(obj.parent === parentNum){
-            return true;
+            console.log(`categoryCheck: {${obj.parent} : ${parentNum}} is TRUE.`);
+            resultTF = true;
         }
     })
-    return false;
+    return resultTF;
 }
 function categoryListCreate(result){
     var resultData = "";        //
     var size_0_category = [];
     var size_1_category = [];
     var size_2_category = [];
+    var count1 = 0;
+    var count2 = 0;
+    var count3 = 0;
     // 카테고리 나누기
     $.each(result, (i, obj)=>{
         if(obj.level === 0){
-            size_0_category[i] = obj;
+            size_0_category[count1++] = obj;
         }
         if(obj.level === 1){
-            size_1_category[i] = obj;
+            size_1_category[count2++] = obj;
         }
         if(obj.level === 2){
-            size_2_category[i] = obj;
+            size_2_category[count3++] = obj;
         }
     })
-    console.log(`${size_0_category.length} : ${size_1_category.length} : ${size_2_category.length}`)
+    console.log(`${count1} : ${count2} : ${count3}`);
     // 큰 카테고리 반복문
     $.each(size_0_category, (i, obj1)=>{
         // 큰 카테고리 선언
@@ -55,33 +60,37 @@ function categoryListCreate(result){
         // 중간 카테고리 체크
         if(size_1_category.length > 0) {
             // 중간카테고리중 위에서 표시한 큰 카테고리의 자식이 있는지 확인
-            if (categoryCheck(size_1_category, size_0_category.num)) {
-                resultData += "<ul>"
+            if (categoryCheck(size_1_category, obj1.num)) {
+                resultData += "<ul>";
                 // 중간카테고리 반복문
                 $.each(size_1_category, (j, obj2) => {
                     // 중간 카테고리 존재여부 판단
                     if (obj2.parent === obj1.num) {
                         // 중간카테고리 선언
-                        resultData += "<li class='size" + obj2.level + "' onclick='location.href=\""+obj2.url+"\"'>" + obj2.name + "</li>";
+                        resultData += "<li class='size"+obj2.level+"' onclick='location.href=\""+obj2.url+"\"'>" + obj2.name + "</li>";
                         // 작은 카테고리 체크
                         if (size_2_category.length > 0) {
                             // 작은 카테고리중 위에서 표시한 중간 카테고리의 자식이 있는지 확인
-                            if (categoryCheck(size_2_category, size_1_category.num)) {
+                            if (categoryCheck(size_2_category, obj2.num)) {
                                 resultData += "<ul>"
                                 // 작은 카테고리 반복문
-                                $.each(size_2_category, (j, obj3) => {
+                                $.each(size_2_category, (k, obj3) => {
                                     // 작은 카테고리 존재여부 판단
-                                    if (obj3.parent === obj1.num) {
+                                    if (obj3.parent === obj2.num) {
                                         // 작은 카테고리 선언
-                                        resultData += "<li class='size" + obj3.level + "' onclick='location.href=\""+obj3.url+"\"'>" + obj3.name + "</li>";
+                                        resultData += "<li class='size"+ obj3.level +"' onclick='location.href=\""+obj3.url+"\"'>" + obj3.name + "</li>";
                                     }
                                 })
                                 resultData += "</ul>"
                             }
                         }
+                    }else{
+                        console.log(`${obj1.num}의 중간카테고리가 존재하지 않습니다.`);
                     }
                 })
                 resultData += "</ul>"
+            }else{
+                console.log(`categoryCheck(size_1_category, ${obj1.num}) is FALSE.`);
             }
         }
     })
