@@ -45,7 +45,9 @@ function update_Category(){
     }).done((result)=>{
         getCategoryList();      // 네비게이션 카테고리 새로고침
         get_CategoryList();     // 선택창 카테고리 새로고침
+        $("#updateCate").val("");
     }).fail((result) =>{
+        alert("수정 실패");
     })
 }
 // 카테고리 삭제
@@ -53,23 +55,32 @@ function delete_Category(){
     $.ajax({
         url:"/category",
         type:"delete",
-        data: JSON.stringify({"deleteTarget":$("#deleteTargetCate option:selected").attr("class")}),
+        data: JSON.stringify({
+            "deleteTarget":$("#deleteTargetCate option:selected").attr("class")
+        }),
         contentType:"application/json; charset=utf-8;"
     }).done((result)=>{
         getCategoryList();      // 네비게이션 카테고리 새로고침
         get_CategoryList();     // 선택창 카테고리 새로고침
     }).fail((result) =>{
+        alert("삭제 실패");
     })
 }
 // 카테고리 비공개 설정
-function put_visibleSetCategory(){
+function put_visibleSetCategory(option = 0){
     $.ajax({
-        url:"/category",
+        url:"/category/vi",
         type:"put",
-        data:JSON.stringify({}),
+        data:JSON.stringify({
+            "visibleTarget":$("#visibleTargetCate option:selected").attr("class"),
+            "visibleOption":option
+        }),
         contentType:"application/json; charset=utf-8;"
     }).done(()=>{
+        getCategoryList();      // 네비게이션 카테고리 새로고침
+        get_CategoryList();     // 선택창 카테고리 새로고침
     }).fail(()=>{
+        alert("설정 변경 실패");
     })
 }
 
@@ -80,34 +91,28 @@ function get_CategoryList(option = "all"){
         type:"get",
         contentType:"application/json"
     }).done((result)=>{
+        var data_level3 = selectBox_categoryListCreate(result, 3);
+        var data_level2 = selectBox_categoryListCreate(result, 2);
         if(option === "create" || option === "all") {
-            var data = "";
-            data += selectBox_categoryListCreate(result, 2);
             // console.log(data);
             $("#parentTargetCate").html("");
-            $("#parentTargetCate").html(data);
+            $("#parentTargetCate").html(data_level2);
         }
         if(option === "update" || option === "all") {
-            var data = "";
-            data += selectBox_categoryListCreate(result, 3);
             // console.log(data);
             $("#updateTargetCate").html("");
-            $("#updateTargetCate").html(data);
+            $("#updateTargetCate").html(data_level3);
         }
         if(option === "delete" || option === "all") {
-            var data = "";
-            data += selectBox_categoryListCreate(result,3);
             // console.log(data);
             $("#deleteTargetCate").html("");
-            $("#deleteTargetCate").html(data);
+            $("#deleteTargetCate").html(data_level3);
         }
 
         if(option === "visible" || option === "all") {
-            /*var data = "";
-            data += selectBox_categoryListCreate(result);
             // console.log(data);
-            $("#parentTargetCate").html("");
-            $("#parentTargetCate").html(data);*/
+            $("#visibleTargetCate").html("");
+            $("#visibleTargetCate").html(data_level3);
         }
 
     }).fail((result) =>{

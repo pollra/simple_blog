@@ -86,7 +86,7 @@ var cateInfoHtml =
     "<select class='categoryUpdateSelect' id='updateTargetCate'>" +
     "<option class='0' value='0' name='0'>default</option>" +
     "</select>" +
-    "<input class='categoryUpdateInput' placeholder='왼쪽에서 선택하면 이곳에 표시됩니당' id='updateCate'>" +
+    "<input class='categoryUpdateInput' placeholder='왼쪽에서 바꿀 값을 선택하고 이곳에 입력' id='updateCate'>" +
     "<button class='actionBtn' style='background: green' onclick='update_Category();return false;'>수정</button>" +
     "</div>" +
     "<div class='infoData sell'>" +
@@ -105,8 +105,11 @@ var cateInfoHtml =
     "카테고리 하나를 선택해서 비공개로 만듭니다. <br>" +
     "이 공개 설정은 자신만 볼 수 있으며 '운영자' 권한 이상만이 사용할 수 있습니다." +
     "</label>" +
-    "<input class='dataInput' placeholder='카테고리 입력'>" +
-    "<button class='actionBtn no_Action' style='background: gray'>적용</button>"+
+    "<select class='categoryVisibleSelect' id='visibleTargetCate'>" +
+    "<option class='0' value='0' name='0'>default</option>" +
+    "</select>" +
+    "<button class='actionBtn' style='background: dodgerblue' onclick='put_visibleSetCategory(1);return false;'>공개 전환</button>"+
+    "<button class='actionBtn' style='background: gray' onclick='put_visibleSetCategory(0);return false;'>비공개 전환</button>"+
     "</div>" +
     "</div>";
 

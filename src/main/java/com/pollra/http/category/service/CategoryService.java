@@ -111,29 +111,82 @@ public class CategoryService {
      * @param param
      * @throws CategoryServiceException
      */
-    public void updateOneCategory(Map<String, Object> param) throws CategoryServiceException{
+    public void updateOneCategory(Map<String, Object> param, HttpServletRequest request) throws CategoryServiceException{
         // 넘어오는 데이터 처리
-        CategoryVO categoryVO = new CategoryVO();
-        categoryVO.setNum(Integer.parseInt(param.get("categoryNum").toString()));
-        categoryVO.setParent(Integer.parseInt(param.get("categoryParent").toString()));
-        categoryVO.setLevel(Integer.parseInt(param.get("categoryLevel").toString()));
-        categoryVO.setUrl(param.get("categoryUrl").toString());
-        categoryVO.setName(param.get("categoryName").toString());
-        categoryVO.setVisible(Integer.parseInt(param.get("categoryVisible").toString()));
-
-        if(categoryVO.check()<=0){
+        CategoryVO targetCategory = new CategoryVO();
+        int result=0;
+        try {
+            targetCategory.setNum(Integer.parseInt(param.get("updateTarget").toString()));
+            targetCategory.setName(param.get("updateText").toString());
+        }catch (NullPointerException e){
+            throw new DataEntryException("[Cu] 입력되지 않은 정보가 있습니다.");
+        }
+        if(targetCategory.getNum() == 0){
+            throw new DataEntryException("[Cu] 입력된 카테고리번호가 없습니다.");
+        }
+        if(targetCategory.getName().equals("")){
             throw new DataEntryException("[Cu] 입력된 카테고리의 이름이 빈 문자열입니다.");
         }
+        if(!request.getSession().getAttribute("lu").toString().equals("")){
+            if(request.getRemoteAddr().equals("0:0:0:0:0:0:0:1")){
+                // 해당 데이터가 있는지 확인
+                if(categoryRepository.selectCountCategoryToNum(targetCategory.getNum()) <= 0){
+                    throw new CategoryNotFoundException("[Cu] 해당 카테고리가 존재하지 않습니다.");
+                }
 
-        // 해당 데이터가 있는지 확인
-        if(categoryRepository.selectCountCategoryToNum(categoryVO.getNum()) <= 0){
-            throw new CategoryNotFoundException("[Cu] 해당 카테고리가 존재하지 않습니다.");
+                result = categoryRepository.updateOneCategoryToCategoryVO(targetCategory.getNum(), targetCategory.getName());
+            }else {
+                log.info("[Cd] 권한이 없습니다.");
+            }
+        }else{
+            throw new DataEntryException("[Cd] 권한이 없습니다.");
         }
-
-        int result = categoryRepository.updateOneCategoryToCategoryVO(categoryVO);
 
         if(result <= 0){
             throw new CategoryServerInternalException("[Cu] 업데이트 실패.");
+        }else{
+            log.info("[Cu] 업데이트 성공");
+        }
+    }
+    /**
+     * updateOneCategory_visible
+     *
+     * 카테고리 하나의 공개설정
+     * @param param
+     * @throws CategoryServiceException
+     */
+    public void updateOneCategory_visible(Map<String, Object> param, HttpServletRequest request) throws CategoryServiceException{
+        // 넘어오는 데이터 처리
+        CategoryVO targetCategory = new CategoryVO();
+        int result=0;
+        try {
+            targetCategory.setNum(Integer.parseInt(param.get("visibleTarget").toString()));
+            targetCategory.setVisible(Integer.parseInt(param.get("visibleOption").toString()));
+        }catch (NullPointerException e){
+            throw new DataEntryException("[Cu] 입력되지 않은 정보가 있습니다.");
+        }
+        if(targetCategory.getNum() == 0){
+            throw new DataEntryException("[Cu] 입력된 카테고리번호가 없습니다.");
+        }
+        if(!request.getSession().getAttribute("lu").toString().equals("")){
+            if(request.getRemoteAddr().equals("0:0:0:0:0:0:0:1")){
+                // 해당 데이터가 있는지 확인
+                if(categoryRepository.selectCountCategoryToNum(targetCategory.getNum()) <= 0){
+                    throw new CategoryNotFoundException("[Cu] 해당 카테고리가 존재하지 않습니다.");
+                }
+
+                result = categoryRepository.updateOneCategoryToNumAndVisible(targetCategory.getNum(), targetCategory.getVisible());
+            }else {
+                log.info("[Cd] 권한이 없습니다.");
+            }
+        }else{
+            throw new DataEntryException("[Cd] 권한이 없습니다.");
+        }
+
+        if(result <= 0){
+            throw new CategoryServerInternalException("[Cu] 업데이트 실패.");
+        }else{
+            log.info("[Cu] 업데이트 성공");
         }
     }
 }

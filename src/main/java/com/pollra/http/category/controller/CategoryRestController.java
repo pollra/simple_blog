@@ -85,7 +85,7 @@ public class CategoryRestController {
     public ResponseEntity<?> updateCategory(@RequestBody Map<String, Object> param, HttpServletRequest request){
         log.info("[R!upd] 카테고리 UPDATE 명령 실행");
         try {
-            categoryService.updateOneCategory(param);
+            categoryService.updateOneCategory(param, request);
             return new ResponseEntity<>("OK", HttpStatus.OK);
         } catch (CategoryNotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
@@ -95,6 +95,23 @@ public class CategoryRestController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (CategoryServiceException e){
             log.info("[R!upd] 업데이트 에러: "+e.getMessage());
+            return new ResponseEntity<>("서버 내부 오류", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @PutMapping("/category/vi")
+    public ResponseEntity<?> updateCategory_vi(@RequestBody Map<String, Object> param, HttpServletRequest request){
+        log.info("[R!upd] 카테고리 VISIBLE 명령 실행");
+        try {
+            categoryService.updateOneCategory_visible(param, request);
+            return new ResponseEntity<>("OK", HttpStatus.OK);
+        } catch (CategoryNotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (DataEntryException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (CategoryServerInternalException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (CategoryServiceException e){
+            log.info("[R!upv] 업데이트 에러: "+e.getMessage());
             return new ResponseEntity<>("서버 내부 오류", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
