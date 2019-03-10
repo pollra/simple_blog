@@ -123,7 +123,36 @@ var gbInfoHtml =
     "<button class='goGBookPage' onclick='location.href=\'/guestbook\''>방명록 관리</button>" +
     "</div>" +
     "</div>";
-
+var boardInfoHtml = `<div class="board">
+        <div class="paragraph">
+            <div class="dataExplanation">
+                <span>글 관리 페이지입니다.<br>글을 작성하거나 수정하고 삭제할 수 있습니다.</span>
+            </div>
+        </div>
+        <div class="infoData sell">
+            <div class="dataText">글 작성</div>
+            <div class="dataExplanation">
+                <span>글을 작성합니다. 아래의 버튼을 눌러 글 작성 페이지로 넘어갑니다.</span>
+            </div>
+            <div class="paragraph btnParagraph">
+                <button class="actionBtn" style="background: #507592" onclick="location.href='/posts'">글 작성</button>
+            </div>
+        </div>
+        <div class="infoData sell">
+            <div class="dataText">글 관리</div>
+            <div class="dataExplanation">
+                <span>글을 관리합니다.</span>
+            </div>
+            <div class="paragraph dataTitleList">
+                <li class="boardIndex_category">카테고리</li>
+                <li class="boardIndex_title">제목</li>
+                <li class="boardIndex_date">날짜</li>
+                <li class="boardIndex_visible">상태</li>
+            </div>
+            <div id="dataContentList">
+            </div>
+        </div>
+    </div>`;
 $(document).ready(()=>{
     $(".contents").html("");
     $(".contents").html(myInfoHtml);
@@ -136,12 +165,10 @@ function openStatus(methodName){
         case "myInfo":
             $(".contents").html("");
             $(".contents").html(myInfoHtml);
-            $(".btnSet").html("");
             break;
         case "cateInfo":
             $(".contents").html("");
             $(".contents").html(cateInfoHtml);
-            $(".btnSet").html("");
             $(document).ready(()=>{
                 get_CategoryList('all');
             });
@@ -149,7 +176,13 @@ function openStatus(methodName){
         case "gbInfo":
             $(".contents").html("");
             $(".contents").html(gbInfoHtml);
-            $(".btnSet").html("");
+            break;
+        case "boardInfo":
+            $(".contents").html("");
+            $(".contents").html(boardInfoHtml);
+            $(document).ready(()=>{
+                setPostList();
+            })
             break;
         default:
             alert("미구현된 기능입니다.");
@@ -157,7 +190,7 @@ function openStatus(methodName){
 }
 
 function updateFunction(actionMethod = ""){
-    console.log("[updateFunction] start")
+    console.log("[updateFunction] start");
     if(actionMethod === "paName"){
         if(dataEntryCheck(optionCheck())){
             updatePwName();
@@ -463,6 +496,56 @@ function updateName(){
     }).fail((result)=>{
         console.log("[!] name update failed.");
         const error = JSON.parse(result.responseText);  // 날아온 JSON 텍스트 데이터를 JSON 객체로 변환해줌
+        alert(error.message);
+    })
+}
+
+function setPostList(){
+    $.ajax({
+        url: "/posts/boardcategory",
+        type:"get"
+    }).done((result)=>{
+        let data ="";
+        $.each(result, (i, obj)=>{
+            data += `<ul class="dataContent" id="${obj.num}">`;
+            data += `<li class="boardIndex_category">${obj.name}</li>`;
+            data += `<li class="boardIndex_title">${obj.title}</li>`;
+            data += `<li class="boardIndex_date">${obj.date}</li>`;
+            data += `<li class="boardIndex_visible" onclick="updateVisible(${obj.num}, ${obj.visible}); return false;">`;
+            if(obj.visible === 1){
+                data += '공개';
+            }
+            if(obj.visible === 0){
+                data += '비공개';
+            }
+            data += `</li>`;
+            data += `</ul>`;
+        })
+        $("#dataContentList").html("");
+        $("#dataContentList").html(data);
+    }).fail((result)=>{
+        let error = JSON.parse(result.responseText);
+        $("#dataContentList").html("");
+        $("#dataContentList").html("게시물이 존재하지 않습니다.");
+        alert(error.message);
+    })
+}
+
+// 글 - 각 글의 비공개 버튼 변경
+function updateVisible(targetNum, targetVisible){
+    let visible = 0;
+    if(targetVisible === 0){
+        visible = 1;
+    }
+    $.ajax({
+        url:"/posts/update/visible",
+        type:"put",
+        data: JSON.stringify({"target":targetNum,"visible":visible}),
+        contentType:"application/json; charset=utf-8;"
+    }).done((result)=>{
+        setPostList();
+    }).fail((result)=>{
+        let error = JSON.parse(result.responseText);
         alert(error.message);
     })
 }

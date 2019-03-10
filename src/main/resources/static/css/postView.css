@@ -1,0 +1,21 @@
+#postViewTitle{
+    padding: 25px 20px;
+    margin: 0px;
+}
+#layout{
+    height: 100%; /* 테스트를 위해 스크롤 생성 */
+    /*border: 1px solid slategray;*/
+    border-radius: 5px;
+    margin: 0px 230px;
+    padding: 0px;
+    width: 70%;
+    min-width: 700px;
+}
+.postsInfo{
+    display: -webkit-box;
+    margin: 0px 20px;
+    float: right;
+}
+.writerInfo{
+    margin-right: 30px;
+}

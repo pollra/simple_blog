@@ -226,3 +226,53 @@ body{
     box-shadow: 0px 0px 7px 0px gray;
     transition: all .2ms ease-in;
 }
+.dataTitleList{
+    list-style: none;
+    height: 30px;
+}
+.dataTitleList li{
+    float: left;
+    margin: 0px 5px;
+    text-align: center;
+    padding-top:10px;
+}
+.boardIndex_category{
+    width: 150px;
+    overflow: auto;
+}
+.boardIndex_title{
+    width: 270px;
+    overflow: auto;
+}
+.boardIndex_date{
+    width: 140px;
+    overflow: auto;
+    text-align: center;
+}
+.boardIndex_visible{
+    width: 80px;
+    overflow: auto;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 4px;
+}
+#dataContentList{
+    font-family: "맑은 고딕";
+    font-size: 10pt;
+}
+#dataContentList ul{
+    list-style: none;
+    height: 25px;
+    display: inline-flex;
+    margin: 3px 0px;
+}
+.dataContent li{
+    float: left;
+    margin: 0px 5px;
+    padding:2px;
+}
+#dataContentList .boardIndex_visible:hover{
+    background: #1A8BE8;
+    color: white;
+    transition: all 0.2s ease;
+}
