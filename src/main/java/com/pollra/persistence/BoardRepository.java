@@ -47,4 +47,10 @@ public interface BoardRepository {
 
     @Update("UPDATE public.board SET category=#{category}, title=#{title}, content=#{content}, visible=#{visible} WHERE num=#{num}")
     public int updateOneBoardToBoardVO(BoardVO boardVO);
+
+    @Select("SELECT board.num FROM category INNER JOIN board ON category.num = board.category WHERE category.name = #{name} ORDER BY board.num DESC LIMIT 1;")
+    public int selectLastBoardNumToCategoryName(@Param("name") String categoryName);
+
+    @Select("SELECT board.num FROM category INNER JOIN board ON category.num = board.category WHERE category.num = #{num} ORDER BY board.num DESC LIMIT 1;")
+    public int selectLastBoardNumToCategoryNum(@Param("num") int categoryName);
 }

@@ -51,16 +51,12 @@ function categoryListCreate(result){
         if(obj.level === 2){
             size_2_category[count3++] = obj;
         }
-    })
-    console.log(`${count1} : ${count2} : ${count3}`);
+    });
+    // console.log(`${count1} : ${count2} : ${count3}`);
     // 큰 카테고리 반복문
     $.each(size_0_category, (i, obj1)=>{
         // 큰 카테고리 선언
-        resultData += "<li class='size"+obj1.level;
-        if(obj1.visible == 0){
-            resultData += " visible_0";
-        }
-        resultData += "' onclick='location.href=\""+obj1.url+"\"'>"+obj1.name+"</li>";
+        resultData += `<li class="size${obj1.level} visible_${obj1.visible}" onclick="location.href='/category/${obj1.num}/lastpost'">${obj1.name}</li>`;
         // 중간 카테고리 체크
         if(size_1_category.length > 0) {
             // 중간카테고리중 위에서 표시한 큰 카테고리의 자식이 있는지 확인
@@ -71,11 +67,7 @@ function categoryListCreate(result){
                     // 중간 카테고리 존재여부 판단
                     if (obj2.parent === obj1.num) {
                         // 중간카테고리 선언
-                        resultData += "<li class='size"+obj2.level;
-                        if(obj2.visible == 0){
-                            resultData += " visible_0";
-                        }
-                        resultData += "' onclick='location.href=\""+obj2.url+"\"'>" + obj2.name + "</li>";
+                        resultData += `<li class="size${obj2.level} visible_${obj2.visible}" onclick="location.href='/category/${obj2.num}/lastpost'">${obj2.name}</li>`;
                         // 작은 카테고리 체크
                         if (size_2_category.length > 0) {
                             // 작은 카테고리중 위에서 표시한 중간 카테고리의 자식이 있는지 확인
@@ -86,23 +78,19 @@ function categoryListCreate(result){
                                     // 작은 카테고리 존재여부 판단
                                     if (obj3.parent === obj2.num) {
                                         // 작은 카테고리 선언
-                                        resultData += "<li class='size"+obj3.level;
-                                        if(obj3.visible == 0){
-                                            resultData += " visible_0";
-                                        }
-                                        resultData += "' onclick='location.href=\""+obj3.url+"\"'>" + obj3.name + "</li>";
+                                        resultData += `<li class="size${obj3.level} visible_${obj3.visible}" onclick="location.href='/category/${obj3.num}/lastpost'">${obj3.name}</li>`;
                                     }
                                 })
                                 resultData += "</ul>"
                             }
                         }
                     }else{
-                        console.log(`${obj1.num}의 중간카테고리가 존재하지 않습니다.`);
+                        // console.log(`${obj1.num}의 중간카테고리가 존재하지 않습니다.`);
                     }
                 })
                 resultData += "</ul>"
             }else{
-                console.log(`categoryCheck(size_1_category, ${obj1.num}) is FALSE.`);
+                // console.log(`categoryCheck(size_1_category, ${obj1.num}) is FALSE.`);
             }
         }
     })
@@ -133,8 +121,8 @@ function loginCheck(){
         console.log(`${error.message}`);
         $(".loginNik").text("로그인");
         $(".loginNik").attr("onclick","location.href='/login/page'");
-        $(".logoutBtn").text("회원가입");
-        $(".logoutBtn").attr("onclick","location.href='/signup'");
+        $(".logoutBtn").text("");
+        $(".logoutBtn").attr("onclick","#");
         console.log("[loginCheck] location.pathname.indexOf(\"/user\") : "+ location.pathname.indexOf("/user"));
         if(location.pathname.indexOf("/user")!== -1){
             location.href = "/login/page";

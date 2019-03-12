@@ -56,11 +56,20 @@ public class RestBoardController {
      * 실행 후
      */
     @PutMapping("/posts/{targetNum}/update/{option}")
-    public ResponseEntity<?> updateBodyBoard(
-            @PathVariable int targetNum,
-            @PathVariable String option,
-            @RequestBody Map<String, Object> param){
+    public ResponseEntity<?> updateBodyBoard(@PathVariable int targetNum, @PathVariable String option, @RequestBody Map<String, Object> param){
         boardService.updateBodyBoard(targetNum, option, param);
         return new ResponseEntity<>("OK",HttpStatus.OK);
+    }
+
+    /**
+     * 카테고리 기준 제일 마지막 포스트의 번호를 리턴
+     */
+    @GetMapping("/category/{categoryName}/type/{option}")
+    public ResponseEntity<?> selectLastPost(@PathVariable String categoryName, @PathVariable String option){
+        int result = 0;
+        if(option.equals("int")){
+            result = boardService.selectLastPostToCategoryNum(Integer.parseInt(categoryName));
+        }
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

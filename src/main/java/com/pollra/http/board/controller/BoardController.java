@@ -23,18 +23,28 @@ public class BoardController {
     }
 
     @GetMapping("/posts")
-    public ModelAndView postsPage(){
-        return new ModelAndView("post");
+    public String postsPage(HttpServletRequest request){
+        return "post";
     }
 
     @GetMapping("/posts/{num}")
-    public ModelAndView postsPage(@PathVariable int num){
-        ModelAndView view = new ModelAndView("postView");
-        return view;
+    public String postsPage(@PathVariable int num){
+        return "postView";
+    }
+
+    @GetMapping("/posts/category/{categoryNum}")
+    public String selectSetCategory(@PathVariable int categoryNum, HttpServletRequest request){
+        log.info("/posts/category/{categoryNum} 실행된당 ㅇㅅ <r~*");
+        return "post";
     }
 
     @GetMapping("/posts/update/{num}")
-    public ModelAndView postsUpdatePage(){
-        return new ModelAndView("postsUpdate");
+    public String postsUpdatePage(@PathVariable int num, HttpServletRequest request){
+        return "postsUpdate";
+    }
+
+    @GetMapping("/postnotfound")
+    public String postNotFound(){
+        return "postNotFound";
     }
 }

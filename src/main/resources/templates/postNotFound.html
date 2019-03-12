@@ -11,22 +11,23 @@
             src="https://code.jquery.com/jquery-3.3.1.js"
             integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
             crossorigin="anonymous"></script>
-    <script src="/m_editor/lib/marked.min.js"></script>
-    <script src="/m_editor/lib/prettify.min.js"></script>
-    <script src="/m_editor/lib/raphael.min.js"></script>
-    <script src="/m_editor/lib/underscore.min.js"></script>
-    <script src="/m_editor/lib/sequence-diagram.min.js"></script>
-    <script src="/m_editor/lib/flowchart.min.js"></script>
-    <script src="/m_editor/lib/jquery.flowchart.min.js"></script>
-    <script src="/m_editor/editormd.js"></script>
-    <script src="/js/postView.js"></script>
     <script type="text/javascript" src="/js/nav.js"></script>
     <link rel="stylesheet" href="/css/postView.css" />
     <link type="text/css" rel="stylesheet" href="/css/nav.css">
     <link rel="stylesheet" href="/m_editor/css/editormd.preview.css"/>
     <link rel="shortcut icon" href="https://pandao.github.io/editor.md/favicon.ico" type="image/x-icon" />
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.9/semantic.min.css">
 </head>
+<style>
+    #content{
+        height: 100%; /* 테스트를 위해 스크롤 생성 */
+        /*border: 1px solid slategray;*/
+        border-radius: 5px;
+        margin: 0px 230px;
+        padding: 0px;
+        width: 70%;
+        min-width: 700px;
+    }
+</style>
 <body>
 <div id="navigation">
     <!--로고-->
@@ -44,13 +45,13 @@
         <div class="logoutBtn">로그아웃</div>
     </div>
 </div>
-<div id="layout">
+<div id="content">
     <label class="postViewTitleOutBox">
-        <h1 id="postViewTitle"></h1>
+        <h1 id="postViewTitle"> 게시글이 존재하지 않습니다.</h1>
     </label>
-    <div id="postView">
-        <!--/*@thymesVar id="content" type="com.pollra.http.board.domain.BoardVO"*/-->
-        <textarea id="postViewContent" style="display:none;"></textarea>
+    <div class="postNotFound">
+        <span> 관리자가 아직 게시글을 작성하지 않았습니다. <br>
+            빨리 작성하라고 재촉하러가봅시다! <button onclick="location.href='/guestbook'">방명록으로가기</button></span>
     </div>
     <div class="postsInfo"></div>
 </div>

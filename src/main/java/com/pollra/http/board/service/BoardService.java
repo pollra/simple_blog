@@ -133,4 +133,16 @@ public class BoardService {
         }
         log.info("[updateBodyBoard] 업데이트 성공");
     }
+
+    public int selectLastPostToCategoryNum(int categoryNum) {
+        // 카테고리로 검색
+        int result = 0;
+        try {
+            result = boardRepository.selectLastBoardNumToCategoryNum(categoryNum);
+        }catch(Exception e){
+            result = 0;
+        }
+
+        return result;
+    }
 }

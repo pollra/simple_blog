@@ -24,11 +24,16 @@ public class MyInterceptorConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         PathMatcher pathMatcher = new AntPathMatcher("/");
         registry.addInterceptor(loginInterceptor).pathMatcher(pathMatcher)
-                .addPathPatterns("/user/**")  // Using interceptor
+                .addPathPatterns("/user/**",
+                        "/posts",
+                        "/posts/category/**",
+                        "/posts/update/**")  // Using interceptor
                 .excludePathPatterns(); // Exclude interceptor
         registry.addInterceptor(allPageInterceptor).pathMatcher(pathMatcher)
-                .addPathPatterns("/**")
-                .excludePathPatterns();
+                .excludePathPatterns("/user/**",
+                        "/posts",
+                        "/posts/category/**",
+                        "/posts/update/**").addPathPatterns("/**");
 
     }
 }

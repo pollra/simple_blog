@@ -2,7 +2,7 @@
 document.write("<script src='postView.js'></script>")
 $(document).ready(()=>{
     set_category();
-})
+});
 
 function getPostContent(){
     console.log("Data : "+$("#postsContent").val())
@@ -59,6 +59,7 @@ function set_category(){
         let categoryList = selectBox_categoryListCreate(result, 3);
         $("#categorySelect").html("");
         $("#categorySelect").html(categoryList);
+        selectSetCategory();
     })
 }
 
@@ -246,4 +247,32 @@ function getOneBoard(){
         console.log(`error : ${error.message}`);
         alert(error.message);
     })
+}
+
+// 현재 경로를 확인하고 카테고리를 미리 선택해둔다
+// /posts/{num}/category/{categoryNum}
+/**
+ * path[1] : posts
+ * path[2] : category
+ * path[3] : {categoryNum}
+ * @returns {boolean}
+ */
+function selectSetCategory(){
+    let path = location.pathname.split("/");
+    console.log("path: "+ location.pathname + " / path.length : "+path.length);
+    if(path.length < 4){
+        console.log("[selectSetCategory] 길이가 부족합니다. path.length: " + path.length);
+        return false;
+    }
+    if(path[1] !== 'posts'){
+        console.log("[selectSetCategory] 카테고리셋이 실행되지 않습니다. path[1]: " + path[1]);
+        return false;
+    }
+    if(path[2] !== 'category'){
+        console.log("[selectSetCategory] 카테고리셋이 실행되지 않습니다. path[2]: " + path[2]);
+        return false;
+    }
+    $(document).ready(()=>{
+        $("#categorySelect").val(`${path[3]}`).prop("selected", true);
+    });
 }
