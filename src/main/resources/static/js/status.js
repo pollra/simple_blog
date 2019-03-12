@@ -1,4 +1,5 @@
 document.write("<script src='category.js'></script>");
+document.write("<script src='posts.js'></script>");
 
 var myInfoHtml =
     "<div class='myInfo'>" +
@@ -55,8 +56,7 @@ var myInfoHtml =
     "<span class='dataExplanation'>권한을 부여합니다. 관리자만이 수정할 수 있습니다.</span>" +
     "<label class='dataInput'>관리자</label>" +
     "</div>" +
-    "</div>";
-
+    "</div>";;
 var cateInfoHtml =
     "<div class='cateInfo'>" +
     "<div class='paragraph'>" +
@@ -111,10 +111,8 @@ var cateInfoHtml =
     "<button class='actionBtn' style='background: dodgerblue' onclick='put_visibleSetCategory(1);return false;'>공개 전환</button>"+
     "<button class='actionBtn' style='background: gray' onclick='put_visibleSetCategory(0);return false;'>비공개 전환</button>"+
     "</div>" +
-    "</div>";
-
-var gbInfoHtml =
-    "<div class='gbInfo'>" +
+    "</div>";;
+var gbInfoHtml = "<div class='gbInfo'>" +
     "<div class='paragraph'>" +
     "<label class='dataExplanation'>" +
     "방명록을 관리합니다. <br>" +
@@ -122,7 +120,7 @@ var gbInfoHtml =
     "</label>" +
     "<button class='goGBookPage' onclick='location.href=\'/guestbook\''>방명록 관리</button>" +
     "</div>" +
-    "</div>";
+    "</div>";;
 var boardInfoHtml = `<div class="board">
         <div class="paragraph">
             <div class="dataExplanation">
@@ -160,7 +158,7 @@ $(document).ready(()=>{
 });
 
 function openStatus(methodName){
-    console.log("[openStatus] start")
+    console.log("[openStatus] start");
     switch (methodName) {
         case "myInfo":
             $(".contents").html("");
@@ -211,77 +209,6 @@ function updateFunction(actionMethod = ""){
     }
     if(actionMethod === ""){
         console.log("updateFunction-actionMethod is null");
-    }
-}
-
-class MyInfo{
-    constructor(){
-        // private
-        this._object_originalPassword = $("#prepw");
-        this._object_newInputPassword = $("#nexpw");
-        this._object_reEnterPassword = $("#repw");
-        this._object_newInputName = $("#updateName");
-        this._passwordRegex = /^.*(?=^.{8,20}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
-
-        // public
-        this.update = {
-            name:()=>{
-                $.ajax({
-                    url: "/user",
-                    type: "put",
-                    data: JSON.stringify({"option":"name","newName":$("#updateName").val()}),
-                    contentType:"application/json; charset=utf-8;"
-                }).done((result)=>{
-                    $(".updateName").val("");
-                    alert("이름 변경에 성공했습니다.");
-                }).fail((result)=>{
-                    console.log("[!] name update failed.");
-                    const error = JSON.parse(result.responseText);  // 날아온 JSON 텍스트 데이터를 JSON 객체로 변환해줌
-                    alert(error.message);
-                })
-            },
-            password:()=>{
-                $.ajax({
-                    url: "/user",
-                    type: "put",
-                    data: JSON.stringify({"option":"pw","newPassword":$("#nexpw").val()}),
-                    contentType:"application/json; charset=utf-8;"
-                }).done((result)=>{
-                    $(".prepw").val("");
-                    $(".nexpw").val("");
-                    $(".repw").val("");
-                    alert("비밀번호 변경에 성공했습니다.");
-                }).fail((result)=>{
-                    console.log("[!] password update failed.");
-                    const error = JSON.parse(result.responseText);  // 날아온 JSON 텍스트 데이터를 JSON 객체로 변환해줌
-                    alert(error.message);
-                })
-            },
-            passwordName:()=>{
-                console.log("[MyInfo.update.password] start");
-                $.ajax({
-                    url: "/user",
-                    type: "put",
-                    data: JSON.stringify({
-                        "option":"pwName",
-                        "newPassword":$("#nexpw").val(),
-                        "newName":$("#updateName").val()
-                    }),
-                    contentType:"application/json; charset=utf-8;"
-                }).done((result)=>{
-                    $(".prepw").val("");
-                    $(".nexpw").val("");
-                    $(".repw").val("");
-                    $("#updateName").val("");
-                    alert("내 정보 수정에 성공했습니다.");
-                }).fail((result)=>{
-                    console.log("[!] info update failed.");
-                    const error = JSON.parse(result.responseText);  // 날아온 JSON 텍스트 데이터를 JSON 객체로 변환해줌
-                    alert(error.message);
-                })
-            }
-        };
-        this.option;
     }
 }
 
@@ -476,7 +403,7 @@ function updatePassword(){
         console.log("[!] password update failed.");
         const error = JSON.parse(result.responseText);  // 날아온 JSON 텍스트 데이터를 JSON 객체로 변환해줌
         alert(error.message);
-    })
+    });
 }
 
 /**
@@ -496,56 +423,6 @@ function updateName(){
     }).fail((result)=>{
         console.log("[!] name update failed.");
         const error = JSON.parse(result.responseText);  // 날아온 JSON 텍스트 데이터를 JSON 객체로 변환해줌
-        alert(error.message);
-    })
-}
-
-function setPostList(){
-    $.ajax({
-        url: "/posts/boardcategory",
-        type:"get"
-    }).done((result)=>{
-        let data ="";
-        $.each(result, (i, obj)=>{
-            data += `<ul class="dataContent" id="${obj.num}">`;
-            data += `<li class="boardIndex_category">${obj.name}</li>`;
-            data += `<li class="boardIndex_title">${obj.title}</li>`;
-            data += `<li class="boardIndex_date">${obj.date}</li>`;
-            data += `<li class="boardIndex_visible" onclick="updateVisible(${obj.num}, ${obj.visible}); return false;">`;
-            if(obj.visible === 1){
-                data += '공개';
-            }
-            if(obj.visible === 0){
-                data += '비공개';
-            }
-            data += `</li>`;
-            data += `</ul>`;
-        })
-        $("#dataContentList").html("");
-        $("#dataContentList").html(data);
-    }).fail((result)=>{
-        let error = JSON.parse(result.responseText);
-        $("#dataContentList").html("");
-        $("#dataContentList").html("게시물이 존재하지 않습니다.");
-        alert(error.message);
-    })
-}
-
-// 글 - 각 글의 비공개 버튼 변경
-function updateVisible(targetNum, targetVisible){
-    let visible = 0;
-    if(targetVisible === 0){
-        visible = 1;
-    }
-    $.ajax({
-        url:"/posts/update/visible",
-        type:"put",
-        data: JSON.stringify({"target":targetNum,"visible":visible}),
-        contentType:"application/json; charset=utf-8;"
-    }).done((result)=>{
-        setPostList();
-    }).fail((result)=>{
-        let error = JSON.parse(result.responseText);
         alert(error.message);
     })
 }

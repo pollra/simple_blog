@@ -1,3 +1,5 @@
+// document.write("<script src='posts.js'></script>");
+document.write("<script src='postView.js'></script>")
 $(document).ready(()=>{
     set_category();
 })
@@ -7,13 +9,13 @@ function getPostContent(){
 }
 
 function toggleBtn_visibleBtn(option){
-    if(option === 0) {
+    if(option === 0 || option === "0") {
         $("#visibleSelectBtn").text("비공개")
         $("#visibleSelectBtn").attr("class", "invisibleSelectBtn");
         $("#visibleSelectBtn").attr("value", 0);
         $("#visibleSelectBtn").attr("onclick","toggleBtn_visibleBtn(1); return false;");
         $("#visibleSelect").text("비공개 상태로 저장합니다.");
-    }else if(option === 1){
+    }else if(option === 1 || option === "1"){
         $("#visibleSelectBtn").text("공개")
         $("#visibleSelectBtn").attr("class", "visibleSelectBtn");
         $("#visibleSelectBtn").attr("value", 1);
@@ -108,7 +110,7 @@ function selectBox_categoryListCreate(result, resultLevel = 3){
                                         // 작은 카테고리 존재여부 판단
                                         if (obj3.parent === obj2.num) {
                                             // 작은 카테고리 선언
-                                            resultData += `<option value="${obj3.parent}">ㄴㄴ${obj3.name}</option>`;
+                                            resultData += `<option value="${obj3.num}">ㄴㄴ${obj3.name}</option>`;
                                         }   // if (obj3.parent === obj1.num) {
                                     }) // $.each(size_2_category, (j, obj3) => {
                                 } // if (categoryCheck(size_2_category, size_1_category.num)) {
@@ -123,4 +125,125 @@ function selectBox_categoryListCreate(result, resultLevel = 3){
         return "";
     }
     return resultData;
+}
+
+// 글 - 각 글의 비공개 버튼 변경
+function updateVisible(targetNum, targetVisible){
+    let visible = 0;
+    if(targetVisible === 0){
+        visible = 1;
+    }
+    console.log("[updateVisible] 업데이트 targetNum: "+ targetNum+" / visible: "+visible );
+    $.ajax({
+        url:`/posts/${targetNum}/update/visible/value/${visible}`,
+        type:"put"
+    }).done((result)=>{
+        setPostList();
+    }).fail((result)=>{
+        let error = JSON.parse(result.responseText);
+        alert(error.message);
+    })
+}
+
+function setPostList(){
+    $.ajax({
+        url: "/posts/boardcategory",
+        type:"get"
+    }).done((result)=>{
+        let data ="";
+        $.each(result, (i, obj)=>{
+            data += `<ul class="dataContent" id="${obj.num}">`;
+            data += `<li class="boardIndex_category">${obj.name}</li>`;
+            data += `<li class="boardIndex_title" onclick="location.href='/posts/update/${obj.num}'">${obj.title}</li>`;
+            data += `<li class="boardIndex_date">${obj.date}</li>`;
+            data += `<li class="boardIndex_visible" onclick="updateVisible(${obj.num}, ${obj.visible}); return false;">`;
+            if(obj.visible === 1){
+                data += '공개';
+            }
+            if(obj.visible === 0){
+                data += '비공개';
+            }
+            data += `</li>`;
+            data += `</ul>`;
+        })
+        $("#dataContentList").html("");
+        $("#dataContentList").html(data);
+    }).fail((result)=>{
+        let error = JSON.parse(result.responseText);
+        $("#dataContentList").html("");
+        $("#dataContentList").html("게시물이 존재하지 않습니다.");
+        alert(error.message);
+    })
+}
+
+/**
+ *
+ * 포스트 수정
+ * 제목과 컨텐츠, 공개여부 수정가능
+ *
+ * "newBoardCategory":$("#categorySelect option:selected").val(),
+ * "visibleSelectBtn":$("#visibleSelectBtn").val(),
+ * "newBoardTitle":$("#newBoardTitle").val(),
+ * "newBoardContent":$("#newBoardContent").val()
+ *
+ * 데이터를 put 으로 날림
+ * 
+ * 서버로 날리는 json 데이터 이름 확인하고 설정에 맞춰 제작
+ * 서버에서 받는 controller 만들어야됨(?)
+ * 서버에서 실행될 service 만들어야됨
+ *
+ * option : all
+ */
+
+function updateOnePost(targetNum, option){
+    console.log("[updateOnePost] start");
+    console.log(`targetNum: ${targetNum}, option: ${option}`);
+    $.ajax({
+        url: `/posts/${targetNum}/update/${option}`,
+        type: "put",
+        contentType: "application/json; charset=utf-8;",
+        data: JSON.stringify({
+            "boardCategory":$("#categorySelect option:selected").val(),
+            "visibleSelectBtn":$("#visibleSelectBtn").val(),
+            "boardTitle":$("#newBoardTitle").val(),
+            "boardContent":$("#newBoardContent").val()
+        })
+    }).done((result)=>{
+        location.href=`/posts/${targetNum}`;
+    }).fail((result)=>{
+
+    })
+}
+
+/**
+ * 글 - 업데이트페이지에서 글을 받아온 뒤 찍음
+ */
+function getOneBoard(){
+    let path = location.pathname;
+    console.log(`현재 페이지 경로: ${path}`);
+    
+    // /posts/update/{num} 일 경우에만 실행됨
+    if(path.split("/")[1] !== "posts"){
+        console.log("[getOneBoard] 경로에서 posts 를 감지할 수 없습니다. false 리턴합니다.");
+        return false;
+    }
+    if(path.split("/")[2] !== "update"){
+        console.log("[getOneBoard] 경로에서 update 를 감지할 수 없습니다. false 리턴합니다.");
+        return false;
+    }
+    $.get("/posts/select/"+path.split("/")[3], function(result) {
+        // let board = JSON.parse(result.responseText);
+        $("#newBoardTitle").val(result.title);
+        $("#newBoardContent").val(result.content);
+        toggleBtn_visibleBtn(result.visible);
+        $("#saveBtnWrapper button").attr("onclick",`updateOnePost(${result.num},'all'); return false;`);
+
+        $(document).ready(()=>{
+            $("#categorySelect").val(`${result.category}`).prop("selected", true);
+        })
+    }).fail((result)=>{
+        let error = JSON.parse(result.responseText);
+        console.log(`error : ${error.message}`);
+        alert(error.message);
+    })
 }

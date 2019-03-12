@@ -32,4 +32,9 @@ public class BoardController {
         ModelAndView view = new ModelAndView("postView");
         return view;
     }
+
+    @GetMapping("/posts/update/{num}")
+    public ModelAndView postsUpdatePage(){
+        return new ModelAndView("postsUpdate");
+    }
 }

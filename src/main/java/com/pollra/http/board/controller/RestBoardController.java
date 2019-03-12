@@ -41,10 +41,26 @@ public class RestBoardController {
     public ResponseEntity<?> selectAllBoardCategory(){
         return new ResponseEntity<>(boardListService.getBoardCategoryList(), HttpStatus.OK);
     }
-
-    @PutMapping("/posts/update/{option}")
-    public ResponseEntity<?> updateVisibleBoard(@PathVariable String option, @RequestBody Map<String, Object> param){
-        boardService.updateBoard(option, param);
+    @PutMapping("/posts/{targetNum}/update/{option}/value/{value}")
+    public ResponseEntity<?> updateValueBoard(
+            @PathVariable int targetNum,
+            @PathVariable String option,
+            @PathVariable int value){
+        boardService.updateValueBoard(targetNum, option, value);
         return new ResponseEntity<>("OK", HttpStatus.OK);
+    }
+
+    /**
+     * 업데이트 할 항목들을 모두 작성 완료 후 실행됨
+     * 데이터베이스를 수정하기때문에 수정된 값이 들어옴.
+     * 실행 후
+     */
+    @PutMapping("/posts/{targetNum}/update/{option}")
+    public ResponseEntity<?> updateBodyBoard(
+            @PathVariable int targetNum,
+            @PathVariable String option,
+            @RequestBody Map<String, Object> param){
+        boardService.updateBodyBoard(targetNum, option, param);
+        return new ResponseEntity<>("OK",HttpStatus.OK);
     }
 }

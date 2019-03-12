@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>포스트 업데이트</title>
+    <script
+            src="https://code.jquery.com/jquery-3.3.1.js"
+            integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+            crossorigin="anonymous"></script>
+    <link type="text/css" rel="stylesheet" href="/css/nav.css">
+    <link type="text/css" rel="stylesheet" href="/css/posts.css">
+    <link type="text/css" rel="stylesheet" href="/m_editor/css/editormd.css">
+    <script type="text/javascript" src="/js/nav.js"></script>
+    <script type="text/javascript" src="/js/posts.js"></script>
+    <script type="text/javascript" src="/m_editor/editormd.js"></script>
+    <script src="/m_editor/languages/en.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.9/semantic.min.css">
+</head>
+<style>
+    .contents{
+        height: 100%; /* 테스트를 위해 스크롤 생성 */
+        /*border: 1px solid slategray;*/
+        border-radius: 5px;
+        margin: 0px 230px 200px 230px;
+        padding: 0px;
+        width: 70%;
+        min-width: 700px;
+    }
+</style>
+<script type="text/javascript">
+    $(function() {
+        var editor = editormd("editormd", {
+            path : "/m_editor/lib/" // Autoload modules mode, codemirror, marked... dependents libs path
+        });
+        /*
+        // or
+        var editor = editormd({
+            id   : "editormd",
+            path : "../lib/"
+        });
+        */
+    });
+    $(document).ready(()=>{
+        getOneBoard();
+    })
+</script>
+<body>
+<div id="navigation">
+    <!--로고-->
+    <div class="logoContainer no-drag">
+        <label class="logo">Pollra</label>
+        <div class="gbookLink" onclick="location.href='/guestbook'">방명록 쓰러가기<i class="edit outline icon"></i></div>
+    </div>
+    <!--카테고리-->
+    <div class="categoryContainer no-drag">
+
+    </div>
+    <!--내 정보-->
+    <div class="loginBox no-drag">
+        <div class="loginNik"></div>
+        <div class="logoutBtn">로그아웃</div>
+    </div>
+</div>
+<div class="contents">
+    <div class="postsWrapper">
+        <div class="postsTitle">
+            <select id="categorySelect">
+            </select>
+            <input type="text" placeholder="제목 입력" id="newBoardTitle">
+        </div>
+        <div class="postsContent">
+            <div id="editormd">
+                <textarea style="display:none;" id="newBoardContent"></textarea>
+            </div>
+        </div>
+        <div class="postsInfo">
+            <div id="visibleSelectWrapper">
+                <span>공개 설정</span>
+                <button value="1" id="visibleSelectBtn" class="visibleSelectBtn" onclick="toggleBtn_visibleBtn(0); return false;">공개</button>
+                <span id="visibleSelect">공개 상태로 저장합니다.</span>
+            </div>
+            <div id="saveBtnWrapper">
+                <button onclick="createNewBoard(); return false;">저장</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

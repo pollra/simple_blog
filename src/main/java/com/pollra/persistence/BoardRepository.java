@@ -44,4 +44,7 @@ public interface BoardRepository {
 
     @Update("UPDATE public.board SET visible=#{visible} WHERE num = #{num}")
     public int updateVisibleToNum(@Param("num")int num, @Param("visible") int visible);
+
+    @Update("UPDATE public.board SET category=#{category}, title=#{title}, content=#{content}, visible=#{visible} WHERE num=#{num}")
+    public int updateOneBoardToBoardVO(BoardVO boardVO);
 }

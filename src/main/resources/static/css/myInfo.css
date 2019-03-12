@@ -253,8 +253,6 @@ body{
     width: 80px;
     overflow: auto;
     text-align: center;
-    cursor: pointer;
-    border-radius: 4px;
 }
 #dataContentList{
     font-family: "맑은 고딕";
@@ -271,8 +269,17 @@ body{
     margin: 0px 5px;
     padding:2px;
 }
-#dataContentList .boardIndex_visible:hover{
+#dataContentList .boardIndex_category, #dataContentList .boardIndex_title, #dataContentList .boardIndex_visible{
+    cursor:pointer;
+}
+#dataContentList .boardIndex_category:hover{
+
+}
+#dataContentList .boardIndex_title:hover, #dataContentList .boardIndex_visible:hover, #dataContentList .boardIndex_category:hover{
+    border-radius: 4px;
     background: #1A8BE8;
-    color: white;
+    border: 0px;
+    color:white;
     transition: all 0.2s ease;
 }
+

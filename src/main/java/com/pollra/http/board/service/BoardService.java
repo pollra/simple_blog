@@ -57,11 +57,11 @@ public class BoardService {
         throw new DataEntryException("글 작성에 실패했습니다.");
     }
 
-    public void updateBoard(String option, Map<String, Object> param){
+    public void updateValueBoard(int targetNum, String option, int value){
         if(option.equals("")) throw new DataEntryException("입력된 데이터가 존재하지 않습니다.");
         switch (option){
             case "visible":
-                updateVisible(Integer.parseInt(param.get("target").toString()),Integer.parseInt(param.get("visible").toString()));
+                updateVisible(targetNum, value);
                 break;
             default:
                 throw new DataEntryException("입력된 옵션이 존재하지 않습니다.");
@@ -97,5 +97,40 @@ public class BoardService {
         int result = boardRepository.updateVisibleToNum(num, visible);
         if(result <= 0 ) throw new NotFoundException("업데이트에 실패했습니다.");
         log.info("[updateVisible] 업데이트 성공");
+    }
+
+    /**
+     * 게시글 수정
+     * 제목과 컨텐츠 수정 가능
+     *
+     * @param targetNum
+     * @param option
+     * @param param
+     */
+    public void updateBodyBoard(int targetNum, String option, Map<String, Object> param) {
+        log.info("[updateBodyBoard] start");
+        int result = 0; // 리턴된 결과를 받는놈
+        if(targetNum <= 0){
+            throw new DataEntryException("게시물을 확인할 수 없습니다.");
+        }
+        if(option.equals("")){
+            throw new DataEntryException("업데이트 옵션을 확인할 수 없습니다.");
+        }
+        switch (option){
+            case "all":
+                BoardVO boardVO = new BoardVO();
+                boardVO.setNum(targetNum);
+                boardVO.setCategory(Integer.parseInt(param.get("boardCategory").toString()));
+                boardVO.setTitle(param.get("boardTitle").toString());
+                boardVO.setVisible(Integer.parseInt(param.get("visibleSelectBtn").toString()));
+                boardVO.setContent(param.get("boardContent").toString());
+
+                result = boardRepository.updateOneBoardToBoardVO(boardVO);
+                break;
+        }
+        if(result <= 0){
+            throw new DataEntryException("데이터 업데이트에 실패했습니다.");
+        }
+        log.info("[updateBodyBoard] 업데이트 성공");
     }
 }
