@@ -26,8 +26,8 @@ public class CategoryController {
         int lastPost = boardService.selectLastPostToCategoryNum(num);
 
         if(lastPost != 0){
-            return "redirect:/postnotfound";
+            return "redirect:/posts/"+lastPost;
         }
-        return "redirect:/posts/category/"+num;
+        return "redirect:/postnotfound";
     }
 }

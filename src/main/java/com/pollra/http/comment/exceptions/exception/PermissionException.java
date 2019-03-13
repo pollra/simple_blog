@@ -1,6 +1,6 @@
-package com.pollra.http.board.exceptions.exception;
+package com.pollra.http.comment.exceptions.exception;
 
-public class PermissionException extends BoardServiceException{
+public class PermissionException extends CommentServiceException {
     public PermissionException(String message) {
         super(message);
     }

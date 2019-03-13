@@ -51,6 +51,6 @@ public interface BoardRepository {
     @Select("SELECT board.num FROM category INNER JOIN board ON category.num = board.category WHERE category.name = #{name} ORDER BY board.num DESC LIMIT 1;")
     public int selectLastBoardNumToCategoryName(@Param("name") String categoryName);
 
-    @Select("SELECT board.num FROM category INNER JOIN board ON category.num = board.category WHERE category.num = #{num} ORDER BY board.num DESC LIMIT 1;")
+    @Select("SELECT board.num FROM category INNER JOIN board ON category.num = board.category WHERE category.num = #{num} AND board.visible = 1 ORDER BY board.num DESC LIMIT 1")
     public int selectLastBoardNumToCategoryNum(@Param("num") int categoryName);
 }

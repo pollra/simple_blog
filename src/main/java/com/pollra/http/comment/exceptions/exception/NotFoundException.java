@@ -1,6 +1,6 @@
-package com.pollra.http.board.exceptions.exception;
+package com.pollra.http.comment.exceptions.exception;
 
-public class NotFoundException extends BoardServiceException{
+public class NotFoundException extends CommentServiceException {
     public NotFoundException(String message) {
         super(message);
     }

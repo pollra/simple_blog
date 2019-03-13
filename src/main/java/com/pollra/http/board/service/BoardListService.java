@@ -2,12 +2,11 @@ package com.pollra.http.board.service;
 
 
 import com.pollra.http.board.domain.BoardCategoryDAO;
-import com.pollra.http.board.exceptions.exception.NotFoundException;
+import com.pollra.http.comment.exceptions.exception.NotFoundException;
 import com.pollra.persistence.BoardRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
-package com.pollra.http.board.exceptions.exception;
+package com.pollra.http.comment.exceptions.exception;
 
-public class DataEntryException extends BoardServiceException {
+public class DataEntryException extends CommentServiceException {
     public DataEntryException(String message) {
         super(message);
     }

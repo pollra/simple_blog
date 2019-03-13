@@ -1,10 +1,7 @@
-package com.pollra.http.board.exceptions.handler;
+package com.pollra.http.comment.exceptions.handler;
 
-import com.pollra.http.comment.exceptions.exception.PermissionException;
-import com.pollra.http.comment.exceptions.exception.CommentServiceException;
-import com.pollra.http.comment.exceptions.exception.DataEntryException;
-import com.pollra.http.comment.exceptions.exception.NotFoundException;
-import com.pollra.http.login.exceptions.domain.ApiErrorDetail;
+import com.pollra.http.comment.exceptions.exception.*;
+import com.pollra.http.comment.exceptions.domain.ApiErrorDetail;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -14,15 +11,15 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import java.util.Date;
 
 @ControllerAdvice
-public class BoardExceptionHandler {
+public class CommentExceptionHandler {
     @ExceptionHandler(CommentServiceException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<ApiErrorDetail> handleUserNotFoundException
-            (CommentServiceException bse){
+            (CommentServiceException cse){
         ApiErrorDetail errorDetail = new ApiErrorDetail();
         errorDetail.setTimeStamp(new Date());
         errorDetail.setCode(0001);
-        errorDetail.setMessage(bse.getMessage());
+        errorDetail.setMessage(cse.getMessage());
         return new ResponseEntity<>(errorDetail, HttpStatus.INTERNAL_SERVER_ERROR);
     }
     @ExceptionHandler(PermissionException.class)

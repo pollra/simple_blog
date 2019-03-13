@@ -1,16 +1,15 @@
 package com.pollra.http.board.service;
 
 import com.pollra.http.board.domain.BoardVO;
-import com.pollra.http.board.exceptions.exception.DataEntryException;
-import com.pollra.http.board.exceptions.exception.NotFoundException;
-import com.pollra.http.board.exceptions.exception.PermissionException;
+import com.pollra.http.comment.exceptions.exception.DataEntryException;
+import com.pollra.http.comment.exceptions.exception.NotFoundException;
+import com.pollra.http.comment.exceptions.exception.PermissionException;
 import com.pollra.persistence.BoardRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
