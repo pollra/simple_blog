@@ -36,11 +36,11 @@ public interface BoardRepository {
     @Delete("DELETE FROM public.board WHRER num = #{num}")
     public int deleteOneBoardToNum(@Param("num") int num);
 
-    @Select("SELECT board.num, category.name, board.title, board.date, board.visible" +
-            " FROM category INNER JOIN board" +
-            " ON category.num = board.category" +
-            " ORDER BY board.num DESC")
+    @Select("SELECT board.num, category.name, board.title, board.date, board.visible FROM category INNER JOIN board ON category.num = board.category ORDER BY board.num DESC")
     public List<BoardCategoryDAO> selectAllUsersBoardCategoryDAO();
+
+    @Select("SELECT board.num, category.name, board.title, board.date, board.visible FROM category INNER JOIN board ON category.num = board.category ORDER BY board.num DESC")
+    public List<BoardCategoryDAO> selectBoardListToCategory();
 
     @Update("UPDATE public.board SET visible=#{visible} WHERE num = #{num}")
     public int updateVisibleToNum(@Param("num")int num, @Param("visible") int visible);
@@ -53,4 +53,13 @@ public interface BoardRepository {
 
     @Select("SELECT board.num FROM category INNER JOIN board ON category.num = board.category WHERE category.num = #{num} AND board.visible = 1 ORDER BY board.num DESC LIMIT 1")
     public int selectLastBoardNumToCategoryNum(@Param("num") int categoryName);
+
+    @Select("SELECT * FROM public.board WHERE category=#{category}")
+    public List<BoardVO> selectBoardVOToCategory(@Param("category") int category);
+
+    @Select("SELECT board.num FROM public.board ORDER BY board.category DESC LIMIT 1")
+    public int selectLastBoardNum();
+
+    @Select("SELECT board.category FROM public.board WHERE num = #{postNum}")
+    public int selectCategoryNumToBoardNum(@Param("postNum") int postNum);
 }

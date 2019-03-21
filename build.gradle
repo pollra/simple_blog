@@ -16,6 +16,7 @@ apply plugin: 'io.spring.dependency-management'
 
 group = 'com.pollra'
 version = '0.0.1-SNAPSHOT'
+
 sourceCompatibility = '11'
 
 repositories {
@@ -31,8 +32,7 @@ dependencies {
     compile group: 'org.springframework', name: 'spring-webmvc', version: '5.1.4.RELEASE'
 
     runtimeOnly 'org.postgresql:postgresql'
-    compileOnly 'org.projectlombok:lombok:1.18.6'
-    annotationProcessor 'org.projectlombok:lombok:1.18.6'
+    compileOnly 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"  //
     compileJava.dependsOn(processResources) //

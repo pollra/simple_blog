@@ -3,6 +3,7 @@ server:
   port: 12345
   servlet:
     session:
+
       timeout: 1800s
   tomcat:
     uri-encoding: UTF-8

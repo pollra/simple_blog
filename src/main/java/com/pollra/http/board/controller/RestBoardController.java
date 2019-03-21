@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -72,4 +73,11 @@ public class RestBoardController {
         }
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+    @GetMapping("/posts/category/{num}/list")
+    public ResponseEntity<?> selectPostList(@PathVariable int num){
+        List<BoardVO> list = boardListService.getBoardListToCategory(num);
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
 }

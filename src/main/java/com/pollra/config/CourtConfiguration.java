@@ -16,6 +16,7 @@ public class CourtConfiguration {
                 = new InternalResourceViewResolver();
         internalResourceViewResolver.setPrefix("/templates/");  // view 상대경로
         internalResourceViewResolver.setSuffix(".html");    // 확장자
+
         return internalResourceViewResolver;
     }
 }

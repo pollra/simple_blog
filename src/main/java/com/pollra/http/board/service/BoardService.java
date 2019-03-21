@@ -141,7 +141,11 @@ public class BoardService {
         }catch(Exception e){
             result = 0;
         }
+        return result;
+    }
 
+    public int selectLastPostToAllCategories() {
+        int result = boardRepository.selectLastBoardNum();
         return result;
     }
 }

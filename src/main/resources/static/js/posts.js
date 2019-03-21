@@ -1,7 +1,9 @@
 // document.write("<script src='posts.js'></script>");
 document.write("<script src='postView.js'></script>")
 $(document).ready(()=>{
-    set_category();
+    $.when(set_category()).done(
+        selectSetCategory()
+    );
 });
 
 function getPostContent(){
@@ -59,7 +61,6 @@ function set_category(){
         let categoryList = selectBox_categoryListCreate(result, 3);
         $("#categorySelect").html("");
         $("#categorySelect").html(categoryList);
-        selectSetCategory();
     })
 }
 
@@ -272,7 +273,5 @@ function selectSetCategory(){
         console.log("[selectSetCategory] 카테고리셋이 실행되지 않습니다. path[2]: " + path[2]);
         return false;
     }
-    $(document).ready(()=>{
-        $("#categorySelect").val(`${path[3]}`).prop("selected", true);
-    });
+    $("#categorySelect").val(`${path[3]}`).prop("selected", true);
 }

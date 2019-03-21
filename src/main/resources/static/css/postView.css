@@ -1,6 +1,10 @@
+.postViewTitleOutBox{
+    display: flow-root;
+}
 #postViewTitle{
     padding: 25px 20px;
     margin: 0px;
+
 }
 #layout{
     height: 100%; /* 테스트를 위해 스크롤 생성 */
@@ -18,4 +22,41 @@
 }
 .writerInfo{
     margin-right: 30px;
+}
+#listContainer{
+    height: auto; /* 테스트를 위해 스크롤 생성 */
+    /*border: 1px solid slategray;*/
+    margin: 0px 230px;
+    padding: 0px;
+    width: 70%;
+}
+#listWrapper{
+    padding: 20px;
+    list-style: none;
+    float: left;
+    width: 100%;
+}
+.list_item{
+    width: 100%;
+    display: inline-flex;
+    margin: 2px;
+    padding: 2px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+.list_item:hover{
+    color:white;
+    background: #507592;
+    transition: all .2s ease;
+}
+.list_title{
+    width:90%;
+    min-width: 560px;
+    max-width: 1210px;
+    float: left;
+}
+.list_date{
+    width:10%;
+    min-width: 100px;
+    max-width: 200px;
 }
