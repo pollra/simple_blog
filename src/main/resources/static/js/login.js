@@ -1,7 +1,5 @@
 /**
- * 
  * 로그인 시도
- *
  */
 function loginAction(){
     $.ajax({
@@ -24,4 +22,3 @@ function loginAction(){
         $("#inputPw").focus();
     })
 }
-

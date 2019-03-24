@@ -7,17 +7,17 @@
 
 }
 #layout{
-    height: 100%; /* 테스트를 위해 스크롤 생성 */
-    /*border: 1px solid slategray;*/
-    border-radius: 5px;
+    height: auto;
     margin: 0px 230px;
     padding: 0px;
     width: 70%;
     min-width: 700px;
+    display: inline-block;
+    /*border-bottom: 1px solid gray;*/
 }
 .postsInfo{
     display: -webkit-box;
-    margin: 0px 20px;
+    margin: 0px 20px 10px 20px;
     float: right;
 }
 .writerInfo{
@@ -29,12 +29,15 @@
     margin: 0px 230px;
     padding: 0px;
     width: 70%;
+    background: #eee;
+    min-width: 700px;
 }
 #listWrapper{
     padding: 20px;
     list-style: none;
     float: left;
     width: 100%;
+    min-height: 176px;
 }
 .list_item{
     width: 100%;
@@ -59,4 +62,87 @@
     width:10%;
     min-width: 100px;
     max-width: 200px;
+}
+.list_item_active{
+    font-weight: bolder;
+}
+#listNav{
+    list-style: none;
+    height: auto;
+    width: 100%;
+    display: inline-block;
+    text-align: center;
+    margin: 0px 20px;
+}
+#listNav li{
+    margin: 0px 5px;
+    padding: 5px 10px;
+    float: left;
+    cursor: pointer;
+}
+#listNav li:hover{
+    font-weight: bolder;
+    transition: all .2s ease;
+}
+.list_index_active{
+    font-weight: bolder;
+}
+
+/**
+ * comment
+ */
+.comment{
+    /*border: 1px solid slategray;*/
+    border-radius: 5px;
+    margin: 0px 230px;
+    padding: 0px;
+    width: 70%;
+    min-width: 700px;
+}
+.comment_from{
+    background: #eee;
+    display: inline-block;
+    width: 100%;
+}
+textarea.comment_content{
+    overflow: auto;
+    width: 98%;
+    min-width: 650px;
+    border: 0px;
+    outline: none;
+    margin: 1%;
+    height: 60px;
+    min-height: 60px;
+    max-height: 300px;
+    resize: vertical;
+}
+.comment_submit{
+    float: right;
+    border: 0px;
+    background: #537895;
+    padding: 6px 30px;
+    margin: 3px;
+    color: white;
+}
+.comment_view_single{
+    padding: 3px;
+    margin: 4px 2px;
+    border-radius: 6px;
+    background: #eee;
+    width: 100%;
+    min-width: 695px;
+}
+.comment_password{
+    border: 0px;
+    margin: 0px 20px;
+    padding: 3px;
+    width: 200px;
+    outline: none;
+}
+.comment_info{
+    margin: 5px;
+    color: gray;
+}
+.comment_content{
+    margin: 2px;
 }

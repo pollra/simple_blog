@@ -44,7 +44,6 @@ public class CommentService {
         if(board <= 0) throw new DataEntryException("데이터는 0이 들어올 수 없습니다.");
         List<CommentVO> commentList = commentRepository.selectListCommentVOToBoard(board);
         if(commentList.size() <= 0 || commentList.get(0) == null) throw new NotFoundException("댓글 리스트가 존재하지 않습니다.");
-
         return commentList;
     }
 
@@ -52,8 +51,9 @@ public class CommentService {
         if(num <= 0) throw new DataEntryException("데이터는 0이 들어올 수 없습니다.");
         CommentVO comment = commentRepository.selectOneCommentVOToNum(num);
         if(comment == null) throw new NotFoundException("댓글의 번호가 잘못되었습니다.");
-
         return comment;
     }
+
+
 
 }

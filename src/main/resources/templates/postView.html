@@ -28,6 +28,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.9/semantic.min.css">
 </head>
 <body>
+
 <div id="navigation">
     <!--로고-->
     <div class="logoContainer no-drag">
@@ -46,24 +47,60 @@
 </div>
 <div id="listContainer">
     <div id="listWrapper">
-        <li class="list_item">
-            <div class="list_title">안녀어엉?</div>
-            <div class="list_date">19.03.10 18:50</div>
-        </li>
     </div>
     <div id="listNav">
-
     </div>
 </div>
 <div id="layout">
-    <label class="postViewTitleOutBox">
-        <h1 id="postViewTitle"></h1>
-    </label>
     <div id="postView">
         <!--/*@thymesVar id="content" type="com.pollra.http.board.domain.BoardVO"*/-->
         <textarea id="postViewContent" style="display:none;"></textarea>
     </div>
     <div class="postsInfo"></div>
+</div>
+<div class="comment">
+    <!-- comment input -->
+    <div class="comment_from">
+        <!-- id / date-->
+        <!--<div class="comment_info"></div>-->
+        <!-- text area -->
+        <textarea class="comment_content" placeholder="댓글 입력"></textarea>
+        <input class="comment_password" placeholder="비밀번호 입력">
+        <button class="comment_submit">입력</button>
+    </div>
+    <!-- comment view -->
+    <div class="comment_view">
+        <!-- 하나의 댓글-->
+        <div class="comment_view_single">
+            <!-- id / date-->
+            <div class="comment_info">
+                <div class="comment_info_writer">아무개</div>
+                <div class="comment_info_date">19.03.24 오후06:22</div>
+            </div>
+            <!-- comment content-->
+            <div class="comment_content">안녕하세요?</div>
+        </div>
+        <!-- 하나의 댓글-->
+        <div class="comment_view_single">
+            <!-- id / date-->
+            <div class="comment_info">
+                <div class="comment_info_writer">아무개</div>
+                <div class="comment_info_date">19.03.24 오후06:22</div>
+            </div>
+            <!-- comment content-->
+            <div class="comment_content">댓글이 잘 달리나요 확인해볼까요? 으옹ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</div>
+        </div>
+        <!-- 하나의 댓글-->
+        <div class="comment_view_single">
+            <!-- id / date-->
+            <div class="comment_info">
+                <div class="comment_info_writer">아무개</div>
+                <div class="comment_info_date">19.03.24 오후06:22</div>
+            </div>
+            <!-- comment content-->
+            <div class="comment_content">확인확인잼!!</div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

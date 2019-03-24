@@ -59,15 +59,28 @@
         /* 트렌지션 대상 시간 이지인*/
         .inputWrapper >input:focus ~ label{
             transform: translateY(-18px);
-            transition: all .1s ease;
             font-size: 14px;
+            background:none;
         }
+        .inputWrapper >input:valid ~ label{
+            transition: all .1s ease;
+            transform: translateY(-18px);
+            font-size: 14px;
+            background:none;
+        }
+        .inputWrapper >input:invalid ~ label{
+            transition: all .1s ease;
+        }
+
         .inputWrapper > label{
             font-size: 18pt;
             top: 0px;
-            left: 5px;
+            /*margin-left: 5px;*/
             display: inline;
             position: absolute;
+            background: white;
+            width: 100%;
+            padding: 5px;
         }
         .btnWrapper > button{
             border: 0;
@@ -91,7 +104,12 @@
 
     </style>
     <script>
-
+        // setInterval(function() { ObserveInputValue($('#inputId').val()); }, 100);
+        setInterval(()=>{
+            console.log("우왕");
+            // $("#inputId").attr("autocomplete","on");
+            // $("#inputPw").attr("autocomplete","on");
+        }, 2000);
     </script>
 </head>
 <body>
@@ -100,11 +118,11 @@
         <label>관리자 로그인</label>
     </div>
     <div class="inputWrapper">
-        <input name="Id" id="inputId" type="text"/>
+        <input name="Id" id="inputId" type="text" autocomplete="off" required/>
         <label for="inputId">ID</label>
     </div>
     <div class="inputWrapper">
-        <input name="Pw" id="inputPw" type="password"/>
+        <input name="Pw" id="inputPw" type="password" autocomplete="off" required/>
         <label for="inputPw">PW</label>
     </div>
     <div class="btnWrapper">

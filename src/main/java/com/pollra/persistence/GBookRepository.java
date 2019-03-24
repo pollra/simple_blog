@@ -22,8 +22,8 @@ public interface GBookRepository {
      * @param num
      * @return
      */
-    @Select("SELECT COUNT(*) FROM public.gbook WHERE num = #{num}")
-    public int selectGBookCheckToNum(@Param("num") int num);
+//    @Select("SELECT COUNT(*) FROM public.gbook WHERE num = #{num}")
+//    public int selectGBookCheckToNum(@Param("num") int num);
 
     /**
      * 해당 번호의 데이터를 가져옴
