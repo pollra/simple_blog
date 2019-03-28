@@ -98,6 +98,7 @@
     padding: 0px;
     width: 70%;
     min-width: 700px;
+    transition: all .2s ease;
 }
 .comment_from{
     background: #eee;
@@ -117,7 +118,6 @@ textarea.comment_content{
     resize: vertical;
 }
 .comment_submit{
-    float: right;
     border: 0px;
     background: #537895;
     padding: 6px 30px;
@@ -130,7 +130,9 @@ textarea.comment_content{
     border-radius: 6px;
     background: #eee;
     width: 100%;
-    min-width: 695px;
+    display: inline-block;
+    min-width: 73px;
+    transition: all .2s ease;
 }
 .comment_password{
     border: 0px;
@@ -142,7 +144,66 @@ textarea.comment_content{
 .comment_info{
     margin: 5px;
     color: gray;
+    display: inherit;
 }
 .comment_content{
     margin: 2px;
+}
+.comment_info_writer{
+    float: left;
+    font-size: 12pt;
+}
+.comment_info_date{
+    font-size: 8pt;
+    margin-left: 20px;
+    display: inline-block;
+}
+.btn{
+    border: 0px;
+    outline: none;
+    margin: 2px;
+    padding: 5px 10px;
+}
+.update_btn{
+    color: white;
+    background: #00a8c6;
+}
+.delete_btn{
+    color: white;
+    background: indianred;
+}
+.btn_box{
+    float: right;
+    display: none;
+    transition: all .2s ease;
+}
+.comment_view > div:hover >.btn_box{
+    display: block;
+    transition: all .2s ease;
+}
+.comment_view_not_found{
+    text-align: center;
+}
+.comment_view_not_found_text{
+    margin: 25px;
+    font-size: 20pt;
+    font-weight: 500;
+}
+div.nodata{
+    background: none;
+}
+.comment_form_btn{
+    float: right;
+}
+.comment_change_input_btn{
+    float: left;
+    margin: 9px;
+    font-size: 12px;
+    color: #00000078;
+    text-shadow: 1px 1px 3px #00000078;
+    cursor: pointer;
+}
+.comment_form_btn > div:hover ~ button{
+    transition: all .2s ease;
+    background: #537895;
 }

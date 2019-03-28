@@ -4,14 +4,12 @@ import lombok.*;
 
 @Data
 @Getter @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @ToString
-public class CommentVO {
+public class CommentViewDTO {
     private int num;
-    private int board;
     private String writer;
     private String date;
     private String content;
-    private String password;
 }

@@ -20,6 +20,7 @@
     <script src="/m_editor/lib/jquery.flowchart.min.js"></script>
     <script src="/m_editor/editormd.js"></script>
     <script src="/js/postView.js"></script>
+    <script src="/js/comment.js"></script>
     <script type="text/javascript" src="/js/nav.js"></script>
     <link rel="stylesheet" href="/css/postView.css" />
     <link type="text/css" rel="stylesheet" href="/css/nav.css">
@@ -64,41 +65,20 @@
         <!-- id / date-->
         <!--<div class="comment_info"></div>-->
         <!-- text area -->
-        <textarea class="comment_content" placeholder="댓글 입력"></textarea>
-        <input class="comment_password" placeholder="비밀번호 입력">
-        <button class="comment_submit">입력</button>
+        <textarea class="comment_content" id="comment_input_box" placeholder="댓글 입력"></textarea>
+        <input class="comment_password" type="password" placeholder="비밀번호 입력">
+        <div class="comment_form_btn">
+            <div class="comment_change_input_btn">입력모드로 변환합니다.</div>
+            <button class="comment_submit" onclick="comment_create_action();">입력</button>
+        </div>
     </div>
     <!-- comment view -->
     <div class="comment_view">
         <!-- 하나의 댓글-->
-        <div class="comment_view_single">
-            <!-- id / date-->
-            <div class="comment_info">
-                <div class="comment_info_writer">아무개</div>
-                <div class="comment_info_date">19.03.24 오후06:22</div>
+        <div class="comment_view_single nodata" id="comment">
+            <div class="comment_view_not_found">
+                <div class="comment_view_not_found_text">댓글이 존재하지 않습니다.</div>
             </div>
-            <!-- comment content-->
-            <div class="comment_content">안녕하세요?</div>
-        </div>
-        <!-- 하나의 댓글-->
-        <div class="comment_view_single">
-            <!-- id / date-->
-            <div class="comment_info">
-                <div class="comment_info_writer">아무개</div>
-                <div class="comment_info_date">19.03.24 오후06:22</div>
-            </div>
-            <!-- comment content-->
-            <div class="comment_content">댓글이 잘 달리나요 확인해볼까요? 으옹ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</div>
-        </div>
-        <!-- 하나의 댓글-->
-        <div class="comment_view_single">
-            <!-- id / date-->
-            <div class="comment_info">
-                <div class="comment_info_writer">아무개</div>
-                <div class="comment_info_date">19.03.24 오후06:22</div>
-            </div>
-            <!-- comment content-->
-            <div class="comment_content">확인확인잼!!</div>
         </div>
     </div>
 </div>

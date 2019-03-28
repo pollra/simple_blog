@@ -78,24 +78,6 @@ function setPostsListView(){
             postsList[postsListLength] += `<div class="list_title">${obj.title}</div>`;
             postsList[postsListLength] += `<div class="list_date">${obj.date}</div>`;
             postsList[postsListLength] += `</li>`;
-            // if(((i+1) % 5) === 0 && i > 0) {
-            //     postsListLength++;
-            //     console.log(`postsListLength(${postsListLength}) : active_btn(${active_btn})`);
-            //     if (active_btn > 0 && postsListLength === active_btn){
-            //         console.log(`btn active ${postsListLength} : ${active_btn}`);
-            //         listNavButton += `<li class="list_index_btn list_index_active" onclick="postsIndexMove(${active_btn}); return false;">${active_btn + 1}</li>`;
-            //     }else{
-            //         listNavButton += `<li class="list_index_btn" onclick="postsIndexMove(${postsListLength}); return false;">${postsListLength+1}</li>`;
-            //     }
-            // }else if(i===0){
-            //     console.log(`postsListLength(${postsListLength}) : active_btn(${active_btn})`);
-            //     if(active_btn > 0 && postsListLength === active_btn){
-            //         console.log(`btn active ${postsListLength} : ${active_btn}`);
-            //         listNavButton += `<li class="list_index_btn list_index_active" onclick="postsIndexMove(${active_btn}); return false;">${active_btn+1}</li>`;
-            //     }else{
-            //         listNavButton += `<li class="list_index_btn" onclick="postsIndexMove(${postsListLength}); return false;">${postsListLength+1}</li>`;
-            //     }
-            // }
             if(((i+1) % 5) === 0 && i > 0){
                 postsListLength++;
             }

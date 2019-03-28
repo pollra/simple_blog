@@ -10,6 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
+
 @RestController
 @RequestMapping(value = "/comment", method = {RequestMethod.POST, RequestMethod.PUT, RequestMethod.GET, RequestMethod.DELETE})
 public class CommentRestController {
@@ -33,8 +36,9 @@ public class CommentRestController {
         }
     }
 
-    @PostMapping("create")
-    public ResponseEntity<?> createOneComment(){
-        return null;
+    @PostMapping("create/one")
+    public ResponseEntity<?> createOneComment(@RequestBody Map<String, Object> param, HttpServletRequest request){
+        commentService.insertOneComment(param, request);
+        return new ResponseEntity<>("OK",HttpStatus.OK);
     }
 }
