@@ -3,13 +3,19 @@ $(document).ready(()=>{
 });
 let current_btn_option = "input";
 $(".comment_change_input_btn").hover(()=>{
-    console.log("입력 버튼으로 변경 시도");
     $(".comment_submit").text("입력");
 });
 $(".comment_change_input_btn").mouseleave(()=>{
-    console.log(`${current_btn_option} 버튼으로 변경 시도`);
     $(".comment_submit").text(current_btn_option);
 });
+
+function comment_btn_basic_setting(){
+    $("#comment_input_box").val("");
+    $(".comment_password").val("");
+    $(".comment_submit").text("입력");
+    $(".comment_submit").attr("class", "comment_submit");
+    $(".comment_submit").attr("onclick", `comment_create_action();`);
+}
 
 /**
  * 
@@ -67,27 +73,33 @@ function form_change(target, option='create'){
  * 댓글 하나를 게시함
  */
 function comment_create_action(){
-    $.ajax({
-        url:"/comment/create/one",
-        type:"post",
-        contentType:"application/json;utf-8;",
-        data:JSON.stringify({
-            "board":location.pathname.split("/posts/")[1],
-            "content":$("textarea.comment_content").val(),
-            "password":$("input.comment_password").val()
-        })
-    }).done(()=>{
-        // 댓글입력창 초기화
-        $("textarea.comment_content").val("");
-        $("input.comment_password").val("");
-        // 댓글 리스트를 다시 불러옴
+    comment_update_ajax().then(()=>{
+        comment_btn_basic_setting();
         comment_select_list_action();
-    }).fail((result)=>{
-        const error = JSON.parse(result.responseText);
-        alert(error.message);
-    })
-}
+    }).catch((err)=>{
+        alert(err.message);
+    });
 
+    function comment_update_ajax(){
+        return new Promise((resolve, reject)=>{
+            $.ajax({
+                url: "/comment/create/one",
+                type: "post",
+                contentType: "application/json;utf-8;",
+                data: JSON.stringify({
+                    "board": location.pathname.split("/posts/")[1],
+                    "content": $("textarea.comment_content").val(),
+                    "password": $("input.comment_password").val()
+                })
+            }).done(() => {
+                resolve();
+            }).fail((result) => {
+                const error = JSON.parse(result.responseText);
+                reject(error.message);
+            })
+        })
+    }
+}
 /**
  * 댓글 하나를 업데이트함
  * @param target
@@ -95,8 +107,9 @@ function comment_create_action(){
 function comment_update_action(target = -1) {
     comment_update_ajax(target).then(()=>{
         comment_select_list_action();
+        comment_btn_basic_setting();
     }).catch((err)=>{
-        console.log(err.message);
+        alert(err.message);
     });
     function comment_update_ajax(target) {
         return new Promise((resolve, reject)=>{
@@ -106,8 +119,8 @@ function comment_update_action(target = -1) {
                 type: "put",
                 contentType: "application/json;utf-8;",
                 data: JSON.stringify({
-                    "target": target,
-                    "content": $("textarea.comment_content").text(),
+                    "num": target,
+                    "content": $("textarea.comment_content").val(),
                     "password": $("input.comment_password").val()
                 })
             }).done((result) => {
@@ -116,16 +129,16 @@ function comment_update_action(target = -1) {
                 reject(JSON.parse(result.responseText));
             });
         })
-
     }
 }
+
 function comment_delete_action(target = -1) {
     if(confirm("정말 삭제하시겠습니까?")) {
         comment_delete_ajax(target).then(() => {
             comment_select_list_action();
-
+            comment_btn_basic_setting();
         }).catch((err) => {
-            console.log(err.message);
+            alert(err.message);
         })
     }
     function comment_delete_ajax(target) {
@@ -152,7 +165,6 @@ function comment_delete_action(target = -1) {
  * 댓글 리스트를 불러옴
  */
 function comment_select_list_action() {
-
     comment_select_list_ajax().then(()=>{
         console.log("comment loading complete");
     }).catch(()=>{

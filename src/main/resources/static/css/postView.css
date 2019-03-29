@@ -208,3 +208,14 @@ div.nodata{
     transition: all .8s ease;
     background: #537895;
 }
+.comment_form_btn > div:hover .footer{
+    height: 200px;
+}
+.footer{
+    height: 250px;
+    margin: 0px 230px;
+    padding: 0px;
+    width: 70%;
+    background: #eee;
+    min-width: 700px;
+}

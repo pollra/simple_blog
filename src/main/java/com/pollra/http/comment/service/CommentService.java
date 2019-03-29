@@ -29,12 +29,19 @@ public class CommentService {
     public int insertOneComment(Map<String, Object> param, HttpServletRequest request) throws CommentServiceException {
         int result = 0;
         CommentVO commentVO = new CommentVO();
+
         try {
-            commentVO.setBoard(Integer.parseInt(param.get("board").toString()));
+            log.info("1");
+            commentVO.setBoard(Integer.parseInt(param.get("board").toString().split(";")[0]));
+            log.info("2");
             commentVO.setWriter(request.getRemoteAddr());
+            log.info("3");
             commentVO.setContent(param.get("content").toString());
+            log.info("4");
             commentVO.setPassword(param.get("password").toString());
+            log.info("5");
             commentVO.setDate(new SimpleDateFormat("yy.MM.dd akk:mm").format(new Date(System.currentTimeMillis())));
+            log.info("6");
         }catch (Exception e){
             log.info("데이터 입력이 올바르지 않습니다.");
             throw new DataEntryException("데이터 입력이 올바르지 않습니다.");
@@ -65,15 +72,20 @@ public class CommentService {
         // password와 num, 변경하고자하는 content를 받음.
         CommentVO commentVO = new CommentVO();
         try{
+            log.info("1");
             commentVO.setPassword(param.get("password").toString());
+            log.info("2");
             commentVO.setNum(Integer.parseInt(param.get("num").toString()));
+            log.info("3");
             commentVO.setContent(param.get("content").toString());
+            log.info("4");
         }catch (Exception e){
             log.info("넘어온 데이터가 정상적이지 않습니다.");
             throw new DataEntryException("데이터가 정상적이지 않습니다.");
         }
+        log.info(commentVO.getContent());
         if(commentVO.getNum() <= 0) throw new DataEntryException("해당 댓글을 찾을 수 없습니다.");
-        if(commentVO.getPassword().equals("")) throw new DataEntryException("패스워드가 올바르지 않습니다.");
+        if(commentVO.getPassword().equals("")) throw new DataEntryException("패스워드를 확인할 수 없습니다.");
         if(commentVO.getContent().equals("")) throw new DataEntryException("입력된 데이터가 존재하지 않습니다.");
         if(commentRepository.selectOneCommentCountToNumAndWriter(commentVO.getNum(), request.getRemoteAddr()) <= 0)
             throw new DataEntryException("권한이 없습니다.");
@@ -95,7 +107,7 @@ public class CommentService {
             throw new DataEntryException("데이터가 정상적이지 않습니다.");
         }
         if(commentVO.getNum() <= 0) throw new DataEntryException("해당 댓글을 찾을 수 없습니다.");
-        if(commentVO.getPassword().equals("")) throw new DataEntryException("패스워드가 올바르지 않습니다.");
+        if(commentVO.getPassword().equals("")) throw new DataEntryException("패스워드를 확인할 수 없습니다.");
         if(commentRepository.selectOneCommentCountToNumAndWriter(commentVO.getNum(), request.getRemoteAddr()) <= 0)
             throw new DataEntryException("권한이 없습니다.");
         if(commentRepository.selectOneCommentCountToNumAndPassword(commentVO.getNum(), commentVO.getPassword())<=0)
