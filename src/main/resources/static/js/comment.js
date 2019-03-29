@@ -1,10 +1,13 @@
 $(document).ready(()=>{
     comment_select_list_action();
 });
-let current_btn_option = "입력";
+let current_btn_option = "input";
 $(".comment_change_input_btn").hover(()=>{
+    console.log("입력 버튼으로 변경 시도");
     $(".comment_submit").text("입력");
-},()=>{
+});
+$(".comment_change_input_btn").mouseleave(()=>{
+    console.log(`${current_btn_option} 버튼으로 변경 시도`);
     $(".comment_submit").text(current_btn_option);
 });
 
@@ -15,25 +18,48 @@ $(".comment_change_input_btn").hover(()=>{
  */
 function form_change(target, option='create'){
     console.log(`타겟 : ${target} / 옵션 : ${option}`);
-    if(target === undefined) return;
+    if(target === undefined && !(option === "create")){
+        console.log(">ㅁ<");
+        return;
+    }
+    let yesOrNo = $("#comment_input_box").val()=== "";
     switch (option) {
         case 'create':
+            if(current_btn_option === "input"){
+                console.log("\'ㅂ \'");
+                return;
+            }else if(yesOrNo){
+                console.log("ㅇㅅㅇ");
+                inputBoxChange();
+                current_btn_option = "input";
+            }else if(confirm("기존에 입력한 정보가 지워집니다. 입력버튼으로 바꾸시겠습니까?")) {
+                console.log("ㅇㅂㅇ");
+                inputBoxChange();
+                current_btn_option = "input";
+            }
             break;
         case 'update':
             $("#comment_input_box").val($(`#comment_${target}`).children(".comment_content").text());
             console.log("타겟 데이터: "+$(`#comment_${target}`).children(".comment_content").text());
-            current_btn_option = "수정";
+            current_btn_option = "update";
             $(".comment_submit").text("수정");
             $(".comment_submit").attr("class","comment_submit update_btn");
             $(".comment_submit").attr("onclick",`comment_update_action(${target})`);
             break;
         case 'delete':
-            current_btn_option = "삭제";
+            current_btn_option = "delete";
             $("#comment_input_box").val($(`#comment_${target}`).children(".comment_content").text());
             $(".comment_submit").text("삭제");
             $(".comment_submit").attr("class","comment_submit delete_btn");
             $(".comment_submit").attr("onclick",`comment_delete_action(${target})`);
             break;
+    }
+    function inputBoxChange(){
+        $("#comment_input_box").val("");
+        $(".comment_password").val("");
+        $(".comment_submit").text("입력");
+        $(".comment_submit").attr("class", "comment_submit");
+        $(".comment_submit").attr("onclick", `comment_create_action();`);
     }
 }
 
@@ -54,7 +80,6 @@ function comment_create_action(){
         // 댓글입력창 초기화
         $("textarea.comment_content").val("");
         $("input.comment_password").val("");
-
         // 댓글 리스트를 다시 불러옴
         comment_select_list_action();
     }).fail((result)=>{
@@ -72,7 +97,7 @@ function comment_update_action(target = -1) {
         comment_select_list_action();
     }).catch((err)=>{
         console.log(err.message);
-    })
+    });
     function comment_update_ajax(target) {
         return new Promise((resolve, reject)=>{
             if (target === -1) reject(new Error("target is null"));
@@ -95,20 +120,23 @@ function comment_update_action(target = -1) {
     }
 }
 function comment_delete_action(target = -1) {
-    comment_delete_ajax(target).then(()=>{
-        comment_select_list_action();
-    }).catch((err)=>{
-        console.log(err.message);
-    })
+    if(confirm("정말 삭제하시겠습니까?")) {
+        comment_delete_ajax(target).then(() => {
+            comment_select_list_action();
+
+        }).catch((err) => {
+            console.log(err.message);
+        })
+    }
     function comment_delete_ajax(target) {
         return new Promise(function (resolve, reject) {
             if (target === -1) reject(new Error("게시글을 찾을 수 없습니다."));
             $.ajax({
-                url: "/comment/update/one",
+                url: "/comment/delete/one",
                 type: "put",
                 contentType: "application/json;utf-8;",
                 data: JSON.stringify({
-                    "target": target,
+                    "num": target,
                     "password": $("input.comment_password").val()
                 })
             }).done((result) => {

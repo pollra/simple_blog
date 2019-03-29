@@ -104,6 +104,7 @@
     background: #eee;
     display: inline-block;
     width: 100%;
+    margin-bottom: 5px;
 }
 textarea.comment_content{
     overflow: auto;
@@ -204,6 +205,6 @@ div.nodata{
     cursor: pointer;
 }
 .comment_form_btn > div:hover ~ button{
-    transition: all .2s ease;
+    transition: all .8s ease;
     background: #537895;
 }
