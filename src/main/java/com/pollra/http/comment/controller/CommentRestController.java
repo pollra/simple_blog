@@ -49,6 +49,7 @@ public class CommentRestController {
     }
     @PutMapping("delete/one")
     public ResponseEntity<?> deleteOneComment(@RequestBody Map<String, Object> param, HttpServletRequest request){
+
         commentService.deleteOneComment(param, request);
         return new ResponseEntity<>("OK", HttpStatus.OK);
     }
