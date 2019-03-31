@@ -15,6 +15,10 @@ public class CommentVO {
     private String content;
     private String password;
 
+    public void setWriter(String writer) {
+        this.writer = writer.equals("0:0:0:0:0:0:0:1") ? "관리자" : writer;
+    }
+
     public String board_content_password_check(){
         String result = "";
         if(this.board == 0) result+= "board";

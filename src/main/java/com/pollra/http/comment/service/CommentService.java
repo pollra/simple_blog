@@ -46,6 +46,7 @@ public class CommentService {
             log.info("데이터 입력이 올바르지 않습니다: "+errStack);
             throw new DataEntryException("데이터 입력이 올바르지 않습니다.");
         }
+
         if(!(commentVO.board_content_password_check()=="")){
             log.info("빈 값이 있습니다:"+commentVO.board_content_password_check());
             throw new DataEntryException("빈 값이 존재합니다.");
