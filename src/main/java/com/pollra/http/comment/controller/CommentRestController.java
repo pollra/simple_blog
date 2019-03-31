@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -49,8 +50,8 @@ public class CommentRestController {
     }
     @PutMapping("delete/one")
     public ResponseEntity<?> deleteOneComment(@RequestBody Map<String, Object> param, HttpServletRequest request){
-
         commentService.deleteOneComment(param, request);
+        ModelAndView view = new ModelAndView("1");
         return new ResponseEntity<>("OK", HttpStatus.OK);
     }
 }

@@ -29,22 +29,26 @@ public class CommentService {
     public int insertOneComment(Map<String, Object> param, HttpServletRequest request) throws CommentServiceException {
         int result = 0;
         CommentVO commentVO = new CommentVO();
-
+        String errStack = "";
         try {
-            log.info("1");
+            errStack+="b";
             commentVO.setBoard(Integer.parseInt(param.get("board").toString().split(";")[0]));
-            log.info("2");
+            errStack+="w";
             commentVO.setWriter(request.getRemoteAddr());
-            log.info("3");
+            errStack+="c";
             commentVO.setContent(param.get("content").toString());
-            log.info("4");
+            errStack+="p";
             commentVO.setPassword(param.get("password").toString());
-            log.info("5");
+            errStack+="d";
             commentVO.setDate(new SimpleDateFormat("yy.MM.dd akk:mm").format(new Date(System.currentTimeMillis())));
-            log.info("6");
+            errStack+="a";
         }catch (Exception e){
-            log.info("데이터 입력이 올바르지 않습니다.");
+            log.info("데이터 입력이 올바르지 않습니다: "+errStack);
             throw new DataEntryException("데이터 입력이 올바르지 않습니다.");
+        }
+        if(!(commentVO.board_content_password_check()=="")){
+            log.info("빈 값이 있습니다:"+commentVO.board_content_password_check());
+            throw new DataEntryException("빈 값이 존재합니다.");
         }
         result = commentRepository.insertOneCommentToCommentVO(commentVO);
         if(result <= 0){

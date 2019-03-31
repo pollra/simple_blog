@@ -14,4 +14,12 @@ public class CommentVO {
     private String date;
     private String content;
     private String password;
+
+    public String board_content_password_check(){
+        String result = "";
+        if(this.board == 0) result+= "board";
+        if(this.content == "") result+= "content";
+        if(this.password == "") result+= "password";
+        return result;
+    }
 }

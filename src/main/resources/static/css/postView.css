@@ -215,3 +215,20 @@ div.nodata{
     width: 70%;
     min-width: 700px;
 }
+.comment_index_list{
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+}
+li.comment_index_item{
+    padding: 5px 20px;
+    margin: 2px 10px;
+    cursor: pointer;
+}
+li.comment_index_item:hover{
+    transition:all .4s ease;
+    background: rgba(26, 139, 232, 0.39);
+}
+.index_active{
+    font-weight: 600;
+}
