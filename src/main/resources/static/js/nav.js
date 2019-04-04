@@ -18,8 +18,8 @@ function getCategoryList(){
         $(".categoryContainer").html(data);
     }).fail((result) =>{
         // let err = JSON.parse(result.responseText);
-        console.log(result);
-        alert(result.responseText);
+        console.log(result.responseText);
+        // alert(result.responseText);
         $(".categoryContainer").html("<li class='size0'>카테고리가 존재하지 않아요</li>");
     })
 }
