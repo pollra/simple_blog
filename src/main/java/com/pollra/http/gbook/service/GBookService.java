@@ -134,7 +134,7 @@ public class GBookService {
             log.info("[d]삭제하려는 글이 존재하지 않습니다.");
             throw new GBookNotFoundException("삭제하려는 글을 인식하지 못했습니다.");
         }
-        if(ip.equals("0:0:0:0:0:0:0:1")){
+        if(loginUser.equals("pollra")){
             ip = targetBoard.getWriter();
         }
         // 글쓴이의 ip주소가 일치하는지 확인. (비밀번호 대용)
@@ -184,7 +184,7 @@ public class GBookService {
             throw new GBookNotFoundException("[u]변경하려는 글이 존재하지 않습니다.");
         }
         // 관리자 권한
-        if(ip.equals("0:0:0:0:0:0:0:1")){
+        if(loginUser.equals("pollra")){
             ip = targetBoard.getWriter();
         }
 
