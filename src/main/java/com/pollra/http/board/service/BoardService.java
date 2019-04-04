@@ -145,7 +145,12 @@ public class BoardService {
     }
 
     public int selectLastPostToAllCategories() {
-        int result = boardRepository.selectLastBoardNum();
+        int result = 0;
+        try {
+            result = boardRepository.selectLastBoardNum();
+        }catch (Exception e){
+            log.info("데이터가 존재하지 않습니다.");
+        }
         return result;
     }
 }
