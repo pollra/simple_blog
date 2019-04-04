@@ -14,7 +14,7 @@ var inputGBook = function () {
         $("#guestBookContent").val("");
         getGBookList();
     }).fail(function (result) {
-        console.log('error: '+result);
+        console.log('error: '+JSON.parse(result.responseText).message);
         alert("방명록 작성에 실패했어요");
     })
 };
@@ -42,7 +42,7 @@ var getGBookList = function () {
         $("#guestBook").html(data);
     }).fail(function (result) {
         $("#guestBook").html("");
-        console.log("[!] error: " +result);
+        console.log("[!] error: " +JSON.parse(result.responseText).message);
         data += "<div class='noData'>" +
             "<h3>아직 작성된 방명록이 없어요...</h3>" +
             "</div>";
@@ -61,8 +61,8 @@ var deleteGBook = function (num) {
         }).done(function (result) {
             console.log(result);
             getGBookList();
-        }).fail(function (xhr) {
-            console.log("delete Error: " + xhr);
+        }).fail(function (result) {
+            console.log("delete Error: " + JSON.parse(result.responseText).message);
             alert("삭제실패")
         })
     }
@@ -88,7 +88,7 @@ var updateGBook = function (num, content) {
             getGBookList();
         }).fail(function (result) {
             alert("권한이 없습니다.");
-            console.log("방명록 업데이트 실패: " + result);
+            console.log("방명록 업데이트 실패: " + JSON.parse(result.responseText).message);
         })
     }
 };
