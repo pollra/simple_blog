@@ -116,6 +116,7 @@ function get_CategoryList(option = "all"){
         }
 
     }).fail((result) =>{
+        console.log(JSON.parse(result.responseText).message);
     })
 }
 // 카테고리 관리 페이지 선택창 카테고리 불러오기

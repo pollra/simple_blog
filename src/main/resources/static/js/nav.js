@@ -17,7 +17,9 @@ function getCategoryList(){
         data += categoryListCreate(result);
         $(".categoryContainer").html(data);
     }).fail((result) =>{
-        alert(result);
+        let err = JSON.parse(result.responseText);
+        console.log(err.message);
+        alert(err.message);
         $(".categoryContainer").html("<li class='size0'>카테고리가 존재하지 않아요</li>");
     })
 }
