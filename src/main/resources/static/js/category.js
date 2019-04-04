@@ -8,7 +8,7 @@ $(document).ready(()=>{
 function add_Category(){
     console.log("[ addCategory ] start");
     console.log(`[ addCategory ] data log : {\n` +
-    `categoryParent : ${$("#parentTargetCate option:selected").attr("value")}\n` +
+    `categoryParent : ${$("#parentTargetCate option:selected").attr("class")}\n` +
     `parentLevel : ${$("#parentTargetCate option:selected").attr("name")}\n` +
     `categoryName : ${$("#inputCate").val()}\n}`
     );
@@ -16,7 +16,7 @@ function add_Category(){
         url:"/category",
         type:"post",
         data: JSON.stringify({
-            "categoryParent":$("#parentTargetCate option:selected").attr("value"),
+            "categoryParent":$("#parentTargetCate option:selected").attr("class"),
             "parentLevel":$("#parentTargetCate option:selected").attr("name"),
             "categoryName":$("#inputCate").val()
         }),
