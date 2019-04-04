@@ -138,7 +138,7 @@ public class GBookService {
             ip = targetBoard.getWriter();
         }
         // 글쓴이의 ip주소가 일치하는지 확인. (비밀번호 대용)
-        if(!targetBoard.getWriter().equals(loginUser)){
+        if(!(ip.equals(targetBoard.getWriter()))){
             log.info("[d]작성자와 현재 IP가 다릅니다.");
             throw new InvalidRequestException("권한이 없습니다.");
         }
@@ -189,7 +189,7 @@ public class GBookService {
         }
 
         // 해당 데이터를 수정할 권한이 있는지?
-        if(!targetBoard.getWriter().equals(loginUser)){
+        if(!(ip.equals(targetBoard.getWriter()))){
             log.info("[u] 접속중인 정보와 글쓴이의 정보가 서로 다릅니다.");
             throw new InvalidRequestException("권한이 없습니다.");
         }
