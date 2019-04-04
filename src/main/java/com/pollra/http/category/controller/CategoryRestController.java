@@ -96,19 +96,30 @@ public class CategoryRestController {
     @PutMapping("/category")
     public ResponseEntity<?> updateCategory(@RequestBody Map<String, Object> param, HttpServletRequest request){
         log.info("[R!upd] 카테고리 UPDATE 명령 실행");
-        if (authChack(request)) return new ResponseEntity<>("권한이 없습니다.", HttpStatus.BAD_REQUEST);
+        String errorLog = "";
+        if (authChack(request)){
+            errorLog += "au";
+            return new ResponseEntity<>("권한이 없습니다.", HttpStatus.BAD_REQUEST);
+        }
         try {
+            errorLog += "s";
             categoryService.updateOneCategory(param, request);
             return new ResponseEntity<>("OK", HttpStatus.OK);
         } catch (CategoryNotFoundException e) {
+            errorLog += "nf";
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (DataEntryException e) {
+            errorLog += "de";
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (CategoryServerInternalException e) {
+            errorLog += "si";
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (CategoryServiceException e){
+            errorLog += "ue";
             log.info("[R!upd] 업데이트 에러: "+e.getMessage());
             return new ResponseEntity<>("서버 내부 오류", HttpStatus.INTERNAL_SERVER_ERROR);
+        } finally {
+            log.info(errorLog);
         }
     }
     @PutMapping("/category/vi")
