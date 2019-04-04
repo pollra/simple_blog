@@ -16,14 +16,15 @@ public class AllPageInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        log.info("[inter] all / start.");
+//        log.info("[inter] all / start.");
+        log.info("[all] Access IP: "+ request.getRemoteAddr());
         HttpSession session = request.getSession();
         try {
             String loginUser = session.getAttribute("lu").toString();
         }catch (NullPointerException e){
             session.setAttribute("lu","");
         }
-        log.info("[inter] all / end.");
+//        log.info("[inter] all / end.");
         return super.preHandle(request, response, handler);
     }
 }
