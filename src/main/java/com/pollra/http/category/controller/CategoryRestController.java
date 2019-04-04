@@ -48,17 +48,7 @@ public class CategoryRestController {
     @PostMapping("/category")
     public ResponseEntity<?> setCategory(@RequestBody Map<String, Object> param, HttpServletRequest request){
         log.info("[R!set] 카테고리 SET 명령 실행");
-        String loginUser = "";
-        try {
-            loginUser = request.getSession().getAttribute("lu").toString();
-        }catch (Exception e){
-            log.info("권한이 없습니다.1");
-            return new ResponseEntity<>("권한이 없습니다.",HttpStatus.BAD_REQUEST);
-        }
-        if(!(loginUser.equals("pollra"))){
-            log.info("권한이 없습니다.2");
-            return new ResponseEntity<>("권한이 없습니다.",HttpStatus.BAD_REQUEST);
-        }
+        if (authChack(request)) return new ResponseEntity<>("권한이 없습니다.", HttpStatus.BAD_REQUEST);
         try {
             categoryService.insertOneData(param);
             return new ResponseEntity<>("OK", HttpStatus.OK);
@@ -73,17 +63,8 @@ public class CategoryRestController {
     @DeleteMapping("/category")
     public ResponseEntity<?> deleteCategory(@RequestBody Map<String, Object> param, HttpServletRequest request){
         log.info("[R!del] 카테고리 DELETE 명령 실행");
-        String loginUser = "";
-        try {
-            loginUser = request.getSession().getAttribute("lu").toString();
-        }catch (Exception e){
-            log.info("권한이 없습니다.1");
-            return new ResponseEntity<>("권한이 없습니다.",HttpStatus.BAD_REQUEST);
-        }
-        if(!(loginUser.equals("pollra"))){
-            log.info("권한이 없습니다.2");
-            return new ResponseEntity<>("권한이 없습니다.",HttpStatus.BAD_REQUEST);
-        }
+
+        if (authChack(request)) return new ResponseEntity<>("권한이 없습니다.", HttpStatus.BAD_REQUEST);
 
         try {
             categoryService.deleteOneCategory(param, request);
@@ -97,9 +78,25 @@ public class CategoryRestController {
         return null;
     }
 
+    private boolean authChack(HttpServletRequest request) {
+        String loginUser = "";
+        try {
+            loginUser = request.getSession().getAttribute("lu").toString();
+        }catch (Exception e){
+            log.info("권한이 없습니다.1");
+            return true;
+        }
+        if(!(loginUser.equals("pollra"))){
+            log.info("권한이 없습니다.2");
+            return true;
+        }
+        return false;
+    }
+
     @PutMapping("/category")
     public ResponseEntity<?> updateCategory(@RequestBody Map<String, Object> param, HttpServletRequest request){
         log.info("[R!upd] 카테고리 UPDATE 명령 실행");
+        if (authChack(request)) return new ResponseEntity<>("권한이 없습니다.", HttpStatus.BAD_REQUEST);
         try {
             categoryService.updateOneCategory(param, request);
             return new ResponseEntity<>("OK", HttpStatus.OK);
@@ -117,6 +114,7 @@ public class CategoryRestController {
     @PutMapping("/category/vi")
     public ResponseEntity<?> updateCategory_vi(@RequestBody Map<String, Object> param, HttpServletRequest request){
         log.info("[R!upd] 카테고리 VISIBLE 명령 실행");
+        if (authChack(request)) return new ResponseEntity<>("권한이 없습니다.", HttpStatus.BAD_REQUEST);
         try {
             categoryService.updateOneCategory_visible(param, request);
             return new ResponseEntity<>("OK", HttpStatus.OK);

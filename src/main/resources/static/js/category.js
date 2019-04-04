@@ -8,7 +8,7 @@ $(document).ready(()=>{
 function add_Category(){
     console.log("[ addCategory ] start");
     console.log(`[ addCategory ] data log : {\n` +
-    `categoryParent : ${$("#parentTargetCate option:selected").attr("class")}\n` +
+    `categoryParent : ${$("#parentTargetCate option:selected").attr("value")}\n` +
     `parentLevel : ${$("#parentTargetCate option:selected").attr("name")}\n` +
     `categoryName : ${$("#inputCate").val()}\n}`
     );
@@ -16,7 +16,7 @@ function add_Category(){
         url:"/category",
         type:"post",
         data: JSON.stringify({
-            "categoryParent":$("#parentTargetCate option:selected").attr("class"),
+            "categoryParent":$("#parentTargetCate option:selected").attr("value"),
             "parentLevel":$("#parentTargetCate option:selected").attr("name"),
             "categoryName":$("#inputCate").val()
         }),
@@ -91,8 +91,8 @@ function get_CategoryList(option = "all"){
         type:"get",
         contentType:"application/json"
     }).done((result)=>{
-        var data_level3 = selectBox_categoryListCreate(result, 3);
-        var data_level2 = selectBox_categoryListCreate(result, 2);
+        let data_level3 = selectBox_categoryOptionListCreate(result, 3);
+        let data_level2 = selectBox_categoryOptionListCreate(result, 2);
         if(option === "create" || option === "all") {
             // console.log(data);
             $("#parentTargetCate").html("");
@@ -120,14 +120,14 @@ function get_CategoryList(option = "all"){
     })
 }
 // 카테고리 관리 페이지 선택창 카테고리 불러오기
-function selectBox_categoryListCreate(result, resultLevel = 3){
-    var resultData = "";        //
-    var size_0_category = [];
-    var size_1_category = [];
-    var size_2_category = [];
-    var count1 = 0;
-    var count2 = 0;
-    var count3 = 0;
+function selectBox_categoryOptionListCreate(result, resultLevel = 3){
+    let resultData = "";        //
+    let size_0_category = [];
+    let size_1_category = [];
+    let size_2_category = [];
+    let count1 = 0;
+    let count2 = 0;
+    let count3 = 0;
     // 카테고리 나누기
     $.each(result, (i, obj)=>{
         if(obj.level === 0){
