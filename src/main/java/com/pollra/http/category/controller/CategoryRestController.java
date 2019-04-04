@@ -73,7 +73,15 @@ public class CategoryRestController {
     @DeleteMapping("/category")
     public ResponseEntity<?> deleteCategory(@RequestBody Map<String, Object> param, HttpServletRequest request){
         log.info("[R!del] 카테고리 DELETE 명령 실행");
-        if(!request.getRemoteAddr().equals("0:0:0:0:0:0:0:1")) {
+        String loginUser = "";
+        try {
+            loginUser = request.getSession().getAttribute("lu").toString();
+        }catch (Exception e){
+            log.info("권한이 없습니다.1");
+            return new ResponseEntity<>("권한이 없습니다.",HttpStatus.BAD_REQUEST);
+        }
+        if(!(loginUser.equals("pollra"))){
+            log.info("권한이 없습니다.2");
             return new ResponseEntity<>("권한이 없습니다.",HttpStatus.BAD_REQUEST);
         }
 
