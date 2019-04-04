@@ -114,6 +114,7 @@ public class CategoryService {
     public void updateOneCategory(Map<String, Object> param, HttpServletRequest request) throws CategoryServiceException{
         // 넘어오는 데이터 처리
         CategoryVO targetCategory = new CategoryVO();
+        String loginUser = "";
         int result=0;
         try {
             targetCategory.setNum(Integer.parseInt(param.get("updateTarget").toString()));
@@ -128,7 +129,8 @@ public class CategoryService {
             throw new DataEntryException("[Cu] 입력된 카테고리의 이름이 빈 문자열입니다.");
         }
         if(!request.getSession().getAttribute("lu").toString().equals("")){
-            if(request.getRemoteAddr().equals("0:0:0:0:0:0:0:1")){
+            loginUser = request.getSession().getAttribute("lu").toString();
+            if(loginUser.equals("pollra")){
                 // 해당 데이터가 있는지 확인
                 if(categoryRepository.selectCountCategoryToNum(targetCategory.getNum()) <= 0){
                     throw new CategoryNotFoundException("[Cu] 해당 카테고리가 존재하지 않습니다.");
@@ -158,6 +160,7 @@ public class CategoryService {
     public void updateOneCategory_visible(Map<String, Object> param, HttpServletRequest request) throws CategoryServiceException{
         // 넘어오는 데이터 처리
         CategoryVO targetCategory = new CategoryVO();
+        String loginUser = "";
         int result=0;
         try {
             targetCategory.setNum(Integer.parseInt(param.get("visibleTarget").toString()));
@@ -169,7 +172,8 @@ public class CategoryService {
             throw new DataEntryException("[Cu] 입력된 카테고리번호가 없습니다.");
         }
         if(!request.getSession().getAttribute("lu").toString().equals("")){
-            if(request.getRemoteAddr().equals("0:0:0:0:0:0:0:1")){
+            loginUser = request.getSession().getAttribute("lu").toString();
+            if(loginUser.equals("pollra")){
                 // 해당 데이터가 있는지 확인
                 if(categoryRepository.selectCountCategoryToNum(targetCategory.getNum()) <= 0){
                     throw new CategoryNotFoundException("[Cu] 해당 카테고리가 존재하지 않습니다.");
