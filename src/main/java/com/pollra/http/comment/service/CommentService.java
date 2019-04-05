@@ -30,12 +30,21 @@ public class CommentService {
     public int insertOneComment(Map<String, Object> param, HttpServletRequest request) throws CommentServiceException {
         int result = 0;
         CommentVO commentVO = new CommentVO();
+        HttpSession session = request.getSession();
         String errStack = "";
+        String loginUser = "";
         try {
             errStack+="b";
             commentVO.setBoard(Integer.parseInt(param.get("board").toString().split(";")[0]));
             errStack+="w";
-            commentVO.setWriter(request.getRemoteAddr());
+            if(session.getAttribute("lu").toString().equals("")){
+                loginUser = request.getRemoteAddr();
+                log.info("현재 로그인되어있지 않습니다. ip로 비교합니다: " + loginUser);
+            }else{
+                loginUser = session.getAttribute("lu").toString();
+                log.info("현재 로그인되어있습니다. 아이디로 비교합니다: "+ loginUser);
+            }
+            commentVO.setWriter(loginUser);
             errStack+="c";
             commentVO.setContent(param.get("content").toString());
             errStack+="p";
