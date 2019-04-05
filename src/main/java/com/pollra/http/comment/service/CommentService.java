@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -76,6 +77,8 @@ public class CommentService {
     public int updateOneComment(Map<String, Object> param, HttpServletRequest request) {
         // password와 num, 변경하고자하는 content를 받음.
         CommentVO commentVO = new CommentVO();
+        HttpSession session = request.getSession();
+        String loginUser = "";
         try{
             log.info("1");
             commentVO.setPassword(param.get("password").toString());
@@ -92,7 +95,9 @@ public class CommentService {
         if(commentVO.getNum() <= 0) throw new DataEntryException("해당 댓글을 찾을 수 없습니다.");
         if(commentVO.getPassword().equals("")) throw new DataEntryException("패스워드를 확인할 수 없습니다.");
         if(commentVO.getContent().equals("")) throw new DataEntryException("입력된 데이터가 존재하지 않습니다.");
-        if(commentRepository.selectOneCommentCountToNumAndWriter(commentVO.getNum(), request.getRemoteAddr()) <= 0)
+
+        loginUser = request.getRemoteAddr();
+        if(commentRepository.selectOneCommentCountToNumAndWriter(commentVO.getNum(), loginUser)<=0)
             throw new DataEntryException("권한이 없습니다.");
         if(commentRepository.selectOneCommentCountToNumAndPassword(commentVO.getNum(), commentVO.getPassword())<=0)
             throw new DataEntryException("비밀번호가 다릅니다.");
@@ -103,6 +108,8 @@ public class CommentService {
 
     public int deleteOneComment(Map<String, Object> param, HttpServletRequest request){
         CommentVO commentVO = new CommentVO();
+        HttpSession session = request.getSession();
+        String loginUser = "";
         try{
             commentVO.setNum(Integer.parseInt(param.get("num").toString()));
             commentVO.setPassword(param.get("password").toString());
@@ -113,12 +120,19 @@ public class CommentService {
         }
         if(commentVO.getNum() <= 0) throw new DataEntryException("해당 댓글을 찾을 수 없습니다.");
         if(commentVO.getPassword().equals("")) throw new DataEntryException("패스워드를 확인할 수 없습니다.");
-        if(commentRepository.selectOneCommentCountToNumAndWriter(commentVO.getNum(), request.getRemoteAddr()) <= 0)
+
+        if(session.getAttribute("lu").toString().equals("")){
+            loginUser = request.getRemoteAddr();
+        }else{
+            loginUser = session.getAttribute("lu").toString();
+        }
+
+        if(commentRepository.selectOneCommentCountToNumAndWriter(commentVO.getNum(), loginUser) <= 0)
             throw new DataEntryException("권한이 없습니다.");
         if(commentRepository.selectOneCommentCountToNumAndPassword(commentVO.getNum(), commentVO.getPassword())<=0)
             throw new DataEntryException("비밀번호가 다릅니다.");
         int result = commentRepository.deleteOneCommentToNum(commentVO.getNum(), commentVO.getPassword());
-        if(result <= 0) throw new DataEntryException("데이터 수정에 실패했습니다.");
+        if(result <= 0) throw new DataEntryException("데이터 삭제에 실패했습니다.");
         return result;
     }
 }

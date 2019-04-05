@@ -31,7 +31,7 @@ public class CategoryRestController {
         log.info("[R!get] 카테고리 GET 명령 실행");
         List<CategoryVO> categoryList;
         try {
-            categoryList = categoryService.selectVisibleList(request.getRemoteAddr());
+            categoryList = categoryService.selectVisibleList(request);
             log.info("[R!get] 데이터 전송 size:"+categoryList.size());
             log.info("[R!get] 데이터 전송 value:"+categoryList.get(0).toString());
 

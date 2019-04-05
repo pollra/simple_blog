@@ -66,9 +66,11 @@ public class CategoryService {
      * @return
      * @throws CategoryServiceException
      */
-    public List<CategoryVO> selectVisibleList(String ip) throws CategoryServiceException{
+    public List<CategoryVO> selectVisibleList(HttpServletRequest request) throws CategoryServiceException{
+        String ip = request.getRemoteAddr();
         List<CategoryVO> categoryList;
-        if(ip.trim().equals("0:0:0:0:0:0:0:1")){
+        String loginUser = request.getSession().getAttribute("lu").toString();
+        if(loginUser.equals("pollra")){
             categoryList = categoryRepository.selectAllCategoryList();
         }else {
             categoryList = categoryRepository.selectVisibleCategoryList();
@@ -87,8 +89,9 @@ public class CategoryService {
     public void deleteOneCategory(Map<String, Object> param, HttpServletRequest request) throws CategoryServiceException{
         int targetNum = Integer.parseInt(param.get("deleteTarget").toString());
         int result=0;
+        String loginUser = request.getSession().getAttribute("lu").toString();
         if(!request.getSession().getAttribute("lu").toString().equals("")){
-            if(request.getRemoteAddr().equals("0:0:0:0:0:0:0:1")){
+            if(loginUser.equals("pollra")){
                 result = categoryRepository.deleteOneCategoryToNum(targetNum);
             }else {
                 log.info("[Cd] 권한이 없습니다.");
@@ -135,15 +138,13 @@ public class CategoryService {
                 if(categoryRepository.selectCountCategoryToNum(targetCategory.getNum()) <= 0){
                     throw new CategoryNotFoundException("[Cu] 해당 카테고리가 존재하지 않습니다.");
                 }
-
                 result = categoryRepository.updateOneCategoryToCategoryVO(targetCategory.getNum(), targetCategory.getName());
             }else {
-                log.info("[Cd] 권한이 없습니다.");
+                log.info("[Cu] 권한이 없습니다.");
             }
         }else{
-            throw new DataEntryException("[Cd] 권한이 없습니다.");
+            throw new DataEntryException("[Cu] 권한이 없습니다.");
         }
-
         if(result <= 0){
             throw new CategoryServerInternalException("[Cu] 업데이트 실패.");
         }else{
@@ -181,12 +182,11 @@ public class CategoryService {
 
                 result = categoryRepository.updateOneCategoryToNumAndVisible(targetCategory.getNum(), targetCategory.getVisible());
             }else {
-                log.info("[Cd] 권한이 없습니다.");
+                log.info("[Cu] 권한이 없습니다.");
             }
         }else{
-            throw new DataEntryException("[Cd] 권한이 없습니다.");
+            throw new DataEntryException("[Cu] 권한이 없습니다.");
         }
-
         if(result <= 0){
             throw new CategoryServerInternalException("[Cu] 업데이트 실패.");
         }else{
