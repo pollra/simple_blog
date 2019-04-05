@@ -25,7 +25,7 @@ public interface CommentRepository {
     @Select("SELECT count(*) FROM public.comment WHERE num = #{num} AND password = #{password}")
     public int selectOneCommentCountToNumAndPassword(@Param("num") int num, @Param("password") String password);
 
-    @Select("SELECT comment.num, comment.writer, comment.date, comment.content FROM public.comment WHERE board = #{board} ORDER BY comment.date DESC")
+    @Select("SELECT comment.num, comment.writer, comment.date, comment.content FROM public.comment WHERE board = #{board} ORDER BY comment.num DESC")
     public List<CommentViewDTO> selectListCommentVOToBoard(@Param("board") int board);
 
     @Select("SELECT count(*) FROM public.comment WHERE num = #{num} AND writer = #{writer}")

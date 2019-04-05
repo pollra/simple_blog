@@ -50,7 +50,7 @@ public class CommentService {
             errStack+="p";
             commentVO.setPassword(param.get("password").toString());
             errStack+="d";
-            commentVO.setDate(new SimpleDateFormat("yy.MM.dd akk:mm").format(new Date(System.currentTimeMillis())));
+            commentVO.setDate(new SimpleDateFormat("yy.MM.dd akk:mm.sss").format(new Date(System.currentTimeMillis())));
             errStack+="a";
         }catch (Exception e){
             log.info("데이터 입력이 올바르지 않습니다: "+errStack);
