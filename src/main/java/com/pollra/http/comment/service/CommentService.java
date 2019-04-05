@@ -128,9 +128,9 @@ public class CommentService {
             loginUser = session.getAttribute("lu").toString();
             log.info("현재 로그인되어있습니다. 아이디로 비교합니다: "+ loginUser);
         }
-
-        if(!(loginUser.equals("pollra")) || commentRepository.selectOneCommentCountToNumAndWriter(commentVO.getNum(), loginUser) <= 0)
-            throw new DataEntryException("권한이 없습니다.");
+        if(!(loginUser.equals("pollra")))
+            if(commentRepository.selectOneCommentCountToNumAndWriter(commentVO.getNum(), loginUser) <= 0)
+                throw new DataEntryException("권한이 없습니다.");
         if(commentRepository.selectOneCommentCountToNumAndPassword(commentVO.getNum(), commentVO.getPassword())<=0)
             throw new DataEntryException("비밀번호가 다릅니다.");
         int result = commentRepository.deleteOneCommentToNum(commentVO.getNum(), commentVO.getPassword());
