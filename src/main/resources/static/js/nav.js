@@ -141,7 +141,7 @@ function logout(){
         console.log("logout complete.");
         console.log("[logout] location.pathname.indexOf(\"/user\") : "+ location.pathname.indexOf("/user"));
         if(!(location.pathname.indexOf("/user") === -1)){
-            location.href = "/login/page";
+            location.href = "/";
         }
         $(".loginNik").text("로그인");
         $(".loginNik").attr("onclick","location.href='/login/page'");
