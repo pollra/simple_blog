@@ -8,6 +8,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.Enumeration;
 
 @Component
 public class AllPageInterceptor extends HandlerInterceptorAdapter {
@@ -16,15 +17,22 @@ public class AllPageInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-//        log.info("[inter] all / start.");
-        log.info("[all] Access IP: "+ request.getRemoteAddr());
+        log.info("[inter] all / start.");
+//        log.info("[all] Access IP: "+ request.getRemoteAddr());
+        Enumeration headerNames = request.getHeaderNames();
+        while (headerNames.hasMoreElements()){
+            String name = (String)headerNames.nextElement();
+            String value = request.getHeader(name);
+            log.info(name + " : " +value);
+        }
+        log.info("[all]");
         HttpSession session = request.getSession();
         try {
             String loginUser = session.getAttribute("lu").toString();
         }catch (NullPointerException e){
             session.setAttribute("lu","");
         }
-//        log.info("[inter] all / end.");
+        log.info("[inter] all / end.");
         return super.preHandle(request, response, handler);
     }
 }
