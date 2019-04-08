@@ -20,12 +20,12 @@ public class AllPageInterceptor extends HandlerInterceptorAdapter {
         log.info("[inter] all / start.");
         request.setAttribute("ip",request.getHeader("x-real-ip"));
         log.info("[all] Access IP: "+ request.getAttribute("ip"));
-        Enumeration headerNames = request.getHeaderNames();
-        while (headerNames.hasMoreElements()){
-            String name = (String)headerNames.nextElement();
-            String value = request.getHeader(name);
-            log.info(name + " : " +value);
-        }
+//        Enumeration headerNames = request.getHeaderNames();
+//        while (headerNames.hasMoreElements()){
+//            String name = (String)headerNames.nextElement();
+//            String value = request.getHeader(name);
+//            log.info(name + " : " +value);
+//        }
         HttpSession session = request.getSession();
         try {
             String loginUser = session.getAttribute("lu").toString();

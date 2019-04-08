@@ -23,14 +23,14 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 //        log.info("[login] login / start.");
         request.setAttribute("ip",request.getHeader("x-real-ip"));
         log.info("[login] Access IP: "+ request.getAttribute("ip"));
-//        HttpSession session = request.getSession();
-//        try {
-//            String loginUser = session.getAttribute("lu").toString();
-//        }catch (NullPointerException e){
-//            log.info("[login] login info is null. redirect loginPage");
-//            session.setAttribute("lu","");
-//            response.sendRedirect("/login/page");
-//        }
+        HttpSession session = request.getSession();
+        try {
+            String loginUser = session.getAttribute("lu").toString();
+        }catch (NullPointerException e){
+            log.info("[login] login info is null. redirect loginPage");
+            session.setAttribute("lu","");
+            response.sendRedirect("/login/page");
+        }
 
         log.info("[login] login / end.");
         return super.preHandle(request, response, handler);
