@@ -38,7 +38,7 @@ public class GBookService {
         int dataEntryResult;
         GBookVO insertNewGBook = new GBookVO();
         HttpSession session = request.getSession();
-        String writer = request.getAttribute("ip").toString();
+        String writer = request.getAttribute("ip").toString().split(".")[1];
         // 데이터를 정리
         try {
              String LuData = session.getAttribute("lu").toString().trim();
@@ -116,7 +116,7 @@ public class GBookService {
      * InvalidRequestException
      */
     public void deleteOneGBook(int num, HttpServletRequest request) throws GBookServiceException {
-        String ip = request.getAttribute("ip").toString();
+        String ip = request.getAttribute("ip").toString().split(".")[1];
         HttpSession session = request.getSession();
         String loginUser = "";
         try {
@@ -166,7 +166,7 @@ public class GBookService {
         int result=0;
         String loginUser = "";
         HttpSession session = request.getSession();
-        String ip = request.getAttribute("ip").toString();
+        String ip = request.getAttribute("ip").toString().split(".")[1];
         try {
             loginUser = session.getAttribute("lu").toString();
         }catch (NullPointerException e){

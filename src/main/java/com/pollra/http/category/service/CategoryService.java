@@ -67,7 +67,7 @@ public class CategoryService {
      * @throws CategoryServiceException
      */
     public List<CategoryVO> selectVisibleList(HttpServletRequest request) throws CategoryServiceException{
-        String ip = request.getAttribute("ip").toString();
+        String ip = request.getAttribute("ip").toString().split(".")[1];
         List<CategoryVO> categoryList;
         String loginUser = request.getSession().getAttribute("lu").toString();
         if(loginUser.equals("pollra")){
