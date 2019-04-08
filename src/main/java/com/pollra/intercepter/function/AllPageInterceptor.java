@@ -18,14 +18,14 @@ public class AllPageInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         log.info("[inter] all / start.");
-//        log.info("[all] Access IP: "+ request.getRemoteAddr());
-        Enumeration headerNames = request.getHeaderNames();
-        while (headerNames.hasMoreElements()){
-            String name = (String)headerNames.nextElement();
-            String value = request.getHeader(name);
-            log.info(name + " : " +value);
-        }
-        log.info("[all]");
+        request.setAttribute("ip",request.getHeader("X-Real-IP"));
+        log.info("[all] Access IP: "+ request.getAttribute("ip"));
+//        Enumeration headerNames = request.getHeaderNames();
+//        while (headerNames.hasMoreElements()){
+//            String name = (String)headerNames.nextElement();
+//            String value = request.getHeader(name);
+//            log.info(name + " : " +value);
+//        }
         HttpSession session = request.getSession();
         try {
             String loginUser = session.getAttribute("lu").toString();

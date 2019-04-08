@@ -20,17 +20,19 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        log.info("[inter] login / start.");
+        log.info("[login] login / start.");
+        request.setAttribute("ip",request.getHeader("X-Real-IP"));
+        log.info("[login] Access IP: "+ request.getAttribute("ip"));
         HttpSession session = request.getSession();
         try {
             String loginUser = session.getAttribute("lu").toString();
         }catch (NullPointerException e){
-            log.info("[inter] login info is null. redirect loginPage");
+            log.info("[login] login info is null. redirect loginPage");
             session.setAttribute("lu","");
             response.sendRedirect("/login/page");
         }
 
-        log.info("[inter] login / end.");
+        log.info("[login] login / end.");
         return super.preHandle(request, response, handler);
     }
 
