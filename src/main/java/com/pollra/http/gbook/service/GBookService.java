@@ -12,7 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class GBookService {
@@ -38,7 +40,7 @@ public class GBookService {
         int dataEntryResult;
         GBookVO insertNewGBook = new GBookVO();
         HttpSession session = request.getSession();
-        String writer = request.getAttribute("ip").toString().split(".")[1];
+        String writer = whatYourName(request);
         // 데이터를 정리
         try {
              String LuData = session.getAttribute("lu").toString().trim();
@@ -116,7 +118,7 @@ public class GBookService {
      * InvalidRequestException
      */
     public void deleteOneGBook(int num, HttpServletRequest request) throws GBookServiceException {
-        String ip = request.getAttribute("ip").toString().split(".")[1];
+        String ip = whatYourName(request);
         HttpSession session = request.getSession();
         String loginUser = "";
         try {
@@ -166,7 +168,7 @@ public class GBookService {
         int result=0;
         String loginUser = "";
         HttpSession session = request.getSession();
-        String ip = request.getAttribute("ip").toString().split(".")[1];
+        String ip = whatYourName(request);
         try {
             loginUser = session.getAttribute("lu").toString();
         }catch (NullPointerException e){
@@ -201,5 +203,23 @@ public class GBookService {
             log.info("[u] update failed.");
         }
         return result;
+    }
+
+    /**
+     * 일시적으로 일부 유저에게 닉네임을 지정해줌
+     */
+    private String whatYourName(HttpServletRequest request){
+        String writer = request.getRemoteAddr();
+        Map<String, String> users = new HashMap<>();
+        users.put("a","robunit");
+        users.put("b","하얀수염");
+        users.put("c","P R A D A");
+        users.put("d","나는빡빡이다");
+        for(Map.Entry entry : users.entrySet()){
+            if(entry.getKey().equals(writer)){
+                return entry.getValue().toString();
+            }
+        }
+        return request.getAttribute("ip").toString().split(".")[1];
     }
 }
