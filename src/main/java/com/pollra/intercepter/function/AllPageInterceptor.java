@@ -18,7 +18,7 @@ public class AllPageInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         log.info("[inter] all / start.");
-        request.setAttribute("ip",request.getHeader("X-Real-IP"));
+        request.setAttribute("ip",request.getHeader("x-real-ip"));
         log.info("[all] Access IP: "+ request.getAttribute("ip"));
         Enumeration headerNames = request.getHeaderNames();
         while (headerNames.hasMoreElements()){

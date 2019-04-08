@@ -21,7 +21,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         log.info("[login] login / start.");
-        request.setAttribute("ip",request.getHeader("X-Real-IP"));
+        request.setAttribute("ip",request.getHeader("x-real-ip"));
         log.info("[login] Access IP: "+ request.getAttribute("ip"));
         HttpSession session = request.getSession();
         try {
