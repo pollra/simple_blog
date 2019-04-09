@@ -11,7 +11,7 @@
 })(function(CodeMirror) {
 "use strict";
 
-  // full haml mode. This handled embeded ruby and html fragments tool
+  // full haml mode. This handled embeded ruby and html fragments too
   CodeMirror.defineMode("haml", function(config) {
     var htmlMode = CodeMirror.getMode(config, {name: "htmlmixed"});
     var rubyMode = CodeMirror.getMode(config, "ruby");

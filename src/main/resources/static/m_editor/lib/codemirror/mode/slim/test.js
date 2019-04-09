@@ -63,7 +63,7 @@
   MT("multilineRuby",
       "[tag p]",
       "  [comment /# this is a comment]",
-      "     [comment and this is a comment tool]",
+      "     [comment and this is a comment too]",
       "  | Date/Time",
       "  [operator&special -] [variable now] [operator =] [tag DateTime][operator .][property now]",
       "  [tag strong][operator&special =] [variable now]",

@@ -274,7 +274,7 @@ extend( QUnit, {
 			if ( runStarted ) {
 				throw new Error( "Called start() outside of a test context while already started" );
 			} else if ( globalStartAlreadyCalled || count > 1 ) {
-				throw new Error( "Called start() outside of a test context tool many times" );
+				throw new Error( "Called start() outside of a test context too many times" );
 			} else if ( config.autostart ) {
 				throw new Error( "Called start() outside of a test context when " +
 					"QUnit.config.autostart was true" );
