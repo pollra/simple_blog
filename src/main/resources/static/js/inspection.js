@@ -1,10 +1,9 @@
-
 function inspection(substitutionCharacter = ""){
-    if(substitutionCharacter === ""){
+    if (substitutionCharacter === "") {
         return "";
-    }else{
-        substitutionCharacter = substitutionCharacter.replace(/</gi,"&lt").replace(/>/gi,"&gt;");
-        substitutionCharacter = substitutionCharacter.replace(/\$/gi,"&#36;").replace(/{/gi, "&#123;").replace(/{/gi, "&#125;");
+    } else {
+        substitutionCharacter = substitutionCharacter.replace(/&lt/gi, "<").replace(/&gt;/gi, ">");
+        substitutionCharacter = substitutionCharacter.replace(/&#36;/gi, "\$").replace(/&#123;/gi, "{").replace(/&#125;/gi, "{");
         return substitutionCharacter;
     }
 }

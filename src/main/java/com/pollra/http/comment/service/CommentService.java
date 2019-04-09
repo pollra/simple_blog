@@ -6,6 +6,7 @@ import com.pollra.http.comment.exceptions.exception.CommentServiceException;
 import com.pollra.http.comment.exceptions.exception.DataEntryException;
 import com.pollra.http.comment.exceptions.exception.NotFoundException;
 import com.pollra.persistence.CommentRepository;
+import com.pollra.tool.data.InspectionTool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -21,9 +22,11 @@ public class CommentService {
     private static final Logger log = LoggerFactory.getLogger(CommentService.class);
 
     private CommentRepository commentRepository;
+    private InspectionTool inspectionTool;
 
     public CommentService(CommentRepository commentRepository) {
         this.commentRepository = commentRepository;
+        inspectionTool = new InspectionTool();
     }
 
     public int insertOneComment(Map<String, Object> param, HttpServletRequest request) throws CommentServiceException {
@@ -45,7 +48,7 @@ public class CommentService {
             }
             commentVO.setWriter(loginUser);
             errStack+="c";
-            commentVO.setContent(param.get("content").toString());
+            commentVO.setContent(inspectionTool.stringDataTagCheck(param.get("content").toString()));
             errStack+="p";
             commentVO.setPassword(param.get("password").toString());
             errStack+="d";
@@ -93,7 +96,7 @@ public class CommentService {
             log.info("2");
             commentVO.setNum(Integer.parseInt(param.get("num").toString()));
             log.info("3");
-            commentVO.setContent(param.get("content").toString());
+            commentVO.setContent(inspectionTool.stringDataTagCheck(param.get("content").toString()));
             log.info("4");
         }catch (Exception e){
             log.info("넘어온 데이터가 정상적이지 않습니다.");

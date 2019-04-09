@@ -6,6 +6,7 @@ import com.pollra.http.category.exception.CategoryServerInternalException;
 import com.pollra.http.category.exception.CategoryServiceException;
 import com.pollra.http.category.exception.DataEntryException;
 import com.pollra.persistence.CategoryRepository;
+import com.pollra.tool.data.InspectionTool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -19,9 +20,11 @@ public class CategoryService {
     private static final Logger log = LoggerFactory.getLogger(CategoryService.class);
 
     private CategoryRepository categoryRepository;
+    private InspectionTool inspectionTool;
 
     public CategoryService(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
+        inspectionTool = new InspectionTool();
     }
 
     /**
@@ -44,7 +47,7 @@ public class CategoryService {
             }
         }
         categoryVO.setVisible(1);
-        categoryVO.setName(param.get("categoryName").toString());
+        categoryVO.setName(inspectionTool.stringDataTagCheck(param.get("categoryName").toString()));
         categoryVO.setUrl("");
         log.info(parentLevel + " : "+categoryVO.toString());
         // 데이터 검사
@@ -62,7 +65,6 @@ public class CategoryService {
 
     /**
      * 카테고리 리스트 가져오기
-     * @param ip
      * @return
      * @throws CategoryServiceException
      */
@@ -120,7 +122,7 @@ public class CategoryService {
         int result=0;
         try {
             targetCategory.setNum(Integer.parseInt(param.get("updateTarget").toString()));
-            targetCategory.setName(param.get("updateText").toString());
+            targetCategory.setName(inspectionTool.stringDataTagCheck(param.get("updateText").toString()));
         }catch (NullPointerException e){
             throw new DataEntryException("[Cu] 입력되지 않은 정보가 있습니다.");
         }

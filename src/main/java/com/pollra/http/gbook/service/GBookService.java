@@ -3,6 +3,7 @@ package com.pollra.http.gbook.service;
 import com.pollra.http.gbook.domain.GBookVO;
 import com.pollra.http.gbook.exceptions.*;
 import com.pollra.persistence.GBookRepository;
+import com.pollra.tool.data.InspectionTool;
 import org.apache.ibatis.jdbc.Null;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,9 +22,11 @@ public class GBookService {
     private static final Logger log = LoggerFactory.getLogger(GBookService.class);
 
     private GBookRepository GBookRepository;
+    private InspectionTool inspectionTool;
 
     public GBookService(GBookRepository GBookRepository) {
         this.GBookRepository = GBookRepository;
+        inspectionTool = new InspectionTool();
     }
 
     /**
@@ -51,7 +54,7 @@ public class GBookService {
             log.info("[GBc] writer is null.");
         }
         insertNewGBook.setWriter(writer.trim());
-        insertNewGBook.setContents(content.trim());
+        insertNewGBook.setContents(inspectionTool.stringDataTagCheck(content.trim()));
         insertNewGBook.setDate(
                 new SimpleDateFormat("yy.MM.dd")
                         .format(new Date(System.currentTimeMillis()))
@@ -196,7 +199,7 @@ public class GBookService {
             throw new InvalidRequestException("권한이 없습니다.");
         }
         // 데이터 업데이트 진행
-        result = GBookRepository.updateOneGBookToNumAndContents(num, content);
+        result = GBookRepository.updateOneGBookToNumAndContents(num, inspectionTool.stringDataTagCheck(content));
         if(result > 0){
             log.info("[u] update complete.");
         }else if(result <=0 ){
