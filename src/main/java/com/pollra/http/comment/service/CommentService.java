@@ -40,12 +40,14 @@ public class CommentService {
             commentVO.setBoard(Integer.parseInt(param.get("board").toString().split(";")[0]));
             errStack+="w";
             if(session.getAttribute("lu").toString().equals("")){
-                loginUser = whatYourName(request);
+                loginUser = inspectionTool.whatYourName(request);
                 log.info("현재 로그인되어있지 않습니다. ip로 비교합니다: " + loginUser);
             }else{
                 loginUser = session.getAttribute("lu").toString();
                 log.info("현재 로그인되어있습니다. 아이디로 비교합니다: "+ loginUser);
             }
+            errStack+="l";
+            errStack+=loginUser;
             commentVO.setWriter(loginUser);
             errStack+="c";
             commentVO.setContent(inspectionTool.stringDataTagCheck(param.get("content").toString()));
@@ -107,7 +109,7 @@ public class CommentService {
         if(commentVO.getPassword().equals("")) throw new DataEntryException("패스워드를 확인할 수 없습니다.");
         if(commentVO.getContent().equals("")) throw new DataEntryException("입력된 데이터가 존재하지 않습니다.");
 
-        loginUser = whatYourName(request);
+        loginUser = inspectionTool.whatYourName(request);
         if(commentRepository.selectOneCommentCountToNumAndWriter(commentVO.getNum(), loginUser)<=0)
             throw new DataEntryException("권한이 없습니다.");
         if(commentRepository.selectOneCommentCountToNumAndPassword(commentVO.getNum(), commentVO.getPassword())<=0)
@@ -124,7 +126,7 @@ public class CommentService {
         try{
             commentVO.setNum(Integer.parseInt(param.get("num").toString()));
             commentVO.setPassword(param.get("password").toString());
-            commentVO.setWriter(whatYourName(request));
+            commentVO.setWriter(inspectionTool.whatYourName(request));
         }catch (Exception e){
             log.info("넘어온 데이터가 정상적이지 않습니다.");
             throw new DataEntryException("데이터가 정상적이지 않습니다.");
@@ -133,7 +135,7 @@ public class CommentService {
         if(commentVO.getPassword().equals("")) throw new DataEntryException("패스워드를 확인할 수 없습니다.");
 
         if(session.getAttribute("lu").toString().equals("")){
-            loginUser = whatYourName(request);
+            loginUser = inspectionTool.whatYourName(request);
             log.info("현재 로그인되어있지 않습니다. ip로 비교합니다: " + loginUser);
         }else{
             loginUser = session.getAttribute("lu").toString();
@@ -147,22 +149,5 @@ public class CommentService {
         int result = commentRepository.deleteOneCommentToNum(commentVO.getNum(), commentVO.getPassword());
         if(result <= 0) throw new DataEntryException("데이터 삭제에 실패했습니다.");
         return result;
-    }
-    /**
-     * 일시적으로 일부 유저에게 닉네임을 지정해줌
-     */
-    private String whatYourName(HttpServletRequest request){
-        String writer = request.getRemoteAddr();
-        Map<String, String> users = new HashMap<>();
-        users.put("a","robunit");
-        users.put("b","하얀수염");
-        users.put("c","P R A D A");
-        users.put("d","나는빡빡이다");
-        for(Map.Entry entry : users.entrySet()){
-            if(entry.getKey().equals(writer)){
-                return entry.getValue().toString();
-            }
-        }
-        return request.getAttribute("ip").toString().split(".")[1];
     }
 }
