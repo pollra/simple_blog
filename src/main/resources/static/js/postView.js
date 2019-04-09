@@ -6,9 +6,9 @@ const currentPath = location.pathname;
 let postsList = new Array("");
 
 function getOnePost(){
-    console.log("/posts/select/"+currentPath.split("/")[2]);
+    // console.log("/posts/select/"+currentPath.split("/")[2]);
     $.get("/posts/select/"+currentPath.split("/")[2], function(markdown) {
-        // console.log("markdown.content: "+markdown.content);
+        // // console.log("markdown.content: "+markdown.content);
         postView = editormd.markdownToHTML("postView", {
             markdown        : `#${markdown.title}\r\n${markdown.content}\r\n<hr>`,
             htmlDecode      : "style,script,iframe",  // you can filter tags decode
@@ -47,10 +47,10 @@ function getOnePost(){
  * 카테고리의 전체 내용을 출력한다.
  */
 function setPostsListView(){
-    console.log(currentPath);
+    // console.log(currentPath);
     const currentPostNum = currentPath.split("/")[2];
     if(!(currentPath.split("/")[1] === "posts")){
-        console.log(`${currentPath} : currentPath 에 posts 가 포함되지 않습니다.`);
+        // console.log(`${currentPath} : currentPath 에 posts 가 포함되지 않습니다.`);
         return;
     }
     $.ajax({
@@ -63,15 +63,15 @@ function setPostsListView(){
         let listNavButton = "";
         let active_btn = -1;
         $.each(result, (i, obj)=>{
-            console.log(i);
+            // console.log(i);
             if(postsList[postsListLength] === undefined){
                 postsList[postsListLength] = "";
             }
             if (obj.num+'' === currentPostNum) {
-                console.log(`obj.num(${obj.num}) 와 currentPostNum (${currentPostNum}) 가 같습니다.`);
+                // console.log(`obj.num(${obj.num}) 와 currentPostNum (${currentPostNum}) 가 같습니다.`);
                 postsList[postsListLength] += `<li class="list_item list_item_active" onclick="location.href='/posts/${obj.num}'">`;
                 active_btn = postsListLength;
-                console.log(`active_btn = ${active_btn}`)
+                // console.log(`active_btn = ${active_btn}`)
             }else {
                 postsList[postsListLength] += `<li class="list_item" onclick="location.href='/posts/${obj.num}'">`;
             }
@@ -81,23 +81,23 @@ function setPostsListView(){
             if(((i+1) % 5) === 0 && i > 0){
                 postsListLength++;
             }
-            console.log(`postsList[${postsListLength}] : ${postsList[postsListLength]}`);
-            // console.log(`listNavButton : ${listNavButton}`);
+            // console.log(`postsList[${postsListLength}] : ${postsList[postsListLength]}`);
+            // // console.log(`listNavButton : ${listNavButton}`);
         });
         $.each(result, (i, obj)=>{
             if(((i+1) % 5) === 0 && i > 0) {
-                console.log(`postsListLength(${postsIndexLength}) : active_btn(${active_btn})`);
+                // console.log(`postsListLength(${postsIndexLength}) : active_btn(${active_btn})`);
                 postsIndexLength++;
                 if (active_btn >= 0 && postsIndexLength === active_btn){
-                    console.log(`btn active ${postsIndexLength} : ${active_btn}`);
+                    // console.log(`btn active ${postsIndexLength} : ${active_btn}`);
                     listNavButton += `<li class="list_index_btn list_index_active" onclick="postsIndexMove(${active_btn}); return false;">${active_btn + 1}</li>`;
                 }else{
                     listNavButton += `<li class="list_index_btn" onclick="postsIndexMove(${postsIndexLength}); return false;">${postsIndexLength+1}</li>`;
                 }
             }else if(i===0){
-                console.log(`postsListLength(${postsIndexLength}) : active_btn(${active_btn})`);
+                // console.log(`postsListLength(${postsIndexLength}) : active_btn(${active_btn})`);
                 if(active_btn >= 0 && postsIndexLength === active_btn){
-                    console.log(`btn active ${postsIndexLength} : ${active_btn}`);
+                    // console.log(`btn active ${postsIndexLength} : ${active_btn}`);
                     listNavButton += `<li class="list_index_btn list_index_active" onclick="postsIndexMove(${active_btn}); return false;">${active_btn + 1}</li>`;
                 }else{
                     listNavButton += `<li class="list_index_btn" onclick="postsIndexMove(${postsIndexLength}); return false;">${postsIndexLength+1}</li>`;
@@ -113,7 +113,7 @@ function setPostsListView(){
     }).fail((result)=>{
         const error = JSON.parse(result.responseText);
         let postsList = "";
-        console.log(`[ERROR]${error.code}/${error.timeStamp} : ${error.message}`);
+        // console.log(`[ERROR]${error.code}/${error.timeStamp} : ${error.message}`);
         $("#listWrapper").html("");
         $("#listWrapper").html(postsList);
     })
@@ -123,13 +123,13 @@ function setPostsListView(){
  * 목차 이동
  */
 function postsIndexMove(num=0){
-    console.log(`postsIndexMove start`);
+    // console.log(`postsIndexMove start`);
     if(num > postsList.length || 0 > num){
-        console.log("데이터가 정확하지 않음");
+        // console.log("데이터가 정확하지 않음");
         return;
     }
-    console.log(`인덱스 이동합니다. ${num} 로 이동.`);
-    console.log(`변경되는 view.html : ${postsList[num]}`);
+    // console.log(`인덱스 이동합니다. ${num} 로 이동.`);
+    // console.log(`변경되는 view.html : ${postsList[num]}`);
     $("#listWrapper").html("");
     $("#listWrapper").html(postsList[num]);
 }

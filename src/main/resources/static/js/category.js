@@ -6,12 +6,8 @@ $(document).ready(()=>{
 });
 // 카테고리 추가
 function add_Category(){
-    console.log("[ addCategory ] start");
-    console.log(`[ addCategory ] data log : {\n` +
-    `categoryParent : ${$("#parentTargetCate option:selected").attr("class")}\n` +
-    `parentLevel : ${$("#parentTargetCate option:selected").attr("name")}\n` +
-    `categoryName : ${$("#inputCate").val()}\n}`
-    );
+    // console.log("[ addCategory ] start");
+    // console.log(`[ addCategory ] data log : {\n categoryParent : ${$("#parentTargetCate option:selected").attr("class")}\n parentLevel : ${$("#parentTargetCate option:selected").attr("name")}\n categoryName : ${$("#inputCate").val()}\n} );
     $.ajax({
         url:"/category",
         type:"post",
@@ -28,7 +24,7 @@ function add_Category(){
         $("#inputCate").val("");
     }).fail((result) =>{
         const error = JSON.parse(result.responseText);
-        console.log(`msg: ${error.message} code: ${error.code} time: ${error.timeStamp}`);
+        // console.log(`msg: ${error.message} code: ${error.code} time: ${error.timeStamp}`);
         alert("카테고리 추가 실패");
     })
 }
@@ -94,29 +90,29 @@ function get_CategoryList(option = "all"){
         let data_level3 = selectBox_categoryOptionListCreate(result, 3);
         let data_level2 = selectBox_categoryOptionListCreate(result, 2);
         if(option === "create" || option === "all") {
-            // console.log(data);
+            // // console.log(data);
             $("#parentTargetCate").html("");
             $("#parentTargetCate").html(data_level2);
         }
         if(option === "update" || option === "all") {
-            // console.log(data);
+            // // console.log(data);
             $("#updateTargetCate").html("");
             $("#updateTargetCate").html(data_level3);
         }
         if(option === "delete" || option === "all") {
-            // console.log(data);
+            // // console.log(data);
             $("#deleteTargetCate").html("");
             $("#deleteTargetCate").html(data_level3);
         }
 
         if(option === "visible" || option === "all") {
-            // console.log(data);
+            // // console.log(data);
             $("#visibleTargetCate").html("");
             $("#visibleTargetCate").html(data_level3);
         }
 
     }).fail((result) =>{
-        console.log(JSON.parse(result.responseText).message);
+        // console.log(JSON.parse(result.responseText).message);
     })
 }
 // 카테고리 관리 페이지 선택창 카테고리 불러오기
@@ -141,7 +137,7 @@ function selectBox_categoryOptionListCreate(result, resultLevel = 3){
         }
     });
     resultData += `<option class="0" value="0" name="0">default</option>`;
-    console.log(`${count1} : ${count2} : ${count3}`)
+    // console.log(`${count1} : ${count2} : ${count3}`)
     // 큰 카테고리 반복문
     $.each(size_0_category, (i, obj1)=>{
         // 큰 카테고리 선언

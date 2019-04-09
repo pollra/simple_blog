@@ -7,7 +7,7 @@ $(document).ready(()=>{
 });
 
 function getPostContent(){
-    console.log("Data : "+$("#postsContent").val())
+    // console.log("Data : "+$("#postsContent").val())
 }
 
 function toggleBtn_visibleBtn(option){
@@ -42,7 +42,7 @@ function createNewBoard(){
         }),
         contentType:"application/json; charset:utf-8;"
     }).done((entry)=>{
-        console.log(`createNewBoard entry : ${entry}`);
+        // console.log(`createNewBoard entry : ${entry}`);
         location.href="/posts/"+entry;
     }).fail((result)=>{
         let error = JSON.parse(result.responseText);
@@ -85,7 +85,7 @@ function selectBox_categoryListCreate(result, resultLevel = 3){
         }
     });
     resultData += `<option value="0">카테고리를 지정해주세요</option>`;
-    console.log(`카테고리 비율 [level 1:${count1}, level 2 : ${count2}, level 3 : ${count3}]`);
+    // console.log(`카테고리 비율 [level 1:${count1}, level 2 : ${count2}, level 3 : ${count3}]`);
 // 큰 카테고리 반복문
     $.each(size_0_category, (i, obj1)=>{
         // 큰 카테고리 선언
@@ -135,7 +135,7 @@ function updateVisible(targetNum, targetVisible){
     if(targetVisible === 0){
         visible = 1;
     }
-    console.log("[updateVisible] 업데이트 targetNum: "+ targetNum+" / visible: "+visible );
+    // console.log("[updateVisible] 업데이트 targetNum: "+ targetNum+" / visible: "+visible );
     $.ajax({
         url:`/posts/${targetNum}/update/visible/value/${visible}`,
         type:"put"
@@ -198,8 +198,8 @@ function setPostList(){
  */
 
 function updateOnePost(targetNum, option){
-    console.log("[updateOnePost] start");
-    console.log(`targetNum: ${targetNum}, option: ${option}`);
+    // console.log("[updateOnePost] start");
+    // console.log(`targetNum: ${targetNum}, option: ${option}`);
     $.ajax({
         url: `/posts/${targetNum}/update/${option}`,
         type: "put",
@@ -222,15 +222,15 @@ function updateOnePost(targetNum, option){
  */
 function getOneBoard(){
     let path = location.pathname;
-    console.log(`현재 페이지 경로: ${path}`);
+    // console.log(`현재 페이지 경로: ${path}`);
     
     // /posts/update/{num} 일 경우에만 실행됨
     if(path.split("/")[1] !== "posts"){
-        console.log("[getOneBoard] 경로에서 posts 를 감지할 수 없습니다. false 리턴합니다.");
+        // console.log("[getOneBoard] 경로에서 posts 를 감지할 수 없습니다. false 리턴합니다.");
         return false;
     }
     if(path.split("/")[2] !== "update"){
-        console.log("[getOneBoard] 경로에서 update 를 감지할 수 없습니다. false 리턴합니다.");
+        // console.log("[getOneBoard] 경로에서 update 를 감지할 수 없습니다. false 리턴합니다.");
         return false;
     }
     $.get("/posts/select/"+path.split("/")[3], function(result) {
@@ -245,7 +245,7 @@ function getOneBoard(){
         })
     }).fail((result)=>{
         let error = JSON.parse(result.responseText);
-        console.log(`error : ${error.message}`);
+        // console.log(`error : ${error.message}`);
         alert(error.message);
     })
 }
@@ -260,17 +260,17 @@ function getOneBoard(){
  */
 function selectSetCategory(){
     let path = location.pathname.split("/");
-    console.log("path: "+ location.pathname + " / path.length : "+path.length);
+    // console.log("path: "+ location.pathname + " / path.length : "+path.length);
     if(path.length < 4){
-        console.log("[selectSetCategory] 길이가 부족합니다. path.length: " + path.length);
+        // console.log("[selectSetCategory] 길이가 부족합니다. path.length: " + path.length);
         return false;
     }
     if(path[1] !== 'posts'){
-        console.log("[selectSetCategory] 카테고리셋이 실행되지 않습니다. path[1]: " + path[1]);
+        // console.log("[selectSetCategory] 카테고리셋이 실행되지 않습니다. path[1]: " + path[1]);
         return false;
     }
     if(path[2] !== 'category'){
-        console.log("[selectSetCategory] 카테고리셋이 실행되지 않습니다. path[2]: " + path[2]);
+        // console.log("[selectSetCategory] 카테고리셋이 실행되지 않습니다. path[2]: " + path[2]);
         return false;
     }
     $("#categorySelect").val(`${path[3]}`).prop("selected", true);

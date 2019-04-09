@@ -18,7 +18,7 @@ function getCategoryList(){
         $(".categoryContainer").html(data);
     }).fail((result) =>{
         // let err = JSON.parse(result.responseText);
-        console.log(result.responseText);
+        // console.log(result.responseText);
         // alert(result.responseText);
         $(".categoryContainer").html("<li class='size0'>카테고리가 존재하지 않아요</li>");
     })
@@ -28,7 +28,7 @@ function categoryCheck(category, parentNum){
     var resultTF = false;
     $.each(category, (i, obj)=>{
         if(obj.parent === parentNum){
-            console.log(`categoryCheck: {${obj.parent} : ${parentNum}} is TRUE.`);
+            // console.log(`categoryCheck: {${obj.parent} : ${parentNum}} is TRUE.`);
             resultTF = true;
         }
     })
@@ -54,7 +54,7 @@ function categoryListCreate(result){
             size_2_category[count3++] = obj;
         }
     });
-    // console.log(`${count1} : ${count2} : ${count3}`);
+    // // console.log(`${count1} : ${count2} : ${count3}`);
     // 큰 카테고리 반복문
     $.each(size_0_category, (i, obj1)=>{
         // 큰 카테고리 선언
@@ -87,12 +87,12 @@ function categoryListCreate(result){
                             }
                         }
                     }else{
-                        // console.log(`${obj1.num}의 중간카테고리가 존재하지 않습니다.`);
+                        // // console.log(`${obj1.num}의 중간카테고리가 존재하지 않습니다.`);
                     }
                 })
                 resultData += "</ul>"
             }else{
-                // console.log(`categoryCheck(size_1_category, ${obj1.num}) is FALSE.`);
+                // // console.log(`categoryCheck(size_1_category, ${obj1.num}) is FALSE.`);
             }
         }
     })
@@ -112,7 +112,7 @@ function loginCheck(){
         type:"get"
     }).done((result)=>{
         if(result !== ""){
-            console.log(`login id : ${result}`);
+            // console.log(`login id : ${result}`);
             $(".loginNik").text(result);
             $(".loginNik").attr("onclick","location.href='/user/info'");
             $(".logoutBtn").text("로그아웃");
@@ -120,12 +120,12 @@ function loginCheck(){
         }
     }).fail((errorObject)=>{
         const error = JSON.parse(errorObject.responseText);  // 날아온 JSON 텍스트 데이터를 JSON 객체로 변환해줌
-        console.log(`${error.message}`);
+        // console.log(`${error.message}`);
         $(".loginNik").text("로그인");
         $(".loginNik").attr("onclick","location.href='/login/page'");
         $(".logoutBtn").text("");
         $(".logoutBtn").attr("onclick","#");
-        console.log("[loginCheck] location.pathname.indexOf(\"/user\") : "+ location.pathname.indexOf("/user"));
+        // console.log("[loginCheck] location.pathname.indexOf(\"/user\") : "+ location.pathname.indexOf("/user"));
         if(location.pathname.indexOf("/user")!== -1){
             location.href = "/login/page";
         }
@@ -133,13 +133,13 @@ function loginCheck(){
 }
 // 로그아웃 기능
 function logout(){
-    console.log("logout action start.");
+    // console.log("logout action start.");
     $.ajax({
         url: "/logout",
         type: "get"
     }).done((result)=>{
-        console.log("logout complete.");
-        console.log("[logout] location.pathname.indexOf(\"/user\") : "+ location.pathname.indexOf("/user"));
+        // console.log("logout complete.");
+        // console.log("[logout] location.pathname.indexOf(\"/user\") : "+ location.pathname.indexOf("/user"));
         if(!(location.pathname.indexOf("/user") === -1)){
             location.href = "/";
         }
@@ -148,7 +148,7 @@ function logout(){
         $(".logoutBtn").text("회원가입");
         $(".logoutBtn").attr("onclick","location.href='/signup'");
     }).fail(()=>{
-        console.log("logout failed.");
+        // console.log("logout failed.");
         alert("로그아웃 실패.");
     })
 }

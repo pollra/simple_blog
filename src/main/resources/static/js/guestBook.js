@@ -10,11 +10,11 @@ var inputGBook = function () {
         type: "post",
         contentType: "application/json"
     }).done(function (result) {
-        console.log("msg: " + result);
+        // console.log("msg: " + result);
         $("#guestBookContent").val("");
         getGBookList();
     }).fail(function (result) {
-        console.log('error: '+JSON.parse(result.responseText).message);
+        // console.log('error: '+JSON.parse(result.responseText).message);
         alert("방명록 작성에 실패했어요");
     })
 };
@@ -42,7 +42,7 @@ var getGBookList = function () {
         $("#guestBook").html(data);
     }).fail(function (result) {
         $("#guestBook").html("");
-        console.log("[!] error: " +JSON.parse(result.responseText).message);
+        // console.log("[!] error: " +JSON.parse(result.responseText).message);
         data += "<div class='noData'>" +
             "<h3>아직 작성된 방명록이 없어요...</h3>" +
             "</div>";
@@ -59,10 +59,10 @@ var deleteGBook = function (num) {
             type: "delete",
             contentType: "application/json; charset=utf-8"
         }).done(function (result) {
-            console.log(result);
+            // console.log(result);
             getGBookList();
         }).fail(function (result) {
-            console.log("delete Error: " + JSON.parse(result.responseText).message);
+            // console.log("delete Error: " + JSON.parse(result.responseText).message);
             alert("삭제실패")
         })
     }
@@ -83,12 +83,12 @@ var updateGBook = function (num, content) {
             type: "put",
             contentType: "application/json; charset=utf-8"
         }).done(function (result) {
-            console.log("방명록 업데이트 성공: " + result);
+            // console.log("방명록 업데이트 성공: " + result);
             $("#guestBookContent").val("");
             getGBookList();
         }).fail(function (result) {
             alert("권한이 없습니다.");
-            console.log("방명록 업데이트 실패: " + JSON.parse(result.responseText).message);
+            // console.log("방명록 업데이트 실패: " + JSON.parse(result.responseText).message);
         })
     }
 };
@@ -124,8 +124,8 @@ function gbookBtnChange (type){
 var gbookUpdateBtn = function () {
     var content = $("#guestBookContent").val();
     var num = $("#guestBookTarget").val();
-    console.log("num: "+num);
-    console.log("content: "+content);
+    // console.log("num: "+num);
+    // console.log("content: "+content);
     updateGBook(num, content);
     gbookBtnChange("input");
 }

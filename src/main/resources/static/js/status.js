@@ -158,7 +158,7 @@ $(document).ready(()=>{
 });
 
 function openStatus(methodName){
-    console.log("[openStatus] start");
+    // console.log("[openStatus] start");
     switch (methodName) {
         case "myInfo":
             $(".contents").html("");
@@ -188,7 +188,7 @@ function openStatus(methodName){
 }
 
 function updateFunction(actionMethod = ""){
-    console.log("[updateFunction] start");
+    // console.log("[updateFunction] start");
     if(actionMethod === "paName"){
         if(dataEntryCheck(optionCheck())){
             updatePwName();
@@ -208,7 +208,7 @@ function updateFunction(actionMethod = ""){
         return;
     }
     if(actionMethod === ""){
-        console.log("updateFunction-actionMethod is null");
+        // console.log("updateFunction-actionMethod is null");
     }
 }
 
@@ -224,14 +224,14 @@ function updateFunction(actionMethod = ""){
  * @returns {boolean}
  */
 function dataEntryCheck(_option = ""){
-    console.log("[dataEntryCheck] start");
+    // console.log("[dataEntryCheck] start");
     const originalPassword = $("#prepw");
     const newInputPassword = $("#nexpw");
     const reEnterPassword = $("#repw");
     const newInputName = $("#updateName");
     const passwordRegex = /^.*(?=^.{8,20}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
     if(_option === "name"){
-        console.log(
+        // console.log(
             `[dataEntryCheck] name : {
  newInputName : ${newInputName.val().length}}`);
         if(newInputName.val().length <= 0){  // 데이터가 없을경우
@@ -244,21 +244,21 @@ function dataEntryCheck(_option = ""){
         return true;
     }
     if(_option === "pw"){
-        console.log(
+        // console.log(
 `[dataEntryCheck] pw : {
  originalPassword : ${originalPassword.val().length}
  newInputPassword : ${newInputPassword.val().length}
  reEnterPassword : ${reEnterPassword.val().length}}`);
         if(originalPassword.val().length <= 0){    // 데이터가 없을경우
-            console.log("[dataEntryCheck] pw : originalPassword 데이터가 입력되지 않았습니다.");
+            // console.log("[dataEntryCheck] pw : originalPassword 데이터가 입력되지 않았습니다.");
             return false;
         }
         if(newInputPassword.val().length <= 0){
-            console.log("[dataEntryCheck] pw : newInputPassword 데이터가 입력되지 않았습니다.");
+            // console.log("[dataEntryCheck] pw : newInputPassword 데이터가 입력되지 않았습니다.");
             return false;
         }
         if(reEnterPassword.val().length <= 0){
-            console.log("[dataEntryCheck] pw : reEnterPassword 데이터가 입력되지 않았습니다.");
+            // console.log("[dataEntryCheck] pw : reEnterPassword 데이터가 입력되지 않았습니다.");
             return false;
         }
 
@@ -278,7 +278,7 @@ function dataEntryCheck(_option = ""){
         return true;
     }
     if(_option === "pwName"){
-        console.log(
+        // console.log(
 `[dataEntryCheck] pwName : {
  originalPassword : ${originalPassword.val().length}
  newInputPassword : ${newInputPassword.val().length}
@@ -294,15 +294,15 @@ function dataEntryCheck(_option = ""){
         }
 
         if(originalPassword.val().length <= 0){    // 데이터가 없을경우
-            console.log("[dataEntryCheck] pw : originalPassword 데이터가 입력되지 않았습니다.");
+            // console.log("[dataEntryCheck] pw : originalPassword 데이터가 입력되지 않았습니다.");
             return false;
         }
         if(newInputPassword.val().length <= 0){
-            console.log("[dataEntryCheck] pw : newInputPassword 데이터가 입력되지 않았습니다.");
+            // console.log("[dataEntryCheck] pw : newInputPassword 데이터가 입력되지 않았습니다.");
             return false;
         }
         if(reEnterPassword.val().length <= 0){
-            console.log("[dataEntryCheck] pw : reEnterPassword 데이터가 입력되지 않았습니다.");
+            // console.log("[dataEntryCheck] pw : reEnterPassword 데이터가 입력되지 않았습니다.");
             return false;
         }
 
@@ -321,7 +321,7 @@ function dataEntryCheck(_option = ""){
         }
         return true;
     }else{
-        console.log("[dataEntryCheck] pw : _option 데이터가 초기화 되지 않았거나 옵션을 찾을 수 없습니다.");
+        // console.log("[dataEntryCheck] pw : _option 데이터가 초기화 되지 않았거나 옵션을 찾을 수 없습니다.");
         return false;
     }
 
@@ -333,24 +333,24 @@ function dataEntryCheck(_option = ""){
  * @returns {string}
  */
 function optionCheck(){
-    console.log("[optionCheck] start");
+    // console.log("[optionCheck] start");
     const originalPassword = $("#prepw");
     const newInputPassword = $("#nexpw");
     const reEnterPassword = $("#repw");
     const newInputName = $("#updateName");
     if(newInputName.val().length > 0 && originalPassword.val().length > 0){
-        console.log("select Option : pwName");
+        // console.log("select Option : pwName");
         return "pwName";
     }
     if(newInputName.val().length > 0){
-        console.log("select Option : name");
+        // console.log("select Option : name");
         return "name";
     }
     if(originalPassword.val().length > 0){
-        console.log("select Option : pw");
+        // console.log("select Option : pw");
         return "pw";
     }else{
-        console.log("[optionCheck] none : 옵션을 찾을 수 없습니다.");
+        // console.log("[optionCheck] none : 옵션을 찾을 수 없습니다.");
         return "";
     }
 }
@@ -360,7 +360,7 @@ function optionCheck(){
  * ajax 요청 데이터를 업데이트 함
  */
 function updatePwName(){
-    console.log("[updatePwName] start");
+    // console.log("[updatePwName] start");
     $.ajax({
         url: "/user",
         type: "put",
@@ -377,7 +377,7 @@ function updatePwName(){
         $("#updateName").val("");
         alert("내 정보 수정에 성공했습니다.");
     }).fail((result)=>{
-        console.log("[!] info update failed.");
+        // console.log("[!] info update failed.");
         const error = JSON.parse(result.responseText);  // 날아온 JSON 텍스트 데이터를 JSON 객체로 변환해줌
         alert(error.message);
     })
@@ -388,7 +388,7 @@ function updatePwName(){
  * ajax 요청 데이터를 업데이트 함
  */
 function updatePassword(){
-    console.log("[updatePassword] start");
+    // console.log("[updatePassword] start");
     $.ajax({
         url: "/user",
         type: "put",
@@ -400,7 +400,7 @@ function updatePassword(){
         $("#repw").val("");
         alert("비밀번호 변경에 성공했습니다.");
     }).fail((result)=>{
-        console.log("[!] password update failed.");
+        // console.log("[!] password update failed.");
         const error = JSON.parse(result.responseText);  // 날아온 JSON 텍스트 데이터를 JSON 객체로 변환해줌
         alert(error.message);
     });
@@ -411,7 +411,7 @@ function updatePassword(){
  * ajax 요청 데이터를 업데이트 함
  */
 function updateName(){
-    console.log("[updateName] start");
+    // console.log("[updateName] start");
     $.ajax({
         url: "/user",
         type: "put",
@@ -421,7 +421,7 @@ function updateName(){
         $("#updateName").val("");
         alert("이름 변경에 성공했습니다.");
     }).fail((result)=>{
-        console.log("[!] name update failed.");
+        // console.log("[!] name update failed.");
         const error = JSON.parse(result.responseText);  // 날아온 JSON 텍스트 데이터를 JSON 객체로 변환해줌
         alert(error.message);
     })
