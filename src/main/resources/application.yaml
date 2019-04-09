@@ -17,7 +17,7 @@ spring:
 
   # 2. Database settings
   datasource:
-    jdbcUrl: jdbc:postgresql://localhost:5432/simpleblog01
+    jdbcUrl: jdbc:postgresql://110.12.8.172:5432/simpleblog01
     username: pollra
     password: qwer1234
     maximumPoolSize: 10

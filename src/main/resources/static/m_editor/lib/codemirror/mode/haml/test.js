@@ -51,7 +51,7 @@
   MT("multilineRuby",
       "[tag %p]",
       "  [comment -# this is a comment]",
-      "     [comment and this is a comment too]",
+      "     [comment and this is a comment tool]",
       "  Date/Time",
       "  [operator -] [variable now] [operator =] [tag DateTime][operator .][property now]",
       "  [tag %strong=] [variable now]",
@@ -70,7 +70,7 @@
 
   MT("multilineHamlComment",
      "[comment -# this is a comment]",
-     "   [comment and this is a comment too]");
+     "   [comment and this is a comment tool]");
 
   MT("multilineHTMLComment",
     "[comment <!--]",
