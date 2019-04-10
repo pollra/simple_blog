@@ -38,14 +38,10 @@ public class InspectionTool {
         String writer = "";
         String logMessage = "";
         try{
-            logMessage+= "x";
             writer = request.getHeader("x-real-ip");
             if(writer.equals("null")) throw new Exception();
-            logMessage+= "xc";
         }catch(Exception e){
-            logMessage+= "r";
             writer = request.getRemoteAddr();
-            logMessage+= "rc";
         }
 
         Map<String, String> users = new HashMap<>();

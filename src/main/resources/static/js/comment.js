@@ -1,6 +1,6 @@
 $(document).ready(()=>{
     comment_select_list_action();
-    comment_list_index();
+    // comment_list_index();
 });
 let current_btn_option = "input";
 $(".comment_change_input_btn").hover(()=>{
@@ -24,9 +24,9 @@ function comment_btn_basic_setting(){
     * create, update, delete
  */
 function form_change(target, option='create'){
-    console.log(`타겟 : ${target} / 옵션 : ${option}`);
+    // console.log(`타겟 : ${target} / 옵션 : ${option}`);
     if(target === undefined && !(option === "create")){
-        console.log(">ㅁ<");
+        // console.log(">ㅁ<");
         return;
     }
     let yesOrNo = $("#comment_input_box").val()=== "";
@@ -44,7 +44,7 @@ function form_change(target, option='create'){
             break;
         case 'update':
             $("#comment_input_box").val($(`#comment_${target}`).children(".comment_content").text());
-            // console.log("타겟 데이터: "+$(`#comment_${target}`).children(".comment_content").text());
+            // // console.log("타겟 데이터: "+$(`#comment_${target}`).children(".comment_content").text());
             current_btn_option = "update";
             $(".comment_submit").text("수정");
             $(".comment_submit").attr("class","comment_submit update_btn");
@@ -184,10 +184,10 @@ let _comment_index = [];    // 인덱스를 갯수에 맞춰 저장함
 function comment_select_list_action() {
     comment_select_list_ajax().catch((err)=>{
         // ajax 요청 에러
-        console.log("comment loading failed. comment is not found.");
-        console.log(err.message);
+        // console.log("comment loading failed. comment is not found.");
+        // console.log(err.message);
     }).then((result)=>{
-        console.log("comment loading complete");
+        // console.log("comment loading complete");
         // 댓글의 HTML 코드를 만듬
         comment_list_html_create(result);
         return;
