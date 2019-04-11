@@ -27,8 +27,8 @@ public class RestBoardController {
     }
 
     @PostMapping("/posts/create")
-    public ResponseEntity<?> createOneBoard(@RequestBody Map<String, Object> param, HttpServletRequest request){
-        int resultBoardNum = boardService.createBoard(param, request);
+    public ResponseEntity<?> createOneBoard(@RequestBody Map<String, Object> param){
+        int resultBoardNum = boardService.createBoard(param);
         return new ResponseEntity<>(resultBoardNum, HttpStatus.OK);
     }
 

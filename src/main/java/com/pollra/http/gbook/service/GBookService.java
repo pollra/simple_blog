@@ -22,11 +22,13 @@ public class GBookService {
     private static final Logger log = LoggerFactory.getLogger(GBookService.class);
 
     private GBookRepository GBookRepository;
+    private HttpServletRequest request;
     private InspectionTool inspectionTool;
 
-    public GBookService(GBookRepository GBookRepository) {
+    public GBookService(com.pollra.persistence.GBookRepository GBookRepository, HttpServletRequest request) {
         this.GBookRepository = GBookRepository;
-        inspectionTool = new InspectionTool();
+        this.request = request;
+        this.inspectionTool = new InspectionTool();
     }
 
     /**
@@ -39,7 +41,7 @@ public class GBookService {
      * @return
      * -1 : 데이터가 입력되지 않았습니다.
      */
-    public void createGBook(String content, HttpServletRequest request) throws GBookServiceException {
+    public void createGBook(String content) throws GBookServiceException {
         int dataEntryResult;
         GBookVO insertNewGBook = new GBookVO();
         HttpSession session = request.getSession();
@@ -120,7 +122,7 @@ public class GBookService {
      * GBookNotFoundException
      * InvalidRequestException
      */
-    public void deleteOneGBook(int num, HttpServletRequest request) throws GBookServiceException {
+    public void deleteOneGBook(int num) throws GBookServiceException {
         String ip = inspectionTool.whatYourName(request);
         HttpSession session = request.getSession();
         String loginUser = "";
@@ -167,7 +169,7 @@ public class GBookService {
      * GBookNotFoundException
      * InvalidRequestException
      */
-    public int updateOneGBook(int num, String content, HttpServletRequest request)throws GBookServiceException {
+    public int updateOneGBook(int num, String content)throws GBookServiceException {
         int result=0;
         String loginUser = "";
         HttpSession session = request.getSession();

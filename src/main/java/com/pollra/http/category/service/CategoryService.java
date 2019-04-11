@@ -21,10 +21,12 @@ public class CategoryService {
 
     private CategoryRepository categoryRepository;
     private InspectionTool inspectionTool;
+    private HttpServletRequest request;
 
-    public CategoryService(CategoryRepository categoryRepository) {
+    public CategoryService(CategoryRepository categoryRepository, HttpServletRequest request) {
         this.categoryRepository = categoryRepository;
-        inspectionTool = new InspectionTool();
+        this.inspectionTool = new InspectionTool();
+        this.request = request;
     }
 
     /**
@@ -68,7 +70,7 @@ public class CategoryService {
      * @return
      * @throws CategoryServiceException
      */
-    public List<CategoryVO> selectVisibleList(HttpServletRequest request) throws CategoryServiceException{
+    public List<CategoryVO> selectVisibleList() throws CategoryServiceException{
         List<CategoryVO> categoryList;
         String loginUser = request.getSession().getAttribute("lu").toString();
         if(loginUser.equals("pollra")){
@@ -87,7 +89,7 @@ public class CategoryService {
      * 카테고리 삭제
      * @param param
      */
-    public void deleteOneCategory(Map<String, Object> param, HttpServletRequest request) throws CategoryServiceException{
+    public void deleteOneCategory(Map<String, Object> param) throws CategoryServiceException{
         int targetNum = Integer.parseInt(param.get("deleteTarget").toString());
         int result=0;
         String loginUser = request.getSession().getAttribute("lu").toString();
@@ -115,7 +117,7 @@ public class CategoryService {
      * @param param
      * @throws CategoryServiceException
      */
-    public void updateOneCategory(Map<String, Object> param, HttpServletRequest request) throws CategoryServiceException{
+    public void updateOneCategory(Map<String, Object> param) throws CategoryServiceException{
         // 넘어오는 데이터 처리
         CategoryVO targetCategory = new CategoryVO();
         String loginUser = "";
@@ -159,7 +161,7 @@ public class CategoryService {
      * @param param
      * @throws CategoryServiceException
      */
-    public void updateOneCategory_visible(Map<String, Object> param, HttpServletRequest request) throws CategoryServiceException{
+    public void updateOneCategory_visible(Map<String, Object> param) throws CategoryServiceException{
         // 넘어오는 데이터 처리
         CategoryVO targetCategory = new CategoryVO();
         String loginUser = "";

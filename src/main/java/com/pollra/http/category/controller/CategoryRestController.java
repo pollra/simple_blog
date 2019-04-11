@@ -31,7 +31,7 @@ public class CategoryRestController {
         log.info("[R!get] 카테고리 GET 명령 실행");
         List<CategoryVO> categoryList;
         try {
-            categoryList = categoryService.selectVisibleList(request);
+            categoryList = categoryService.selectVisibleList();
             log.info("[R!get] 데이터 전송 size:"+categoryList.size());
             log.info("[R!get] 데이터 전송 value:"+categoryList.get(0).toString());
 
@@ -67,7 +67,7 @@ public class CategoryRestController {
         if (authChack(request)) return new ResponseEntity<>("권한이 없습니다.", HttpStatus.BAD_REQUEST);
 
         try {
-            categoryService.deleteOneCategory(param, request);
+            categoryService.deleteOneCategory(param);
         }catch (DataEntryException e){
             return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
         }catch (CategoryServiceException e) {
@@ -103,7 +103,7 @@ public class CategoryRestController {
         }
         try {
             errorLog += "s";
-            categoryService.updateOneCategory(param, request);
+            categoryService.updateOneCategory(param);
             return new ResponseEntity<>("OK", HttpStatus.OK);
         } catch (CategoryNotFoundException e) {
             errorLog += "nf";
@@ -127,7 +127,7 @@ public class CategoryRestController {
         log.info("[R!upd] 카테고리 VISIBLE 명령 실행");
         if (authChack(request)) return new ResponseEntity<>("권한이 없습니다.", HttpStatus.BAD_REQUEST);
         try {
-            categoryService.updateOneCategory_visible(param, request);
+            categoryService.updateOneCategory_visible(param);
             return new ResponseEntity<>("OK", HttpStatus.OK);
         } catch (CategoryNotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);

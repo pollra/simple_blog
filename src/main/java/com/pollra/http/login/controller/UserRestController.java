@@ -34,7 +34,7 @@ public class UserRestController {
 
     @PutMapping         // 유저 정보 업데이트
     public ResponseEntity<?> updateUser(@RequestBody Map<String, Object> param, HttpServletRequest request){
-        userService.updateUser(param, request);
+        userService.updateUser(param);
         return new ResponseEntity<>("ok", HttpStatus.OK);
     }
 

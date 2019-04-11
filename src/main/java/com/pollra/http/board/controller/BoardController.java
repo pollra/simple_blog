@@ -23,7 +23,7 @@ public class BoardController {
     }
 
     @GetMapping("/posts")
-    public String postsPage(HttpServletRequest request){
+    public String postsPage(){
         return "post";
     }
 
@@ -33,13 +33,13 @@ public class BoardController {
     }
 
     @GetMapping("/posts/category/{categoryNum}")
-    public String selectSetCategory(@PathVariable int categoryNum, HttpServletRequest request){
+    public String selectSetCategory(@PathVariable int categoryNum){
         log.info("/posts/category/{categoryNum} 실행된당 ㅇㅅ <r~*");
         return "post";
     }
 
     @GetMapping("/posts/update/{num}")
-    public String postsUpdatePage(@PathVariable int num, HttpServletRequest request){
+    public String postsUpdatePage(@PathVariable int num){
         return "postsUpdate";
     }
 

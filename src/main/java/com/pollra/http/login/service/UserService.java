@@ -22,9 +22,11 @@ public class UserService {
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
     private UserRepository userRepository;
+    private HttpServletRequest request;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, HttpServletRequest request) {
         this.userRepository = userRepository;
+        this.request = request;
     }
 
     // 회원가입
@@ -56,9 +58,8 @@ public class UserService {
      * 이름 변경(option, newName)
      *
      * @param param
-     * @param request
      */
-    public void updateUser(Map<String, Object> param, HttpServletRequest request){
+    public void updateUser(Map<String, Object> param){
         log.info("[Uu] updateUser start");
 
         // 수정 데이터 추출
@@ -154,7 +155,7 @@ public class UserService {
 
 
     // 로그인 액션
-    public void loginUser(Map<String, Object> param, HttpServletRequest request){
+    public void loginUser(Map<String, Object> param){
         log.info("[Ula] loginUser start");
         HttpSession session = request.getSession();
         // 로그인 되어있는지 확인
@@ -188,7 +189,7 @@ public class UserService {
     }
 
     // 로그인 확인
-    public String loginCheck(HttpServletRequest request){
+    public String loginCheck(){
         log.info("[Ulc] loginCheck start.");
         HttpSession session = request.getSession();
         try {
@@ -206,7 +207,7 @@ public class UserService {
     }
 
     // 로그아웃
-    public void logoutUser(HttpServletRequest request){
+    public void logoutUser(){
         HttpSession session = request.getSession();
         String loginUser = "";
         try{

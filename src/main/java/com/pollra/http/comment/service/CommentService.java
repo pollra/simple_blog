@@ -23,13 +23,15 @@ public class CommentService {
 
     private CommentRepository commentRepository;
     private InspectionTool inspectionTool;
+    private HttpServletRequest request;
 
-    public CommentService(CommentRepository commentRepository) {
+    public CommentService(CommentRepository commentRepository, HttpServletRequest request) {
         this.commentRepository = commentRepository;
-        inspectionTool = new InspectionTool();
+        this.inspectionTool = new InspectionTool();
+        this.request = request;
     }
 
-    public int insertOneComment(Map<String, Object> param, HttpServletRequest request) throws CommentServiceException {
+    public int insertOneComment(Map<String, Object> param) throws CommentServiceException {
         int result = 0;
         CommentVO commentVO = new CommentVO();
         HttpSession session = request.getSession();
@@ -87,7 +89,7 @@ public class CommentService {
     }
 
 
-    public int updateOneComment(Map<String, Object> param, HttpServletRequest request) {
+    public int updateOneComment(Map<String, Object> param) {
         // password와 num, 변경하고자하는 content를 받음.
         CommentVO commentVO = new CommentVO();
         HttpSession session = request.getSession();
@@ -119,7 +121,7 @@ public class CommentService {
         return result;
     }
 
-    public int deleteOneComment(Map<String, Object> param, HttpServletRequest request){
+    public int deleteOneComment(Map<String, Object> param){
         CommentVO commentVO = new CommentVO();
         HttpSession session = request.getSession();
         String loginUser = "";

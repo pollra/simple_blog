@@ -19,12 +19,14 @@ public class BoardService {
     private static final Logger log = LoggerFactory.getLogger(BoardService.class);
 
     private BoardRepository boardRepository;
+    private HttpServletRequest request;
 
-    public BoardService(BoardRepository boardRepository) {
+    public BoardService(BoardRepository boardRepository, HttpServletRequest request) {
         this.boardRepository = boardRepository;
+        this.request = request;
     }
 
-    public int createBoard(Map<String, Object> param, HttpServletRequest request){
+    public int createBoard(Map<String, Object> param){
         BoardVO boardVO = new BoardVO();
         int result = 0, insertNum = 0;
         boardVO.setCategory(Integer.parseInt(param.get("newBoardCategory").toString()));
