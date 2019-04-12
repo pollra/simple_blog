@@ -8,11 +8,13 @@ import com.pollra.http.category.exception.DataEntryException;
 import com.pollra.http.category.service.CategoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
 
@@ -21,13 +23,17 @@ public class CategoryRestController {
     private static final Logger log = LoggerFactory.getLogger(CategoryRestController.class);
 
     private CategoryService categoryService;
+    private HttpServletRequest request;
+    private HttpSession session;
 
-    public CategoryRestController(CategoryService categoryService) {
+    public CategoryRestController(CategoryService categoryService, HttpServletRequest request, HttpSession session) {
         this.categoryService = categoryService;
+        this.request = request;
+        this.session = session;
     }
 
     @GetMapping("/category")
-    public ResponseEntity<?> getCategoryList(HttpServletRequest request){
+    public ResponseEntity<?> getCategoryList(){
         log.info("[R!get] 카테고리 GET 명령 실행");
         List<CategoryVO> categoryList;
         try {
@@ -46,9 +52,9 @@ public class CategoryRestController {
     }
 
     @PostMapping("/category")
-    public ResponseEntity<?> setCategory(@RequestBody Map<String, Object> param, HttpServletRequest request){
+    public ResponseEntity<?> setCategory(@RequestBody Map<String, Object> param){
         log.info("[R!set] 카테고리 SET 명령 실행");
-        if (authChack(request)) return new ResponseEntity<>("권한이 없습니다.", HttpStatus.BAD_REQUEST);
+        if (authChack()) return new ResponseEntity<>("권한이 없습니다.", HttpStatus.BAD_REQUEST);
         try {
             categoryService.insertOneData(param);
             return new ResponseEntity<>("OK", HttpStatus.OK);
@@ -61,10 +67,10 @@ public class CategoryRestController {
     }
 
     @DeleteMapping("/category")
-    public ResponseEntity<?> deleteCategory(@RequestBody Map<String, Object> param, HttpServletRequest request){
+    public ResponseEntity<?> deleteCategory(@RequestBody Map<String, Object> param){
         log.info("[R!del] 카테고리 DELETE 명령 실행");
 
-        if (authChack(request)) return new ResponseEntity<>("권한이 없습니다.", HttpStatus.BAD_REQUEST);
+        if (authChack()) return new ResponseEntity<>("권한이 없습니다.", HttpStatus.BAD_REQUEST);
 
         try {
             categoryService.deleteOneCategory(param);
@@ -78,10 +84,10 @@ public class CategoryRestController {
         return null;
     }
 
-    private boolean authChack(HttpServletRequest request) {
+    private boolean authChack() {
         String loginUser = "";
         try {
-            loginUser = request.getSession().getAttribute("lu").toString();
+            loginUser = session.getAttribute("lu").toString();
         }catch (Exception e){
             log.info("권한이 없습니다.1");
             return true;
@@ -94,10 +100,10 @@ public class CategoryRestController {
     }
 
     @PutMapping("/category")
-    public ResponseEntity<?> updateCategory(@RequestBody Map<String, Object> param, HttpServletRequest request){
+    public ResponseEntity<?> updateCategory(@RequestBody Map<String, Object> param){
         log.info("[R!upd] 카테고리 UPDATE 명령 실행");
         String errorLog = "";
-        if (authChack(request)){
+        if (authChack()){
             errorLog += "au";
             return new ResponseEntity<>("권한이 없습니다.", HttpStatus.BAD_REQUEST);
         }
@@ -123,9 +129,9 @@ public class CategoryRestController {
         }
     }
     @PutMapping("/category/vi")
-    public ResponseEntity<?> updateCategory_vi(@RequestBody Map<String, Object> param, HttpServletRequest request){
+    public ResponseEntity<?> updateCategory_vi(@RequestBody Map<String, Object> param){
         log.info("[R!upd] 카테고리 VISIBLE 명령 실행");
-        if (authChack(request)) return new ResponseEntity<>("권한이 없습니다.", HttpStatus.BAD_REQUEST);
+        if (authChack()) return new ResponseEntity<>("권한이 없습니다.", HttpStatus.BAD_REQUEST);
         try {
             categoryService.updateOneCategory_visible(param);
             return new ResponseEntity<>("OK", HttpStatus.OK);

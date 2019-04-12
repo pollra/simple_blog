@@ -27,19 +27,19 @@ public class LoginRestController {
     }
 
     @GetMapping("/login")   // 로그인 상태 체크
-    public ResponseEntity<?> getLoginCondition(HttpServletRequest request){
+    public ResponseEntity<?> getLoginCondition(){
         String loginUser = userService.loginCheck();
         return new ResponseEntity<>(loginUser, HttpStatus.OK);
     }
 
     @PostMapping("/login")  // 로그인 시도
-    public ResponseEntity<?> setLoginAction(@RequestBody Map<String, Object> param, HttpServletRequest request){
+    public ResponseEntity<?> setLoginAction(@RequestBody Map<String, Object> param){
         userService.loginUser(param);
         return new ResponseEntity<>("ok", HttpStatus.OK);
     }
 
     @GetMapping("/logout")
-    public ResponseEntity<?> setLogoutAction(HttpServletRequest request){
+    public ResponseEntity<?> setLogoutAction(){
         userService.logoutUser();
         return new ResponseEntity<>("ok", HttpStatus.OK);
     }

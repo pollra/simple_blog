@@ -23,7 +23,7 @@ public class GBookRestController {
     }
 
     @PostMapping("")
-    public ResponseEntity<String> inputData(@RequestBody Map<String, Object> param, HttpServletRequest request){
+    public ResponseEntity<String> inputData(@RequestBody Map<String, Object> param){
         try {
             GBookService.createGBook(param.get("content").toString());
             log.info("데이터 저장 완료.");
@@ -59,7 +59,7 @@ public class GBookRestController {
      * InvalidRequestException
      */
     @DeleteMapping("")
-    public ResponseEntity<String> deleteData(@RequestBody Map<String, Object> param, HttpServletRequest request){
+    public ResponseEntity<String> deleteData(@RequestBody Map<String, Object> param){
         // 데이터를 삭제하려면?
         // 삭제하기위한 데이터의 넘버를 받아야함
         try {
@@ -85,14 +85,13 @@ public class GBookRestController {
     /**
      *
      * @param param
-     * @param request
      * @return
      * DataEntryException
      * GBookNotFoundException
      * InvalidRequestException
      */
     @PutMapping("")
-    public ResponseEntity<String> updateData(@RequestBody Map<String, Object> param, HttpServletRequest request){
+    public ResponseEntity<String> updateData(@RequestBody Map<String, Object> param){
         int result = 0;
         if(param.get("gbookNum") == null || param.get("gbookContent") == null){
             return new ResponseEntity<>("데이터가 올바르지 않습니다.", HttpStatus.BAD_REQUEST);

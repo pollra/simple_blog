@@ -38,18 +38,18 @@ public class CommentRestController {
     }
 
     @PostMapping("create/one")
-    public ResponseEntity<?> createOneComment(@RequestBody Map<String, Object> param, HttpServletRequest request){
+    public ResponseEntity<?> createOneComment(@RequestBody Map<String, Object> param){
         commentService.insertOneComment(param);
         return new ResponseEntity<>("OK",HttpStatus.OK);
     }
 
     @PutMapping("update/one")
-    public ResponseEntity<?> updateOneComment(@RequestBody Map<String, Object> param, HttpServletRequest request){
+    public ResponseEntity<?> updateOneComment(@RequestBody Map<String, Object> param){
         commentService.updateOneComment(param);
         return new ResponseEntity<>("OK", HttpStatus.OK);
     }
     @PutMapping("delete/one")
-    public ResponseEntity<?> deleteOneComment(@RequestBody Map<String, Object> param, HttpServletRequest request){
+    public ResponseEntity<?> deleteOneComment(@RequestBody Map<String, Object> param){
         commentService.deleteOneComment(param);
         ModelAndView view = new ModelAndView("1");
         return new ResponseEntity<>("OK", HttpStatus.OK);

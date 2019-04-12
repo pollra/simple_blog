@@ -1,5 +1,7 @@
 package com.pollra.config;
 
+import org.apache.tomcat.util.descriptor.web.SessionConfig;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
@@ -8,6 +10,10 @@ import java.util.Collections;
 import java.util.Set;
 
 public class CourtServletContainerInitializer implements ServletContainerInitializer {
+    @Autowired
+    private SessionConfig sessionConfig;
+
+
     @Override
     public void onStartup(Set<Class<?>> c, ServletContext ctx) throws ServletException {
         AnnotationConfigWebApplicationContext applicationContext =
@@ -19,7 +25,6 @@ public class CourtServletContainerInitializer implements ServletContainerInitial
         courtRegistration.setLoadOnStartup(1);
         courtRegistration.addMapping("/");
 
-        // 쿠키 설정
         ctx.setSessionTrackingModes(
                 Collections.singleton(SessionTrackingMode.COOKIE)
         );
