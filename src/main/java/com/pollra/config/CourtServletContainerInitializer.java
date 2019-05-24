@@ -30,7 +30,7 @@ public class CourtServletContainerInitializer implements ServletContainerInitial
         );
         SessionCookieConfig sessionCookieConfig =
                 ctx.getSessionCookieConfig();
-        sessionCookieConfig.setHttpOnly(true);
+        sessionCookieConfig.setHttpOnly(false);
 
     }
 }
