@@ -12,9 +12,11 @@ try{
         sh 'java -jar simple_blog.jar'
         echo 'jar running'
     }
-}catch(err){
+}
+catch (err) {
     currentBuild.result = "FAILURE"
-}finally{
+}
+finally{
     (currentBuild.result != "ABORTED"){
         slackSend message: "jar 배포 실패[simple-blog] : <${env.BUILD_URL} | ${env.JOB_NAME}>"
     }
