@@ -31,8 +31,5 @@ public class CourtServletContainerInitializer implements ServletContainerInitial
         SessionCookieConfig sessionCookieConfig =
                 ctx.getSessionCookieConfig();
         sessionCookieConfig.setHttpOnly(false);
-        String test = "우왕";
-        System.out.println(test);
-
     }
 }
