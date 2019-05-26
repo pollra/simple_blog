@@ -7,7 +7,9 @@ node('master'){
             result = result + 1
         }
         stage('Compile'){
-            sh "cd .."
+            sh "ls -al"
+            sh "cd /var/lib/jenkins/workspace/webhook-example_master/"
+            sh "ls -al"
             sh "gradle clean build -x test"
             result = result + 1
         }
