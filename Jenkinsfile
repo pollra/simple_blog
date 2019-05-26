@@ -1,1 +1,2 @@
-slackSend message: "Build start : <${env.BUILD_URL} | ${env.JOB_NAME}>"
+slackSend message: "Build start[simple-blog] : <${env.BUILD_URL} | ${env.JOB_NAME}>"
+echo pwd
