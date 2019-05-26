@@ -3,7 +3,7 @@ node('master'){
     slackSend message: "Build start[simple-blog] : <${env.BUILD_URL} | ${env.JOB_NAME}>"
 
     try{
-        sh 'sudo git clone https://github.com/pollra/simple_blog.git'
+        sh 'git clone https://github.com/pollra/simple_blog.git'
         echo 'git clone complete'
     }catch(err){
         currentBuild.result = "FAILURE"
@@ -15,7 +15,7 @@ node('master'){
     }
 
     try{
-        sh 'sudo gradle clean build -x test'
+        sh 'gradle clean build -x test'
         echo 'gradle build complete'
     }catch(err){
         currentBuild.result = "FAILURE"
