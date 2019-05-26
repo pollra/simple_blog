@@ -2,8 +2,8 @@ node('master'){
     slackSend message: "Build start[simple-blog] : <${env.BUILD_URL} | ${env.JOB_NAME}>"
     catchError {
         def result = 0
-        sh 'git clone https://github.com/pollra/simple_blog.git'
-        echo 'git clone complete'
+        sh 'git pull'
+        echo 'git pull complete'
 
         result = result + 1
         sh 'gradle clean build -x test'
