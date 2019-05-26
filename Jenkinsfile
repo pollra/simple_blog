@@ -7,6 +7,7 @@ node('master'){
             result = result + 1
         }
         stage('Compile'){
+            sh "cd .."
             sh "gradle clean build -x test"
             result = result + 1
         }
