@@ -9,8 +9,8 @@ import java.util.List;
 
 @Repository
 public interface CommentRepository {
-
-    @Insert("INSERT INTO public.comment (num, board, writer, date, content, password) VALUES (DEFAULT, #{board}, #{writer}, #{date}, #{content}, #{password})")
+    @Insert("INSERT INTO public.comment (num, board, writer, date, content, password)" +
+            " VALUES (DEFAULT, #{board}, #{writer}, #{date}, #{content}, #{password})")
     public int insertOneCommentToCommentVO(CommentVO commentVO);
 
     @Update("UPDATE public.comment SET content=#{content} WHERE num=#{num}")

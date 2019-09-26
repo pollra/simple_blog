@@ -13,7 +13,6 @@ public class CourtServletContainerInitializer implements ServletContainerInitial
     @Autowired
     private SessionConfig sessionConfig;
 
-
     @Override
     public void onStartup(Set<Class<?>> c, ServletContext ctx) throws ServletException {
         AnnotationConfigWebApplicationContext applicationContext =

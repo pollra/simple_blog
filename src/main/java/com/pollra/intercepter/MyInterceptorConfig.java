@@ -34,6 +34,5 @@ public class MyInterceptorConfig implements WebMvcConfigurer {
                         "/posts",
                         "/posts/category/**",
                         "/posts/update/**").addPathPatterns("/**");
-
     }
 }
